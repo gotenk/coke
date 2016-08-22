@@ -1,0 +1,6 @@
+.htaccess
+assets/cache/*
+system/cms/cache/*
+system/cms/logs/*
+system/cms/config/database.php
+uploads/*
