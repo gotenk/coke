@@ -1,0 +1,1 @@
+<iframe src="<?php echo site_url('admin/menu/image'); ?>" width="800" height="500"></iframe>

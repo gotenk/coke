@@ -1,0 +1,16 @@
+<?php $kode=@$_GET['kode'] ?>
+<div id="mobile-menu">
+<?php if ($kode==0): ?>
+	<ul class="menu-top-white" style="text-align:right;">
+<?php else: ?>
+	<ul class="menu-top-black" style="text-align:right;">
+<?php endif ?>
+		<li><a href="{{url:site}}">beranda</a></li>
+	   	<li><a href="{{url:site}}gabung">cara ikutan</a></li>
+	   	<li><a href="{{url:site}}galeri">galeri video</a></li>
+	   	<li><a href="{{url:site}}favorite">video #meriahbersama</a></li>
+	   	<li><a href="{{url:site}}product">coca-cola label ramadan</a></li>
+	   	<!--<li><a href="{{url:site}}promo">promo</a></li>-->
+	   	<li><a href="{{url:site uri="persyaratan-dan-ketentuan" }}">s&amp;k</a></li>
+	</ul>
+</div>

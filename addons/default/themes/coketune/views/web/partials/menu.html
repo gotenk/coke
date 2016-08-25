@@ -1,0 +1,35 @@
+<div id="top-wrapper">
+	<div id="header">
+		<div class="container">
+			<a class="logo" href="">
+				{{ theme:image file="coke.png" }}
+			</a>
+			<a id="toggle" href="javascript:void(0)">
+				<span class="span1"></span>
+				<span class="span2"></span>
+				<span class="span3"></span>
+			</a>
+			<div class="menu-wrapper">
+				<ul class="menu">
+					<li class="{{ if { url:segments segment='1' default='home' } == "cara" }} active {{ endif }}">
+						<a href="{{ url:site }}">Cara Mengikuti Kompetisi</a>
+					</li>
+					<li class ="{{ if { url:segments segment="1" default="home" } == "home" }} active {{ endif }}">
+						<a href="{{ url:site uri="galeri" }}">Masuk / Daftar</a>
+					</li>
+					<!-- <li class="{{ if { url:segments segment="1" default="home" } == "event" }} active {{ endif }}">
+						<a href="{{ url:site uri="event" }}">Ikuti Acara Seru</a>
+					</li> -->
+
+				</ul>
+				<div class="social-header">
+					<a target="_blank" href="https://twitter.com/cocacola_id" class="social-header-btn twitter"></a>
+					<a target="_blank" href="https://www.facebook.com/cocacolaindonesia " class="social-header-btn facebook"></a>
+					<a target="_blank" href="https://instagram.com/cocacola_id/" class="social-header-btn instagram"></a>
+
+				</div>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+	</div>
