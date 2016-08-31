@@ -221,7 +221,8 @@ class Users extends Public_Controller
 		if(!$this->facebook->getUser())
 		{
 			$fb_connect_url = uri_string();
-			var_dump($fb_connect_url);die()
+			var_dump($fb_connect_url);
+			die();
 
 			$data_url = $this->facebook->getLoginUrl(array('redirect_uri'=>site_url(uri_string()),
 												'scope'=>array('email')));
