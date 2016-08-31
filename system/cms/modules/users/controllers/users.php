@@ -331,9 +331,10 @@ class Users extends Public_Controller
 
 				$this->ion_auth->activate($id, false);
 				//$current_register = $this->session->userdata('register_status');
+				*/
 			}
 
-
+			/*
 			if(isset($redir) && $redir)
 			{
 
