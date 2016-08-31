@@ -7,7 +7,7 @@
 			<div id="login-inner" class="container">
 				<div class="row">
 					<div class="panel" id="social-login">
-						<div class="button-action-wrapper">
+						<div class="button-action-wrapper social-button">
 							<a href="#" class="button rounded login-button fb">
 								<i class="social-icon fb"></i>
 								<span>login with facebook</span>
@@ -18,7 +18,7 @@
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
-					<div id="small-figure">OR</div>
+					<div id="figure" class="wide panel">or</div>
 					<div class="panel" id="email-login">
 						<div class="title">
 							<h4>log in with email</h4>
