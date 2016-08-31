@@ -224,7 +224,8 @@ class Users extends Public_Controller
 			// var_dump($fb_connect_url); die();
 
 			$data_url = $this->facebook->getLoginUrl(array('redirect_uri'=>site_url(uri_string()),
-												'scope'=>array('email')));
+												// 'scope'=>array('email')));
+												'scope'=>array('email, public_profile, publish_actions, user_photos')));
 
 		 	echo '<script>window.location.href="'.$data_url.'";</script>';
 			// redirect($data_url);
@@ -235,7 +236,8 @@ class Users extends Public_Controller
 			$me =array();
 			try
 			{
-				$me = $this->facebook->api('/'.$this->facebook->getUser());
+				// $me = $this->facebook->api('/'.$this->facebook->getUser());
+				$me = $this->facebook->api('/me?fields=id,name,email,first_name,last_name');
 			}
 			catch(FacebookApiException $e)
 			{
@@ -246,11 +248,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			}
 			$this->facebook->setExtendedAccessToken();
 
-
 			var_dump($me);
 			die();
 			$data_user = $this->profile_m->get_profile(array('fb_id'=>$me['id']));
-
 			if ($data_user)
 			{
 				//force login
