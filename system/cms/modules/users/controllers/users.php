@@ -221,22 +221,17 @@ class Users extends Public_Controller
 		if(!$this->facebook->getUser())
 		{
 			$fb_connect_url = uri_string();
-			var_dump($fb_connect_url);
-			die();
+			// var_dump($fb_connect_url); die();
 
 			$data_url = $this->facebook->getLoginUrl(array('redirect_uri'=>site_url(uri_string()),
 												'scope'=>array('email')));
 
-			 echo '<script>window.location.href="'.$data_url.'";</script>';
-			redirect($data_url);
+		 	echo '<script>window.location.href="'.$data_url.'";</script>';
+			// redirect($data_url);
 			return;
 
 		}
 		else {
-
-
-			var_dump($me);
-			die();
 			$me =array();
 			try
 			{
@@ -252,6 +247,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$this->facebook->setExtendedAccessToken();
 
 
+			var_dump($me);
+			die();
 			$data_user = $this->profile_m->get_profile(array('fb_id'=>$me['id']));
 
 			if ($data_user)
