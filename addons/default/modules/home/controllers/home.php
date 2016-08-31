@@ -235,6 +235,18 @@ class Home extends Public_Controller
 			return;
 		}
 
+		if(count($url_segments) && isset($url_segments[1]) && ($url_segments[1] =='lengkapi-profile'))
+		{
+			/*Asset::css('theme::jquery.mCustomScrollbar.css');
+			Asset::js('theme::jquery.mCustomScrollbar.concat.min.js');
+			Asset::js('theme::jquery.mCustomScrollbar.min.js');*/
+
+			$this->template->title('Lengkapi Profile');
+			//$this->template->set('image_background','bg-how-to.jpg');
+			$this->template->build('home');
+			return;
+		}
+
 		$this->_home($url_segments);
 
 

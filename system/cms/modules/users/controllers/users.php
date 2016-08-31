@@ -218,6 +218,7 @@ class Users extends Public_Controller
 	{
 		$this->session->unset_userdata('connect_with');
 		$this->session->set_userdata('connect_with', 'facebook');
+		$redir = site_url();
 
 		if(!$this->facebook->getUser())
 		{
@@ -261,23 +262,29 @@ class Users extends Public_Controller
 				}
 
 				//save last current data
-				$dob = explode('/',$this->session->userdata('dob'));
-				$parent_email=$this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
-				$connect_with =$this->session->userdata('connect_with');
+				// $dob = explode('/',$this->session->userdata('dob'));
+				// $parent_email=$this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
+				// $connect_with =$this->session->userdata('connect_with');
+				//
+				// $this->session->set_userdata('data_current',array('social_media'=>$connect_with,'day'=>$dob[0],'month'=>$dob[1],'year'=>$dob[2],'parent_email'=>$parent_email ));
+				// $this->session->set_userdata('message_register',lang('user:already_register'));
+				// echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
+				// exit();
 
-				$this->session->set_userdata('data_current',array('social_media'=>$connect_with,'day'=>$dob[0],'month'=>$dob[1],'year'=>$dob[2],'parent_email'=>$parent_email ));
-				$this->session->set_userdata('message_register',lang('user:already_register'));
-				echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
-				exit();
+				$redir = site_url('profile-page');
 			}
 			else {
 
 				if( (!$this->session->userdata('dob')) || ($this->session->userdata('connect_with') !='facebook') )
 				{
-					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
-					exit();
+					// echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
+					// exit();
+					redirect(site_url('syarat-dan-ketentuan'));
 				}
 
+				$this->session->set_userdata('me', $me);
+
+				/*
 				$dob = $this->session->userdata('dob');
 				$dob_int = date_create_from_format('j/n/Y',$dob)->getTimestamp();
 				$this->session->set_userdata('message_register',lang('user:success_register'));
@@ -311,11 +318,12 @@ class Users extends Public_Controller
 
 				$id = $this->ion_auth->register($username, $password, $email,$parent_email, null, $profile_data,false,$my_extra);
 				if($parent_email)
-					{
-						//send email confirmation
-						$this->send_email_confirmation($parent_email,$id);
-					}
-					$this->check_id_entity_match_by($id,$me['id'],'facebook');
+				{
+					//send email confirmation
+					$this->send_email_confirmation($parent_email,$id);
+				}
+				$this->check_id_entity_match_by($id,$me['id'],'facebook');
+
 				//unset
 				$this->session->unset_userdata('parent_email');
 				$this->session->unset_userdata('connect_with');
@@ -323,8 +331,6 @@ class Users extends Public_Controller
 
 				$this->ion_auth->activate($id, false);
 				//$current_register = $this->session->userdata('register_status');
-
-
 			}
 
 
@@ -339,6 +345,8 @@ class Users extends Public_Controller
 				echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 				//redirect();
 			}
+			*/
+
 		}
 	}
 
