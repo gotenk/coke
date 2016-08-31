@@ -216,7 +216,8 @@ class Users extends Public_Controller
 	//facebook callback
 	public function fb_connect()
 	{
-
+		$this->session->unset_userdata('connect_with');
+		$this->session->set_userdata('connect_with', 'facebook');
 
 		if(!$this->facebook->getUser())
 		{
@@ -241,15 +242,14 @@ class Users extends Public_Controller
 			}
 			catch(FacebookApiException $e)
 			{
-				echo '<html><head><META HTTP-EQUIV="REFRESH"
-CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_query($this->input->get()):'').'"><title>Sedang Di Arahkan Ulang</title></head><body>tunggu sebentar</body></html>';
-				//redirect();
+				// echo '<html><head><META HTTP-EQUIV="REFRESH" CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_query($this->input->get()):'').'"><title>Sedang Di Arahkan Ulang</title></head><body>tunggu sebentar</body></html>';
+				redirect(site_url());
 				return;
 			}
 			$this->facebook->setExtendedAccessToken();
 
-			var_dump($me);
-			die();
+			// var_dump($me);
+			// die();
 			$data_user = $this->profile_m->get_profile(array('fb_id'=>$me['id']));
 			if ($data_user)
 			{
@@ -373,6 +373,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 		}*/
 
+		$this->session->unset_userdata('connect_with');
+		$this->session->set_userdata('connect_with', 'twitter');
 
    		$settings_twitter = array();
 		$settings_twitter['oauth_access_token'] = Settings::get('oauth_access_token');
