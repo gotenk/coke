@@ -14,7 +14,7 @@ class Users extends Public_Controller
 	 *
 	 * @return \Users
 	 */
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -24,7 +24,7 @@ class Users extends Public_Controller
 		$this->load->helper('user');
 		$this->lang->load('user');
 		$this->load->library('form_validation');
-		
+
 		$this->social_media_list =array('vine','instagram','twitter','facebook');
 	}
 
@@ -34,12 +34,12 @@ class Users extends Public_Controller
 	public function index()
 	{
 		redirect('');
-		
+
 	}
 	public 	function instagram_callback(){
 			$this->load->library('instagram/instagram');
 			$this->instagram->setApiCallback(site_url(uri_string()));
-		
+
 			if($code = $this->input->get('code'))
 			{
 				$data = $this->instagram->getOAuthToken($code);
@@ -48,8 +48,8 @@ class Users extends Public_Controller
 					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 					exit();
 				}
-				
-				
+
+
 				//var_dump($id_twitter);
 				$data_check = $this->profile_m->get_profile(array('insta_id'=> $data->user->id));
 				//var_dump($data);
@@ -61,21 +61,21 @@ class Users extends Public_Controller
 						echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 						exit();
 					}
-					
+
 					//save last current data
 					$dob = explode('/',$this->session->userdata('dob'));
 					$parent_email=$this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
 					$connect_with =$this->session->userdata('connect_with');
-					
+
 					$this->session->set_userdata('data_current',array('social_media'=>$connect_with,'day'=>$dob[0],'month'=>$dob[1],'year'=>$dob[2],'parent_email'=>$parent_email ));
 					$this->session->set_userdata('message_register',lang('user:already_register'));
 					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 					exit();
 				}
 				else {
-					
-				
-					
+
+
+
 					if( (!$this->session->userdata('dob')) || ($this->session->userdata('connect_with') !='instagram') )
 					{
 						echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
@@ -85,14 +85,14 @@ class Users extends Public_Controller
 					$dob_int = date_create_from_format('j/n/Y',$dob)->getTimestamp();
 					$this->session->set_userdata('message_register',lang('user:success_register'));
 					//register
-					
-					
-					
+
+
+
 					$profile_data =array();
 					$profile_data['display_name'] =(($data->user->full_name)? $data->user->full_name: $data->user->username);
 					$profile_data['insta_id'] = $data->user->id;
 					$profile_data['dob'] = $dob_int;
-					$profile_data['dob_date_format'] = $dob;			
+					$profile_data['dob_date_format'] = $dob;
 					$email='';
 					$username = $data->user->username;
 					//generate pub, private key
@@ -103,9 +103,9 @@ class Users extends Public_Controller
 					$parent_email = $this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
 					$my_extra = array(	'insta_id'	=>$data->user->id,
 										'dob'	=>$dob_int,
-										'dob_date_format'=> $dob,					
+										'dob_date_format'=> $dob,
 									);
-								
+
 					$id = $this->ion_auth->register($username, $password, $email,$parent_email, null, $profile_data,false,$my_extra);
 					if($parent_email)
 					{
@@ -118,13 +118,13 @@ class Users extends Public_Controller
 					$this->session->unset_userdata('connect_with');
 					$this->session->unset_userdata('dob');
 					$this->ion_auth->activate($id, false);
-					
+
 				}
-			
-			
+
+
 				if(isset($redir) && $redir)
 				{
-					
+
 					echo '<script>window.location.href="'.site_url(rawurldecode($redir)).'";</script>';
 					//redirect(site_url(rawurldecode($redir)));
 				}
@@ -137,20 +137,20 @@ class Users extends Public_Controller
 			else {
 				redirect($this->instagram->getLoginUrl());
 			}
-	
-	
-				
 
-			
+
+
+
+
 	}
-	
+
 	public function check_parent_email()
 	{
 		$day = $this->input->post('day',true);
 		$month = $this->input->post('month',true);
 		$year = $this->input->post('year',true);
-		
-		
+
+
 		if($this->func_check_parent_email($month,$day,$year))
 		{
 			echo json_encode(array('status'=>1));
@@ -159,7 +159,7 @@ class Users extends Public_Controller
 			echo json_encode(array('status'=>0));
 		}
 	}
-	
+
 	function _parent_email_check()
 	{
 		$month = $this->input->post('month');
@@ -173,11 +173,11 @@ class Users extends Public_Controller
 			$this->form_validation->set_message('_parent_email_check',lang('user:parent_email_check'));
 			return false;
 		}
-		
+
 	}
-	
-	
-	
+
+
+
 	private function func_check_parent_email($month,$day,$year)
 	{
 		if( checkdate (intval($month), intval($day), intval($year) ))
@@ -200,42 +200,42 @@ class Users extends Public_Controller
 				return false;
 			}
 			else {
-				
+
 				return false;
-				
+
 			}
-			
-			
+
+
 		}
 		else {
 			return false;
 		}
 	}
-		
-		
+
+
 	//facebook callback
 	public function fb_connect()
 	{
-		
-		
+
+
 		if(!$this->facebook->getUser())
 		{
 			$fb_connect_url = uri_string();
-			//var_dump($fb_connect_url);die()
-			
+			var_dump($fb_connect_url);die()
+
 			$data_url = $this->facebook->getLoginUrl(array('redirect_uri'=>site_url(uri_string()),
 												'scope'=>array('email')));
-												
+
 			 echo '<script>window.location.href="'.$data_url.'";</script>';
-			//redirect($data_url);
+			redirect($data_url);
 			return;
-				
+
 		}
 		else {
-			
-			
-			//var_dump($me); 
-			//die();
+
+
+			var_dump($me);
+			die();
 			$me =array();
 			try
 			{
@@ -249,10 +249,10 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				return;
 			}
 			$this->facebook->setExtendedAccessToken();
-			
-			
+
+
 			$data_user = $this->profile_m->get_profile(array('fb_id'=>$me['id']));
-			
+
 			if ($data_user)
 			{
 				//force login
@@ -261,25 +261,25 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 					exit();
 				}
-				
+
 				//save last current data
 				$dob = explode('/',$this->session->userdata('dob'));
 				$parent_email=$this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
 				$connect_with =$this->session->userdata('connect_with');
-				
+
 				$this->session->set_userdata('data_current',array('social_media'=>$connect_with,'day'=>$dob[0],'month'=>$dob[1],'year'=>$dob[2],'parent_email'=>$parent_email ));
 				$this->session->set_userdata('message_register',lang('user:already_register'));
 				echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 				exit();
 			}
 			else {
-				
+
 				if( (!$this->session->userdata('dob')) || ($this->session->userdata('connect_with') !='facebook') )
 				{
 					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 					exit();
 				}
-				
+
 				$dob = $this->session->userdata('dob');
 				$dob_int = date_create_from_format('j/n/Y',$dob)->getTimestamp();
 				$this->session->set_userdata('message_register',lang('user:success_register'));
@@ -299,7 +299,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 						$email ='';
 					}
 				}
-				$username ='';				
+				$username ='';
 				$profile_data = array_merge($profile_data);
 				$password=rand(895,9542324).microtime().rand(0,5443434);
 				$username = $this->generate_username($me['name']);
@@ -308,9 +308,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$parent_email = $this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
 				$my_extra = array(		'fb_id'	=>$me['id'],
 										'dob'	=>$dob_int,
-										'dob_date_format'=> $dob,					
+										'dob_date_format'=> $dob,
 									);
-								
+
 				$id = $this->ion_auth->register($username, $password, $email,$parent_email, null, $profile_data,false,$my_extra);
 				if($parent_email)
 					{
@@ -322,17 +322,17 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$this->session->unset_userdata('parent_email');
 				$this->session->unset_userdata('connect_with');
 				$this->session->unset_userdata('dob');
-				
+
 				$this->ion_auth->activate($id, false);
 				//$current_register = $this->session->userdata('register_status');
-				
-				
+
+
 			}
-			
-			
+
+
 			if(isset($redir) && $redir)
 			{
-				
+
 				echo '<script>window.location.href="'.site_url(rawurldecode($redir)).'";</script>';
 				//redirect(site_url(rawurldecode($redir)));
 			}
@@ -355,7 +355,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$this->session->unset_userdata('tw_name');
 			$this->ion_auth->logout();
 			$build_query=array();
-						
+
 			if($this->current_user)
 			{
 				$this->session->unset_userdata('access_token');
@@ -372,29 +372,29 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				//redirect(uri_string());
 				return;
 			}
-			
+
 		}*/
-   		
-		
+
+
    		$settings_twitter = array();
 		$settings_twitter['oauth_access_token'] = Settings::get('oauth_access_token');
 		$settings_twitter['oauth_access_token_secret'] = Settings::get('oauth_access_token_secret');
 		$settings_twitter['consumer_key'] = Settings::get('consumer_key');
 		$settings_twitter['consumer_secret'] = Settings::get('consumer_key_secret');
-   	
+
 		if(isset($_REQUEST['oauth_verifier']))
 		{
 			$redirecting = $this->input->get('redirect');
 			/* If the oauth_token is old redirect to the connect page. */
-		
+
 			if (isset($_REQUEST['oauth_token']) && isset( $_SESSION['oauth_token']) && ($_REQUEST['oauth_token'] !== $_REQUEST['oauth_token']) ) {
 				unset($_SESSION['oauth_token']);
 				//redirect('juara-voice/tw-connect?reset=true');
 			}
-			
+
 			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
 			$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'), (isset($_SESSION['oauth_token'])? $_SESSION['oauth_token']: FALSE), (isset($_SESSION['oauth_token_secret']))?$_SESSION['oauth_token_secret'] :false ));
-			
+
 			/* Request access tokens from twitter */
 			$access_token = $this->twitter->getAccessToken($_REQUEST['oauth_verifier']);
 
@@ -405,11 +405,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			}
 			/* Save the access tokens. Normally these would be saved in a database for future use. */
 			$_SESSION['access_token'] = $access_token;
-			
+
 			/* Remove no longer needed request tokens */
 			unset($_SESSION['oauth_token']);
 			unset($_SESSION['oauth_token_secret']);
-			
+
 			/* If HTTP response is 200 continue otherwise send to connect page to retry */
 			if (200 == $this->twitter->http_code) {
 			  /* The user has been verified and the access tokens can be saved for future use */
@@ -422,7 +422,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 
 		if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
-				
+
 				$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'),null,null));
 				$_redir = $this->input->get('redirect');
 				$twitter_callback = uri_string().'?redirect='.rawurlencode($_redir);
@@ -434,7 +434,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			  case 200:
 			    	/* Build authorize URL and redirect user to Twitter. */
 			    	$url = $this->twitter->getAuthorizeURL($token);
-			    header('Location: ' . $url); 
+			    header('Location: ' . $url);
 				return;
 			    break;
 			    default:
@@ -443,11 +443,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			}
 		}
 		else {
-			
+
 			//$this->session->set_userdata('register_status','tw');
 			$access_token = $this->session->userdata('access_token');
 			$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'), $access_token['oauth_token'],$access_token['oauth_token_secret']));
-			
+
 			//$data = $this->twitter->get('account/verify_credentials');
 			/*$rate_limit= $this->twitter->get('application/rate_limit_status');
 			var_dump($rate_limit);
@@ -456,7 +456,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			{
 				var_dump($rate_limit);die();
 			}*/
-			
+
 			$id_twitter = isset($_SESSION['access_token']['user_id'])? $_SESSION['access_token']['user_id'] :false;
 			//s
 			//var_dump($id_twitter);
@@ -470,21 +470,21 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 					exit();
 				}
-				
+
 				//save last current data
 				$dob = explode('/',$this->session->userdata('dob'));
 				$parent_email=$this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
 				$connect_with =$this->session->userdata('connect_with');
-				
+
 				$this->session->set_userdata('data_current',array('social_media'=>$connect_with,'day'=>$dob[0],'month'=>$dob[1],'year'=>$dob[2],'parent_email'=>$parent_email ));
 				$this->session->set_userdata('message_register',lang('user:already_register'));
 				echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 				exit();
 			}
 			else {
-				
-			
-				
+
+
+
 				if( (!$this->session->userdata('dob')) || ($this->session->userdata('connect_with') !='twitter') )
 				{
 					echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
@@ -512,7 +512,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				if(! is_dir(  getcwd().$this->config->item('default_path').$data->id))
 				{
 					$result = mkdir(  getcwd().$this->config->item('default_path').$data->id,0755,true);
-					
+
 				}
 				$parent_email = $this->session->userdata('parent_email')?$this->session->userdata('parent_email') : null;
 				$my_extra = array(	'tw_id'	=>$data->id,
@@ -520,9 +520,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 									'dob_date_format'=> $dob,
 									'tw_screen_name'=>$data->screen_name,
 									'tw_tokens'	=>serialize($access_token),
-				
+
 								);
-							
+
 				$id = $this->ion_auth->register($username, $password, $email,$parent_email, null, $profile_data,false,$my_extra);
 				if($parent_email)
 				{
@@ -535,13 +535,13 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$this->session->unset_userdata('connect_with');
 				$this->session->unset_userdata('dob');
 				$this->ion_auth->activate($id, false);
-				
+
 			}
-			
-			
+
+
 			if(isset($redir) && $redir)
 			{
-				
+
 				echo '<script>window.location.href="'.site_url(rawurldecode($redir)).'";</script>';
 				//redirect(site_url(rawurldecode($redir)));
 			}
@@ -550,16 +550,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				echo '<script>window.location.href="'.site_url('persyaratan-dan-ketentuan').'";</script>';
 				//redirect();
 			}
-			
-			
-			
-			
-		} 
-		
-		
+
+
+
+
 		}
 
-		
+
+		}
+
+
 
 
 	/**
@@ -572,7 +572,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 		$this->ion_auth->logout();
 
-		//unset($this->session->userdata);  
+		//unset($this->session->userdata);
 		$this->session->sess_destroy();
 
 		if ($this->input->is_ajax_request())
@@ -592,10 +592,10 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	{
 		$this->load->library('recaptcha');
 		$response = $this->recaptcha->recaptcha_check_answer_checkbox($this->input->post('g-recaptcha-response'));
-		
+
 
 		if(!$this->recaptcha->is_valid){
-			
+
 			$this->form_validation->set_message('_recaptcha_check',lang('user:recaptcha'));
 			return false;
 		}else{
@@ -603,16 +603,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 
 	}
-	
+
 	public function _tnc($val)
 	{
 		if(empty($val))
 		{
 			$this->form_validation->set_message('_tnc',lang('user:tnc'));
-			
+
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -630,9 +630,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	/*public function register_user(){
-		
+
 		$this->load->helper('home/home');
-		
+
 		if ($this->current_user)
 		{
 			$this->session->set_flashdata('notice', lang('user:already_logged_in'));
@@ -682,7 +682,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'rules' => 'trim|required',
 			),
 		);
-		
+
 		if(!$this->input->post('parent_email'))
 		{
 			unset($validation['parent_email']);
@@ -698,17 +698,17 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		{
 			$user->{$rule['field']} = $this->input->post($rule['field']) ? escape_tags($this->input->post($rule['field'])) : null;
 		}
-		
+
 		if ($_POST)
 		{
-			
+
 			//$complete_test = $this->session->userdata('complete_tes');
 			//if($complete_test==NULL){
-				
+
 				//$this->session->unset_userdata(array('firstlogin', 'connect_with', 'me'));
-			//	
+			//
 			//	if(!$this->input->is_ajax_request())
-			//	{		
+			//	{
 			//		redirect();
 			//	}
 			//	else
@@ -723,7 +723,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			//		return;
 			//	}
 			//}
-			
+
 
 			$email_asli = $this->input->post('email');
 			if ($this->form_validation->run())
@@ -732,12 +732,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$email = $this->input->post('email');
 				$email_parts = explode('@', $email);
 				$username = $email_parts[0];
-				
+
 				$first_name = $this->input->post('first_name');
 				$last_name = $this->input->post('last_name');
 				$display_name = $first_name.' '.$last_name;
 				$username = $first_name;
-								
+
 				$profile_data = $extra = array();
 				$profile_data['display_name'] = $display_name;
 				$profile_data['first_name'] = $first_name;
@@ -747,11 +747,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$tgl = $this->input->post('tgl');
 				$bln = $this->input->post('bln');
 				$thn = $this->input->post('thn');
-				if( $thn && $bln && $tgl ){					
+				if( $thn && $bln && $tgl ){
 					if($cek_dob = $this->_cek_dob($thn, $bln, $tgl)){
 						$extra['dob'] = $thn.'-'.$bln.'-'.$tgl;
 					}else{
-						$this->session->set_userdata('dob_false', '1');						
+						$this->session->set_userdata('dob_false', '1');
 						echo json_encode(array('url'=>'', 'status'=>false, 'message'=>'Maaf, kamu belum memenuhi syarat untuk mendaftar', 'aksi'=>'home' ));
 						return;
 					}
@@ -779,11 +779,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$extra['photo_profile'] = $this->session->userdata('image_url');
 
 				}
-										
+
 				//$id = $this->ion_auth->register($username, $password, $email, null, $profile_data);
 				$id = $this->ion_auth->register($username, $password, $email_asli, $email, null, $profile_data);
 
-				
+
 
 				if ($this->input->post('parent_email')) {
 					$data_email = array();
@@ -792,27 +792,27 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$data_email['name'] = $display_name;
 
 					$hash_id = $this->encode5t($id);
-					
+
 					$data_email['link'] = site_url()."confirm_parent/".$hash_id;
 					// var_dump($data_email);
 					$this->send_email($data_email);
 
 				}
-				
-				
+
+
 				// Try to create the user
 				if ($id > 0)
 				{
 					//-- UPDATE PROFILE DATA
 					$this->db->update('profiles', $extra, array('user_id'=>$id));
-					
+
 					//-- UNSET ALL SESSION TERKAIT
 					$this->session->unset_userdata('firstlogin');
 					$this->session->unset_userdata('me');
 
 					$created = date('Y-m-d H:i:s');
 					$created_on = strtotime($created);
-					
+
 					$this->ion_auth->activate($id, false);
 					// if ($this->input->post('parent_email')=="") {
 					// 	$this->ion_auth->force_login($id);
@@ -824,7 +824,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$this->ion_auth->force_login($id);
 
 					if(!$this->input->is_ajax_request())
-					{		
+					{
 						redirect();
 					}
 					else
@@ -839,7 +839,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			else{
 				// Return the validation error
 				if(!$this->input->is_ajax_request())
-				{		
+				{
 					$this->template->error_string = $this->form_validation->error_string();
 					redirect();
 				}
@@ -852,7 +852,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 	}*/
 
-	
+
 	public function register_term_user()
 	{
 		//init day month year
@@ -867,7 +867,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 								 'September',
 								 'Oktober',
 								 'November',
-								 'Desember'	
+								 'Desember'
 								);
 		$day_temp = array_values(range(1,31,1));
 		$month_temp = array_values(range(1,12,1));
@@ -878,7 +878,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		rsort($val_test);
 		$year_list = array_combine ( $val_test , $val_test );
 		$this->year_list =   array('tahun'=>'tahun')+$year_list ;
-		
+
 		//set validation rules
 		$this->rules_validation = array(
 			array(
@@ -902,7 +902,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'rules' => 'callback__tnc',
 			),
 		);
-		
+
 		$this->vine_rules_validation =array(
 			array(
 				'field' => 'vine_username',
@@ -915,29 +915,29 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'rules' => 'required|max_length[60]'
 			),
 		);
-		
+
 		$this->email_parent_validation =array(
 			array(
 				'field' => 'parent_email',
 				'label' => lang('user:parent_email'),
 				'rules' => 'required|max_length[60]|valid_email|callback__same_email|callback__parent_email_check'
 				)
-			
+
 		);
-		
+
 		$check_dob = $this->session->userdata('dob_failed');
-		
+
 		//check double
-		$data_current = $this->session->userdata('data_current');		
+		$data_current = $this->session->userdata('data_current');
 		if($this->func_check_parent_email($this->input->post('month'),$this->input->post('day'),$this->input->post('year'))||isset($data_current['parent_email']))
 	    {
 			$this->rules_validation = array_merge($this->rules_validation,$this->email_parent_validation );
 	    }
-		
+
 		if($this->input->post('social_media') =='vine'){
 			$this->rules_validation = array_merge($this->rules_validation,$this->vine_rules_validation);
 		}
-		
+
 		$this->form_validation->set_rules($this->rules_validation);
 		$register_field = new stdClass();
 		//format-date = day-month-year //
@@ -946,41 +946,41 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$parent_email = $this->input->post('parent_email')?$this->input->post('parent_email'): null;
 			$this->session->set_userdata('parent_email',$parent_email);
 			$this->session->set_userdata('connect_with',$this->input->post('social_media'));
-			$this->session->set_userdata('dob',$this->input->post('day').'/'.$this->input->post('month').'/'.$this->input->post('year'));		
-			
+			$this->session->set_userdata('dob',$this->input->post('day').'/'.$this->input->post('month').'/'.$this->input->post('year'));
+
 			switch($this->input->post('social_media'))
 			{
-				
-				case 'twitter': 
-				
+
+				case 'twitter':
+
 						echo '<script>window.location.href="'.site_url('tw-connect').'";</script>';
-									
-					
+
+
 				break;
-					
-				case 'facebook': 
-				
+
+				case 'facebook':
+
 						echo '<script>window.location.href="'.site_url('fb-connect').'";</script>';
-					
+
 				break;
-				
-				case 'instagram': 
-				
+
+				case 'instagram':
+
 						echo '<script>window.location.href="'.site_url('instagram-connect').'";</script>';
-					
+
 				break;
-				
+
 				case 'vine' :
-				
+
 				$data = new stdClass;
 				$this->vine_data = $GLOBALS['vine_data'];
-				
+
 				if(isset($this->vine_data['user_id']))
 				{
 					$data  = $this->profile_m->get_profile(array('vine_id'=>$this->vine_data['user_id']) );
 				}
-				
-			
+
+
 			//var_dump($data);
 			//var_dump($_SESSION);die();
 			if($data && isset($data->user_id))
@@ -989,8 +989,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				redirect('persyaratan-dan-ketentuan');
 			}
 			else {
-				
-		
+
+
 				$dob =$this->input->post('day').'/'.$this->input->post('month').'/'.$this->input->post('year');
 				$dob_int = date_create_from_format('j/n/Y',$dob)->getTimestamp();
 				$this->session->set_userdata('message_register',lang('user:success_register'));
@@ -1007,14 +1007,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$username = $this->generate_username($username);
 				//split name
 				$this->split_fullname($this->vine_data['username'],$profile_data);
-				
+
 				$parent_email = $this->input->post('parent_email')?$this->input->post('parent_email'): null;
 				$my_extra = array(	'vine_id'	=>$this->vine_data['user_id'],
 									'dob'	=>$dob_int,
 									'dob_date_format'=> $dob,
-				
+
 								);
-							
+
 				$id = $this->ion_auth->register($username, $password, $email,$parent_email, null, $profile_data,false,$my_extra);
 				if($parent_email)
 				{
@@ -1026,26 +1026,26 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$this->session->unset_userdata('parent_email');
 				$this->session->unset_userdata('connect_with');
 				$this->session->unset_userdata('dob');
-				$this->ion_auth->activate($id, false);				
+				$this->ion_auth->activate($id, false);
 				redirect('persyaratan-dan-ketentuan');
 			  }
 				break;
-				
+
 			}
-			exit();	
-			
+			exit();
+
 		}
 		else {
 			//var_dump(validation_errors());die();
 			//,array('sosmed'=>$connect_with,'day'=>$dob[0],'month'=>$dob[1],'year'=>$dob[2],'parent_email'=>$parent_email )
 			$data_current = $this->session->userdata('data_current');
-		
+
 			$this->session->unset_userdata('data_current');
 			foreach($this->rules_validation as $field)
 			{
 				if($field['field'] == 'dob')
 				{
-					
+
 					if($data_current)
 					{
 						$register_field->day =  $data_current['day'];
@@ -1059,9 +1059,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							$register_field->year = $this->input->post('year') ;
 							$register_field->dob =  ( ( $this->input->post('day') && $this->input->post('month') && $this->input->post('year') ) ? $this->input->post('day').'/'.$this->input->post('month').'/'.$this->input->post('year'): '0/0/0' );
 					}
-						
-							
-					
+
+
+
 				}
 				else {
 					if($data_current && isset($data_current[$field['field']]))
@@ -1071,23 +1071,23 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					else {
 						$register_field->{$field['field']} = $this->input->post($field['field']);
 					}
-					
+
 				}
 			}
-			
+
 		}
-		
+
 		if($message_register = $this->session->userdata('message_register'))
 		{
 			$this->session->unset_userdata('message_register');
 			$this->template->set('message_register',$message_register);
 			Asset::js_inline('$(\'document\').ready(function(){ $(\'#message-register\').fadeIn(\'slow\'); });');
-			
+
 		}
 		$this->template->set('day_list',form_dropdown('day',$this->day_list,$register_field->day,'id="day" class="reg fancy-select day"'));
 		$this->template->set('month_list',form_dropdown('month',$this->month_list,$register_field->month,'id="month" class="fancy-select reg month"'));
-		$this->template->set('year_list',form_dropdown('year',$this->year_list,$register_field->year,'id="year" class="fancy-select reg year"') );		
-		
+		$this->template->set('year_list',form_dropdown('year',$this->year_list,$register_field->year,'id="year" class="fancy-select reg year"') );
+
 		$this->template->append_css('theme::fancySelect.css');
 		$this->template->append_js('theme::fancySelect.js');
 		$this->template->append_js('theme::dateSelectBoxes.js');
@@ -1096,7 +1096,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 
-	
+
 	//reset password
 	/**
 	 * Reset a user's password
@@ -1114,7 +1114,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			redirect('');
 			return;
 	    }
-					
+
 
 		// code is supplied in url so lets try confirm update user
 		if ($code && $this->input->post())
@@ -1126,51 +1126,51 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'label' => lang('global:password'),
 				'rules' => 'xss_clean|required|callback__check_code_confirmation['.$code.']|callback__check_answer_valid'
 				),
-			
+
 			);
-			
-		     $user		= $this->ion_auth_model->profile($code, true); //pass the code to profile			
+
+		     $user		= $this->ion_auth_model->profile($code, true); //pass the code to profile
 			$this->form_validation->set_rules($answer_validation);
-			
+
 			if($this->form_validation->run() !==false)
 			{
-			
+
 				$this->db->where('forgotten_password_code', $code);
-		
+
 				if ($this->db->count_all_results('users') > 0)
 				{
-				
+
 					$data = array(
 						'forgotten_password_code'	=> '0',
 						'active'			=> ($this->input->post('answer')=='no')? 1 : 0,
 						);
-		
+
 					$this->db->update('users', $data, array('forgotten_password_code' => $code));
-		
+
 					$this->session->set_flashdata('message','Email Persetujuan Orang Tua status menjadi '.(($this->input->post('answer')=='no')? 'ditolak' : 'diterima'));
 					redirect('');
 				}
 				else {
 					$this->session->set_flashdata('message','Terjadi Kesalahan, silahkan coba beberapa saat lagi');
 				}
-	
-				
+
+
 			}else {
-				
+
 			}
 		}
 		$this->template->append_js('theme::email_parent_confirmation.js');
 		$this->template->set_layout('default.html');
 		$this->template->build('parent_confirmation',array('code'=>$code));
-		
+
 	}
-	
+
 	function _check_answer_valid($value)
 	{
 		$answers = array('yes','no');
 		if(in_array($value, $answers))
 		{
-			return true;	
+			return true;
 		}
 		else {
 			$this->form_validation->set_message('_check_answer_valid',lang('user:check_answer_valid'));
@@ -1179,9 +1179,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 	function _check_code_confirmation($value,$code)
 	{
-		
-		$user		= $this->ion_auth_model->profile($code, true); 
-		
+
+		$user		= $this->ion_auth_model->profile($code, true);
+
 		if(is_object($user))
 		{
 			return true;
@@ -1191,7 +1191,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			return false;
 		}
 	}
-	
+
 
 	/**
 	 * Callback method used during login
@@ -1286,22 +1286,22 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							}
 						$ret = $valid_email;
 					}
-				}				
+				}
 			}
 
 
 			if($ret){
 				//--------- FOR BLOCK AN DOMAIN
-				//build list of not allowed providers as lowercase 
+				//build list of not allowed providers as lowercase
 				$NotAllowedClients = array("guerrillamail", "mailinator","getairmail","fakeinbox","yopmail","10minutemail","temp-mail","mailcatch","mintemail","easytrashmail","ssl.trashmail.net","trashmail","meltmail","tempemail","sharklasers","fakemailgenerator","armyspy","cuvox","dayrep","einrot","jetable","disposableinbox","mytrashmail","tempmailer","inbox","spamgourmet","incognitomail","fakebox","tempsky","maildrop");
-				
+
 				preg_match_all('/\@(.*?)\./', $email, $clientarr);
-				$client = strtolower($clientarr[1][0]);  
+				$client = strtolower($clientarr[1][0]);
 				if($client=='ssl'){
 					$cek = explode('@', $email);
 					$client = $cek[1];
-				}            
-				 
+				}
+
 				if(!in_array($client,$NotAllowedClients)){
 				    //DO NOTHING
 				    //var_dump($client); die();
@@ -1325,11 +1325,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$day = $this->input->post('day');
 		$month = $this->input->post('month');
 		$year = $this->input->post('year');
-		
+
 		if($this->session->userdata('dob_failed'))
 		{
 				Asset::js_inline('$(document).ready(function(){
-									
+
 										$(\'#error-register\').fadeIn(\'slow\');
 									});');
 				$this->form_validation->set_message('_dob','');
@@ -1358,11 +1358,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					return true;
 				}
 				else {
-					
+
 					$this->session->set_userdata('dob_failed','true');
 				//notif message success
 				Asset::js_inline('$(document).ready(function(){
-									
+
 										$(\'#error-register\').fadeIn(\'slow\');
 								   });');
 				$this->form_validation->set_message('_dob','');
@@ -1373,23 +1373,23 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$this->session->set_userdata('dob_failed','true');
 				//notif message success
 				Asset::js_inline('$(document).ready(function(){
-										
+
 										$(\'#error-register\').fadeIn(\'slow\');
 								   });');
 				$this->form_validation->set_message('_dob','');
 				return false;
-				
+
 			}
-			
-			
+
+
 		}
 		else {
 				$this->form_validation->set_message('_dob',lang('user:date'));
 			return false;
 		}
-		
+
 		//var_dump('masuk3');die();
-		
+
 	}
 
 	function send_email($data = array()) {
@@ -1413,7 +1413,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			redirect(site_url());
 		}
 	}
-	
+
 	function _password_complexcity($pass,$user_id){
 			$this->form_validation->set_message('_password_complexcity','Password minimal 8 karakter terdiri minimal 1 huruf, 1 angka dan 1 karakter spesial.');
 			preg_match('/[^a-zA-Z0-9]+/ism', $pass,$matches);
@@ -1432,12 +1432,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							return false;
 						}
 					}
-	
+
 					if($user_info)
 					{
 						$hashed_new_pass = $this->ion_auth_model->hash_password($pass ,$user_info->salt?$user_info->salt:'');
 						$data_tst = $this->history_password_m->get_by(array('password_new'=>$hashed_new_pass,'user_id'=>$user_id));
-	
+
 						if($data_tst || ( $hashed_new_pass == $user_info->password))
 						{
 							$this->form_validation->set_message('_password_complexcity','Password tidak boleh sama dengan password lama.');
@@ -1453,14 +1453,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 																	));
 							return true;
 						}
-	
+
 					}
 				}
 				return true;
 			}
 			return false;
 		}
-	
+
 		function _check_old_password($pass,$user_id)
 		{
 			$user_info = $this->user_m->get(array('id' => $user_id));
@@ -1475,11 +1475,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				else {
 					return true;
 				}
-	
-	
+
+
 			}
 		}
-		
+
 		function _same_email()
 		{
 			$this->form_validation->set_message('_same_email','Email Orang tua tidak valid');
@@ -1487,11 +1487,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			{
 				return false;
 			}
-			
+
 			return true;
 		}
-		
-		
+
+
 		function _valid_social_media($social_media)
 		{
 			if(in_array($social_media,$this->social_media_list))
@@ -1503,31 +1503,31 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				return false;
 			}
 		}
-		
+
 		function _vine_login()
 		{
 			$this->load->library('vine/vine');
 			if( $this->session->userdata('register_type') !='vine'){
-				
+
 				$this->vine->login($this->input->post('vine_username'),$this->input->post('vine_password'));
 				$obj = $this->vine->get_vine_session();
 				if(isset($obj->success) &&  ($obj->success== true) )
 				{
 					$GLOBALS['vine_data']= array('username'=>$obj->data->username,'user_id'=>$obj->data->userId);
-					
-						
+
+
 					return true;
 				}
 				else {
-				
+
 				$this->form_validation->set_message('_vine_login','Tidak dapat Login Vine, karena "'.$obj->error.'"');
 				return false;
 				}
-				
-			}	
+
+			}
 		}
-		
-		
+
+
 		public function vine_test_login()
 		{
 			$this->load->library('vine/vine');
@@ -1536,10 +1536,10 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			//$this->vine_data =
 			//var_dump($result);
 		}
-		
+
 	private function generate_username($name)
 	{
-		
+
 		$this->load->helper('url');
 		$username = url_title($name, '-', true);
 
@@ -1569,12 +1569,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 			++$i;
 		}
-		
+
 		return $username;
-		
-		
+
+
 	}
-	
+
 	private function split_fullname($name,&$profile_data)
 	{
 		$data_name = explode(' ',$name);
@@ -1588,7 +1588,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$profile_data['first_name'] = $name;
 		}
 	}
-	
+
 	private function send_email_confirmation($parent_email,$id)
 	{
 		if ( $this->ion_auth_model->forgotten_password_id($id) )   //changed
@@ -1603,7 +1603,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$data['reply-to']	= Settings::get('contact_email');
 			$data['link']		= site_url(array('konfirmasi-orang-tua',$user->forgotten_password_code));
 			$data['name']		= $user->display_name;
-			
+
 			// send the email using the template event found in system/cms/templates/
 			$results = Events::trigger('email', $data, 'array');
 			foreach ($results as $result)
@@ -1613,14 +1613,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					return false;
 				}
 			}
-			
+
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
-	
+
 	private function check_id_entity_match_by($id,$sosid,$social_media)
 	{
 		$this->load->model('video/search_content_m');
@@ -1630,5 +1630,5 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$this->search_content_m->update_by(array('via'=>$social_media,'userid'=>$sosid),array('userid_match'=>$id));
 		}
 	}
-		
+
 }
