@@ -9,6 +9,9 @@
 			</div>
 
 			<hr />
+			<?php
+			var_dump($this->session->userdata('me'));
+			?>
 
 			<div class="input" style="">
 				<label>NAME <span>*</span></label>
