@@ -1,0 +1,65 @@
+/* FILE NAVIGATION */
+#file-nav {
+  position: fixed;
+  bottom: 0;
+  padding: 5px;
+  background: #333333;
+  z-index: 1000000;
+  color: white;
+  height: 100%;
+  width: 200px;
+  border-right: solid 2px white;
+  left: -200px;
+  -webkit-transition: all 100ms;
+  -moz-transition: all 100ms;
+  -o-transition: all 100ms;
+  -ms-transition: all 100ms;
+  transition: all 100ms;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -ms-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+#file-nav div {
+  padding-top: 10px;
+}
+#file-nav.active {
+  left: 0;
+}
+#file-nav a {
+  display: block;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  letter-spacing: 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+#file-nav a:hover {
+  opacity: 0.7;
+}
+#file-nav #file-nav-toggle {
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 40px;
+  padding: 0 0 0 7px;
+  font-weight: 800;
+  line-height: 32px;
+  -webkit-border-radius: 0 15px 15px 0;
+  -moz-border-radius: 0 15px 15px 0;
+  -o-border-radius: 0 15px 15px 0;
+  border-radius: 0 15px 15px 0;
+  left: 197px;
+  background: #333;
+  border: solid 2px white;
+  border-left: solid 2px #333;
+  font-size: 18px;
+}
+#file-nav #file-nav-toggle:hover {
+  opacity: 1;
+}
+#file-nav a {
+  color: white;
+  margin-right: 10px;
+}
