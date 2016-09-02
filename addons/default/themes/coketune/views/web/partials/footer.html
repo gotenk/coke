@@ -1,36 +1,29 @@
-<div class="push"></div>
-</div>
-<div id="footer">
-	<div class="container">
-		<div class="right-side">
-			<a href="{{ url:site uri="syarat-dan-ketentuan" }}">Syarat & Ketentuan</a>
-		</div>
-		<div class="left-side">
-			*Saat ini nama-nama tertentu hanya tersedia di Pulau Jawa
-		</div>
-	</div>
-</div>
-<div class="popup" id="gallery-detail">
-	<div class="gallery-detail">
-		<div class="popup-wrapper">
-			<div class="picture">
-				<a class="close-btn" href="javascript:void(0)" onclick="$(this).parents('.popup').fadeOut(200)"></a>				
-				{{theme:image file="sample-popup.jpg"}}
-				<div class="text gray">
-					<label>@LIA</label>
-					<span>Pondok Gede - Jakarta Timur</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+	<footer>
+		<div id="footer-inner" class="container">
+			<div class="row">
+				<div id="logo">
+					<a href="#"><img src="{{ theme:image_url file= "coke/logo-red.png" }}"	 /></a>
+				</div> <!-- #logo -->
+				<nav id="bottom">
+					<ul>
+						<li><a href="{{ url:site}}">beranda</a></li>
+						<li><a href="{{ url:site uri="register"}}">daftar</a></li>
+						<li><a href="{{ url:site uri="syarat-dan-ketentuan"}}">syarat dan ketentuan</a></li>
+						<li><a href="{{ url:site uri="kebijakan-privasi"}}">kebijakan privasi</a></li>
+					</ul>
+				</nav> <!-- #top --> 
+				<div id="copyright">
+					2016 The Coca-Cola Company, all rights reserved
+					<span>
+						“COCA-COLA, Botol Kontur COCA-COLA dan Rasakan Momennya™ adalah merek-merek dagang milik The Coca-Cola Company”
+					</span>
+				</div> <!-- #copyright -->
+			</div> <!-- .row -->			
+		</div> <!-- #footer-inner -->
+	</footer>
+	
+	{{ theme:js file="main.min.js" }}
 
-<!-- twitter script -->
-<script type="text/javascript">
-	window.twttr = (function (d,s,id) {
-	 var t, js, fjs = d.getElementsByTagName(s)[0];
-	if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
-	js.src="https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
-	return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
-	}(document, "script", "twitter-wjs"));
-</script>
+</body>
+
+</html>

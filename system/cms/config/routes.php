@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller']                = 'home';
-$route['404_override']                      = 'home';
+$route['default_controller']                = 'users/home';
+$route['404_override']                      = 'pages';
 
 if(ADMIN_URL !='admin')
 {
@@ -60,7 +60,9 @@ $route[ADMIN_URL.'/([a-zA-Z0-9_-]+)']            = '$1/admin/index';
 // $route['event(/:any)?']						= 'article_manager/index$1';
 // $route['insert-word']							= 'search_engine/insert_word';
 $route['fb-connect']            = 'users/fb_connect';
-$route['tw-connect']	          = 'users/twitter_callback';
+$route['tw-connect']	          = 'users/tw_connect';
+$route['register']	          = 'users/register';
+$route['login']	          = 'users/login';
 //$route['vine-connect']					= 'users/vine_login';
 //$route['instagram-connect']				= 'users/instagram_callback';
 //$route['check-parent-email']			= 'users/check_parent_email';

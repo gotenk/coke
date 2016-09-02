@@ -1,15 +1,11 @@
-<html lang="">
-<head>
-	{{ theme:partial name="metadata" }}
-</head>
-<body>
-   {{ facebook:fb_javascript }}
-   {{ theme:partial name="menu" }}	
-<div id="middle">
-	<div class="container">	
-		{{template:body}}
-	</div>
-</div>
+{{ theme:partial name="metadata" }}
+
+
+{{ template:body }}
+
+{{ if { url:segments segment="1" } == '' }} 
+	{{ theme:partial name="caranya" }}   
+	{{ theme:partial name="masukkan_code" }}
+{{ endif }}
+
 {{ theme:partial name="footer" }}
-</body>
-</html>

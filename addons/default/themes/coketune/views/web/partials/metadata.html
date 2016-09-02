@@ -1,44 +1,85 @@
-<meta http-equiv="content-type" content="text/html" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-<meta name="author" content="sutalasc" />
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <script type="text/javascript">
-    var BASE_URL = '{{ url:base }}'; 
-        var SITE_URL = '{{ url:site }}'; 
-        var URI_STRING = '{{ url:uri_string }}';
-    var tokens ={<?php echo '\''.$this->security->get_csrf_token_name().'\':\''.$this->security->get_csrf_hash().'\''; ?>};
-    </script>
-	
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title> Coca Cola </title>
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="robots" content="" />
+  
+  <!-- Favicon -->
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-57x57.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-114x114.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-72x72.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-144x144.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-60x60.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-120x120.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-76x76.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-touch-icon-152x152.png" }}" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-196x196.png" }}" sizes="196x196" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-96x96.png" }}" sizes="96x96" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-32x32.png" }}" sizes="32x32" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-16x16.png" }}" sizes="16x16" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-128.png" }}" sizes="128x128" />
+  <meta name="application-name" content="&nbsp;"/>
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/mstile-144x144.png" }}" />
+  <meta name="msapplication-square70x70logo" content="{{ theme:image_url file= "lib/favicon/mstile-70x70.png" }}" />
+  <meta name="msapplication-square150x150logo" content="{{ theme:image_url file= "lib/favicon/mstile-150x150.png" }}" />
+  <meta name="msapplication-wide310x150logo" content="{{ theme:image_url file= "lib/favicon/mstile-310x150.png" }}" />
+  <meta name="msapplication-square310x310logo" content="{{ theme:image_url file= "lib/favicon/mstile-310x310.png" }}" />
+  <!-- end Favicon -->
     
-{{ theme:favicon file="faviconpng/favicon.ico" sizes="16x16 32x32" }}
-<title>{{template:title}}</title>
+  {{ theme:css file="main.css" }}
+</head>
 
-{{ asset:css file="style.css" }}
-{{ asset:css file="additional.css" }}
-{{ asset:js file="max.js" }}
+<body>
 
-{{ asset:render }}
-	{{ template:metadata }} 
-    {{asset:render_js_inline}}
-<script src='https://www.google.com/recaptcha/api.js'></script>
+  <header>
+    <div id="header-inner" class="container">
+      <div class="row">
+        <div id="logo">
+          <a href="#"><img src="{{ theme:image_url file= "coke/logo-red.png" }}"   /></a>
+        </div> <!-- #logo -->
+        <a href="javascript:void(0)" id="toggle-nav">toggle navigation</a>
+        
+        <!-- NAVIGATION WIDE SCREEN -->
+        <nav id="top">
+          <ul>
+            <li><a href="{{ url:site}}">cara mengikuti kompetisi</a></li>
+            <li><a href="{{ url:site uri="login"}}">masuk/daftar</a></li>
+          </ul>
+        </nav> <!-- #top -->
+        <!-- END NAVIGATION WIDE SCREEN -->       
+      </div> <!-- .row -->
+      
+      <!-- NAVIGATION MOBILE -->
+      <nav id="mobile">
+        <ul>
+          <li><a href="{{ url:site }}">beranda</a></li>
+          <li><a href="{{ url:site uri="login"}}">masuk/daftar</a></li>
+          <li><a href="{{ url:site }}">cara mengikuti kompetisi</a></li>
+          <li><a href="{{ url:site uri="syarat-dan-ketentuan"}}">syarat dan ketentuan</a></li>
+          <li><a href="{{ url:site uri="kebijakan-privasi"}}">kebijakan privasi</a></li>
+        </ul>
+      </nav> <!-- #mobile -->
+      <!-- END NAVIGATION MOBILE -->      
+      
+    </div> <!-- #header-inner -->
 
-<!--<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    {{ if { url:segments segment="1" } == '' }}    
+    {{ theme:partial name="home" }}
+    {{ elseif { url:segments segment="1" } == 'cara-mengikuti-kompetisi'}}
+    {{ theme:partial name="howto" }}
+    {{ endif }}
 
-  ga('create', 'UA-62560761-1', 'auto');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
-</script> 
-
-	<!-- Google Tag Manager -->
-<!--	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MD6PXV"
-	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-MD6PXV');</script>
--->
+    <script type="text/javascript">
+      var BASE_URL = '{{ url:base }}';
+      var SITE_URL = '{{ url:site }}';
+      var URI_STRING = '{{ url:uri_string }}';
+      var tokens ={<?php echo '\''.$this->security->get_csrf_token_name().'\':\''.$this->security->get_csrf_hash().'\''; ?>};
+    </script>
+  </header>
