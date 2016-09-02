@@ -1,0 +1,44 @@
+<meta http-equiv="content-type" content="text/html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<meta name="author" content="sutalasc" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript">
+    var BASE_URL = '{{ url:base }}'; 
+        var SITE_URL = '{{ url:site }}'; 
+        var URI_STRING = '{{ url:uri_string }}';
+    var tokens ={<?php echo '\''.$this->security->get_csrf_token_name().'\':\''.$this->security->get_csrf_hash().'\''; ?>};
+    </script>
+	
+    
+{{ theme:favicon file="faviconpng/favicon.ico" sizes="16x16 32x32" }}
+<title>{{template:title}}</title>
+
+{{ asset:css file="style.css" }}
+{{ asset:css file="additional.css" }}
+{{ asset:js file="max.js" }}
+
+{{ asset:render }}
+	{{ template:metadata }} 
+    {{asset:render_js_inline}}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<!--<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-62560761-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script> 
+
+	<!-- Google Tag Manager -->
+<!--	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MD6PXV"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-MD6PXV');</script>
+-->

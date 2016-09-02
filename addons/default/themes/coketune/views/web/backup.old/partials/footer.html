@@ -1,0 +1,36 @@
+<div class="push"></div>
+</div>
+<div id="footer">
+	<div class="container">
+		<div class="right-side">
+			<a href="{{ url:site uri="syarat-dan-ketentuan" }}">Syarat & Ketentuan</a>
+		</div>
+		<div class="left-side">
+			*Saat ini nama-nama tertentu hanya tersedia di Pulau Jawa
+		</div>
+	</div>
+</div>
+<div class="popup" id="gallery-detail">
+	<div class="gallery-detail">
+		<div class="popup-wrapper">
+			<div class="picture">
+				<a class="close-btn" href="javascript:void(0)" onclick="$(this).parents('.popup').fadeOut(200)"></a>				
+				{{theme:image file="sample-popup.jpg"}}
+				<div class="text gray">
+					<label>@LIA</label>
+					<span>Pondok Gede - Jakarta Timur</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- twitter script -->
+<script type="text/javascript">
+	window.twttr = (function (d,s,id) {
+	 var t, js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
+	js.src="https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+	return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
+	}(document, "script", "twitter-wjs"));
+</script>

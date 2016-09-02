@@ -1,0 +1,22 @@
+<html lang="">
+<head>
+	<meta http-equiv="content-type" content="text/html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<meta name="author" content="sutalasc" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript">
+    var BASE_URL = '{{ url:base }}'; 
+        var SITE_URL = '{{ url:site }}'; 
+        var URI_STRING = '{{ url:uri_string }}';
+    var tokens ={<?php echo '\''.$this->security->get_csrf_token_name().'\':\''.$this->security->get_csrf_hash().'\''; ?>};
+    </script>
+	
+    
+{{ theme:favicon file="faviconpng/favicon.ico" sizes="16x16 32x32" }}
+<title>{{template:title}}</title>
+	{{ template:metadata }} 
+    {{asset:render_js_inline}}
+</head>
+<body >
+</body>
+</html>
