@@ -33,7 +33,10 @@
 	<meta name="msapplication-square310x310logo" content="img/lib/favicon/mstile-310x310.png" />
 	<!-- end Favicon -->
 	
+	<link rel="stylesheet" href="css/file-nav.css">
 	<link rel="stylesheet" href="css/main.css">
+
+	<script type="text/javascript" src="js/jquery.js"></script>
 </head>
 
 <body>
