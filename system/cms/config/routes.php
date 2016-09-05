@@ -64,6 +64,7 @@ $route['tw-connect']	          = 'users/tw_connect';
 $route['register']	          = 'users/register';
 $route['login']	          = 'users/login';
 $route['dob']	          = 'users/dob';
+$route['dob-failed']	          = 'users/dob_failed';
 //$route['vine-connect']					= 'users/vine_login';
 //$route['instagram-connect']				= 'users/instagram_callback';
 //$route['check-parent-email']			= 'users/check_parent_email';

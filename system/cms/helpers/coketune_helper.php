@@ -1,5 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+if (!function_exists('is_valid_date'))
+{
+	function is_valid_date($yy, $mm, $dd){
+		if ( checkdate($mm, $dd, $yy) ){
+			return true;			
+		}
+		return false;
+	}
+}
+
 if (!function_exists('is_thirteen_or_more'))
 {
 	function is_thirteen_or_more($yy, $mm, $dd){
