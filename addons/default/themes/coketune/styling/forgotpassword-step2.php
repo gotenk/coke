@@ -2,7 +2,7 @@
 
 <main>
 	
-	<section id="register" class="date-check fullScreen">
+	<section id="register" class="date-check fullScreen register">
 		<div id="background-img" class="fluid-img">
 			<div id="register-inner" class="container">
 				<div class="row">
