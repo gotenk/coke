@@ -6,12 +6,12 @@ class Code extends Public_Controller
         array(
             'field' => 'alfamart_code',
             'label' => 'Kode Unik',
-            'rules' => 'required|trim|xss_clean'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars'
         ),
         array(
             'field' => 'transaction_code',
             'label' => 'Kode Transaksi',
-            'rules' => 'required|trim|xss_clean'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars'
         ),
         array(
             'field' => 'recaptcha_response_field',
@@ -24,7 +24,7 @@ class Code extends Public_Controller
         array(
             'field' => 'indomaret_code',
             'label' => 'Kode Unik',
-            'rules' => 'required|trim|xss_clean'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars'
         ),
         array(
             'field' => 'recaptcha_response_field',
@@ -38,13 +38,14 @@ class Code extends Public_Controller
         parent::__construct();
 
         $this->load->model(array('code_m'));
+        $this->form_validation->set_error_delimiters('', '');
     }
 
     public function index()
     {
         if (!$this->current_user) {
-            $this->session->set_flashdata('message', array('Silahkan login terlebih dahulu'));
-            redirect();
+            echo json_encode(array('message' => 'Silahkan login terlebih dahulu'));
+            return;
         }
 
         $vendor = $this->input->post('vendor');
@@ -58,37 +59,36 @@ class Code extends Public_Controller
                     'transaction_code' => $this->input->post('transaction_code'),
                 );
 
-                // $result = $this->alfamartCodeCheck($data);
-                redirect();
+                $result = $this->alfamartCodeCheck($data);
+
+                echo json_encode($result);
+                return;
             }
 
             $error = array(
-                'alfamart_code'            => form_error('alfamart_code'),
-                'transaction_code'         => form_error('transaction_code'),
-                'recaptcha_response_field' => form_error('recaptcha_response_field'),
+                'message' => form_error('alfamart_code').form_error('transaction_code').form_error('recaptcha_response_field')
             );
 
-            $this->session->set_flashdata('message', $error);
-            redirect();
+            echo json_encode($error);
+            return;
         } elseif ($vendor == 'indomaret') {
             $this->form_validation->set_rules($this->indomaret_validation);
 
             if ($this->form_validation->run()) {
-                $data = array(
-                    'indomaret_code' => $this->input->post('indomaret_code'),
-                );
+                $data = array('indomaret_code' => $this->input->post('indomaret_code'));
 
-                // $result = $this->indomaretCodeCheck($data);
-                redirect();
+                $result = $this->indomaretCodeCheck($data);
+
+                echo json_encode($result);
+                return;
             }
 
             $error = array(
-                'indomaret_code'           => form_error('indomaret_code'),
-                'recaptcha_response_field' => form_error('recaptcha_response_field'),
+                'message' => form_error('indomaret_code').form_error('recaptcha_response_field')
             );
 
-            $this->session->set_flashdata('message', $error);
-            redirect();
+            echo json_encode($error);
+            return;
         } else {
             redirect();
         }
@@ -110,7 +110,7 @@ class Code extends Public_Controller
         $hasil = json_decode($result);
 
         if (!$hasil->success) {
-            $this->form_validation->set_message('_recaptcha_check_custom', 'Recaptcha tidak valid');
+            $this->form_validation->set_message('_recaptcha_check_custom', 'Recaptcha tidak valid.');
 
             return false;
         } else {
@@ -132,9 +132,9 @@ class Code extends Public_Controller
                 'date_failed'           => date('Y-m-d H:i:s'),
             );
 
-            $this->code_m->insertData('alfamart_fail', $fail);
+            // $this->code_m->insertData('alfamart_fail', $fail);
 
-            return false;
+            return array('message' => 'Kode sudah pernah digunakan.');
         }
 
         // Code is new - let's check whether they match each other
@@ -142,10 +142,10 @@ class Code extends Public_Controller
 
         if ($check != $data['alfamart_code']) {
             // Code is not match
-            return false;
+            return array('message' => 'Kode yang dimasukkan salah.');
         }
 
-        return true;
+        return array('message' => 'Kode valid.');
     }
 
     private function indomaretCodeCheck($data)
@@ -160,11 +160,13 @@ class Code extends Public_Controller
                 'date_used' => date('Y-m-d H:i:s'),
             );
 
-            return $this->code_m->updateData('indomaret_code', $data, 'code', $data['indomaret_code']);
+            // $this->code_m->updateData('indomaret_code', $data, 'code', $data['indomaret_code']);
+
+            return array('message' => 'Kode valid.');
         }
 
         // Code is not found or has been used
-        return false;
+        return array('message' => 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
     }
 
     private function confidential($no_trans)
