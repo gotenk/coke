@@ -1691,13 +1691,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
                 //force login
                 if($this->ion_auth->force_login($data_user->user_id))
                 {                	                	
-                    redirect(site_url());
+                    redirect(site_url('profile'));
                 }
             }else { // register
             	$profile_data 					= array();            	             
                 $profile_data['display_name'] 	= $me['name'];
                 $profile_data['fb_id'] 			= $me['id'];                                
                 $profile_data['email'] 			=  (isset($me['email'])) ? $me['email'] : '';
+                $profile_data['dob'] 			=  (isset($me['birthday'])) ? $me['birthday'] : '';
                 $profile_data['image_url'] 		= 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';                
                 
                 $this->session->set_userdata($this->sess_data_fb, $profile_data);
@@ -1799,7 +1800,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				if($this->ion_auth->force_login($data->user_id))
 				{					
 					$this->session->set_userdata('access_token',$access_token);
-					$redir = site_url();					
+					$redir = site_url('profile');					
 					echo '<script>window.location.href="'.$redir.'";</script>';
 					return;
 				}
@@ -1859,12 +1860,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'password',
 			'label' => 'Password',
-			'rules' => 'trim|required|callback__string_angka_spasi|xss_clean',
+			'rules' => 'trim|required|xss_clean|callback__password_complexcity',
 		),
 		array(
 			'field' => 're-password',
 			'label' => 'Konfirmasi Password',
-			'rules' => 'trim|required|callback__string_angka_spasi|xss_clean|matches[password]',
+			'rules' => 'trim|required|xss_clean|matches[password]',
 		),
 		array(
 			'field' => 'name',
@@ -1920,6 +1921,29 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			redirect();
 		}
 
+		$this->validation_rules = array(
+			array(
+				'field' => 'email',
+				'label' => lang('global:email'),
+				'rules' => 'required|callback__check_login'
+			),
+			array(
+				'field' => 'password',
+				'label' => lang('global:password'),
+				'rules' => 'required'
+			)
+		);
+			
+		$this->form_validation->set_rules($this->validation_rules);
+		
+		if ($this->form_validation->run() or $this->ion_auth->logged_in())
+		{			
+			$redirect = $this->session->userdata('admin_redirect');
+			$this->session->unset_userdata('admin_redirect');
+
+			redirect('profile');
+		}		
+
 		$this->template
 				->build('coketune/login');	
 	}
@@ -1942,7 +1966,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}		
 		
 		$this->form_validation->set_rules($this->register_validation_array);
-		if($this->input->post('register')){			
+		if($this->input->post('register')){
 			if($this->form_validation->run()){
 				$dd = $this->input->post('dd');
 				$mm = $this->input->post('mm');
@@ -1960,6 +1984,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$profile_data = array();
 					$profile_data['display_name'] = $display_name;
 
+
 					// insert user
 					$id = $this->ion_auth->register($username, $password, $email, $valid_email, null, $profile_data);	
 
@@ -1968,13 +1993,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 						// columns not use stream, update manual
 						$connect_with = $this->session->userdata($this->sess_connect_with);					
 						$profile_data['phone'] = $this->input->post('phone');
-						$profile_data['gender'] = $this->input->post('gender');
-						$profile_data['dd'] = $dd;
-						$profile_data['mm'] = $mm;
-						$profile_data['yy'] = $yy;
-						$profile_data['kode_unik'] = $this->input->post('kode_unik');
-						$profile_data['kode_transaksi'] = $this->input->post('kode_transaksi');					
-						$profile_data['term'] 	= $this->input->post('term');
+						$profile_data['gender'] = $this->input->post('gender');						
+						$profile_data['dob'] = strtotime("{$yy}-{$mm}-{$yy}");
+						
+						#$profile_data['kode_unik'] = $this->input->post('kode_unik');
+						#$profile_data['kode_transaksi'] = $this->input->post('kode_transaksi');					
+						
 						if($connect_with == 'fb'){
 							$imgfb = $this->grab_facebook_picture($id); //download img
 							$session = $this->session->userdata($this->sess_data_fb);
@@ -1987,7 +2011,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							$profile_data['tw_screen_name'] 	= $session['screen_name'];					
 							$profile_data['tw_id']   			= $session['twitter_id'];
 							$profile_data['tw_access_token']   	= serialize($this->session->userdata('access_token'));					
-							$profile_data['twitter_name'] 		= $session['display_name'];
+							$profile_data['tw_name'] 		= $session['display_name'];
 							$profile_data['photo_profile'] 		= $imgtw;						
 						}
 						
@@ -1998,13 +2022,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							//unset session
 							$this->session->unset_userdata($this->sess_data_fb);
 							$this->session->unset_userdata($this->sess_data_tw);
-							$this->session->unset_userdata($this->connect_with);
+							$this->session->unset_userdata($this->sess_connect_with);
+							$this->session->unset_userdata($this->sess_name_dob);
+							$this->session->unset_userdata($this->sess_name_dob_status);
+							$this->session->unset_userdata('access_token');
 
 							//active and login
 							$this->ion_auth->activate($id, false);
 							$this->ion_auth->force_login($id);
 
-							redirect(site_url());
+							redirect('profile');
 						}else{
 							$this->ion_auth->delete_user($id);
 						}
@@ -2096,7 +2123,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	public function profile(){
 		$this->_restricted_area();
+		$this->template				
+				->build('coketune/profile');
 	}
+
+
 
 
 
@@ -2117,15 +2148,6 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 	}
 
-
-	/*private function _is_dob_session(){
-		$sess_dob = $this->session->userdata($this->sess_name_dob);
-		if( !$sess_dob){
-			redirect('dob');			
-		}else if($sess_dob == "false"){
-			redirect('dob-failed');			
-		}
-	}*/
 
 	private function _check_dob($yy, $mm, $dd){
 		$error = "";
@@ -2183,34 +2205,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		curl_close($ch);
 		$hasil = json_decode($result);
 		if (!$hasil->success) {
-			$this->form_validation->set_message('_recaptcha_check', 'Recaptcha tidak valid');
+			$this->form_validation->set_message('_recaptcha_check_custom', 'Recaptcha tidak valid');
 			return false;
 		}else{
 			return true;
 		}
 	}
-
-	/*public function _callback_check_dob(){
-		$dd = $this->input->post('dd');
-		$mm = $this->input->post('mm');
-		$yy = $this->input->post('yy');
-		if(!$dd){
-			$this->form_validation->set_message('_callback_check_dob', 'dd is required');
-			return FALSE;
-		}else if(!$mm){
-			$this->form_validation->set_message('_callback_check_dob', 'mm is required');
-			return FALSE;
-		}else if(!$yy){
-			$this->form_validation->set_message('_callback_check_dob', 'yy is required');
-			return FALSE;
-		}else{
-			$dob = $this->_check_dob($yy, $mm, $dd);
-			if($dob != ""){
-				$this->form_validation->set_message('_callback_check_dob', $dob);
-				return FALSE;	
-			}			
-		}
-	}*/
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/	
 
 
