@@ -19,17 +19,19 @@
 					<div id="figure" class="wide panel">or</div>
 					
 					<div class="panel" id="email-login">
-						<?php echo form_open();?>
+						<?php echo cmc_form_open('user-login', site_url('login'));?>						
 						<div class="title">
 							<h4>log in with email</h4>
 						</div> <!-- .title -->
 						<div class="column">
 							<label for="email">email</label>
 							<input class="ipt" type="text" id="email" placeholder="your email address" name="email">
+							<?php #echo form_error('email');?>
 						</div> <!-- .column -->
 						<div class="column">
 							<label for="password">password</label>
 							<input class="ipt" type="password" id="password" placeholder="your password" name="password">
+							<?php #echo form_error('password');?>
 						</div> <!-- .column -->
 						<div class="button-action-wrapper">
 							<input type="submit" class="button rounded primary" name="login" value="login">

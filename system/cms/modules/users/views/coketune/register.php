@@ -1,8 +1,8 @@
-<?php echo validation_errors()?>
+<?php #echo validation_errors()?>
 <?php 
-	if($dob_err){
+	/*if($dob_err){
 		echo $dob_err;
-	}
+	}*/
 ?>
 <main>
 	<section id="register">
@@ -26,7 +26,7 @@
 						<div class="title">
 							<h4>daftar</h4>
 						</div> <!-- .title -->						
-						<?php echo form_open('', 'id="user-register"');?>
+						<?php echo cmc_form_open('user-register', site_url('register'), 'id="user-register"');?>
 							<div class="column">
 								<label for="username" class="sub-title">nama lengkap<span>*</span></label>
 								<?php
@@ -39,7 +39,8 @@
 										}
 									}											
 								?>
-								<input id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
+								<input id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">								
+								<p><?php echo form_error('name')?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="email" class="sub-title">alamat email<span>*</span></label>
@@ -54,18 +55,22 @@
 									}											
 								?>
 								<input id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
+								<p><?php echo form_error('email')?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="password" class="sub-title">kata sandi<span>*</span></label>
 								<input id="password" type="password" placeholder="kata sandi baru" name="password" value="<?php echo set_value('password');?>">
+								<p><?php echo form_error('password')?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="re-password" class="sub-title">konfirmasi kata sandi<span>*</span></label>
 								<input id="re-password" type="password" placeholder="ulangi kata sandi" name="re-password" value="<?php echo set_value('re-password');?>">
+								<p><?php echo form_error('re-password')?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="phone" class="sub-title">nomer ponsel<span>*</span></label>
 								<input id="phone" type="text" placeholder="08X-XXXXXXXXX" name="phone" value="<?php echo set_value('phone');?>">
+								<p><?php echo form_error('phone')?></p>
 							</div> <!-- .column -->
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
@@ -79,20 +84,22 @@
 								    <label for="f-option"><span></span>Perempuan</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
+								<p><?php echo form_error('gender')?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label class="sub-title">tanggal lahir<span>*</span></label>
 								<div class="devide-3">
 									<div class="child">
-										<input type="text" id="day" placeholder="DD" class="center" name="dd" value="<?php echo (isset($dob_ar[2])) ? $dob_ar[2] : '' ;?>"/>
+										<input readonly type="text" id="day" placeholder="DD" class="center" name="dd" value="<?php echo (isset($dob_ar[2])) ? $dob_ar[2] : '' ;?>"/>
 									</div> <!-- .child -->
 									<div class="child">
-										<input type="text" id="month" placeholder="MM" class="center" name="mm" value="<?php echo (isset($dob_ar[1])) ? $dob_ar[1] : '' ;?>"/>
+										<input readonly type="text" id="month" placeholder="MM" class="center" name="mm" value="<?php echo (isset($dob_ar[1])) ? $dob_ar[1] : '' ;?>"/>
 									</div> <!-- .child -->
 									<div class="child">
-										<input type="text" id="year" placeholder="YYYY" class="center" name="yy" value="<?php echo (isset($dob_ar[0])) ? $dob_ar[0] : '' ;?>"/>
+										<input readonly type="text" id="year" placeholder="YYYY" class="center" name="yy" value="<?php echo (isset($dob_ar[0])) ? $dob_ar[0] : '' ;?>"/>
 									</div> <!-- .child -->									
 								</div> <!-- .devide-3 -->
+								<p><?php echo $dob_err;?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
@@ -104,7 +111,7 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<div id="captcha">									
-									<div style="margin-top: 10px;" class="test">
+									<div>
 	                                    <script type="text/javascript">
 	                                        var verifyCallback = function(response) {
 	                                            //alert(response);
@@ -119,10 +126,11 @@
 	                                            });
 	                                        };
 	                                    </script>
-	                                    <div id="html_element" style="margin:0 auto;"></div>
+	                                    <div id="html_element"></div>
 	                                    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 	                                    <input type="hidden" name="recaptcha_response_field" value="" readonly="readonly" />
-	                                </div>
+	                                </div>	                                
+	                                <p><?php echo form_error('recaptcha_response_field')?></p>
 								</div> <!-- #captcha -->
 							</div> <!-- .column -->
 							<div class="column">
@@ -133,6 +141,7 @@
 								    	</label>
 								    <span class="text">Saya telah memahami dan menyetujui Syarat dan Ketentuan Promosi</span>
 								</div> <!-- .custom-radio-button -->
+								<p><?php echo form_error('term')?></p>
 							</div> <!-- .column -->
 							<div class="button-action-wrapper">
 								<input type="submit" class="button rounded border primary" name="register" value="daftar">

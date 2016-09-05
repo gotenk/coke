@@ -1649,7 +1649,7 @@ class Users extends Public_Controller
 
 	public function fb_connect()
     {
-    	$this->_already_logged_in();
+    	$this->_already_logged_in();    	
 
         $redir = site_url('');
 
@@ -1694,24 +1694,33 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
                     redirect(site_url('profile'));
                 }
             }else { // register
-            	$profile_data 					= array();            	             
-                $profile_data['display_name'] 	= $me['name'];
-                $profile_data['fb_id'] 			= $me['id'];                                
-                $profile_data['email'] 			=  (isset($me['email'])) ? $me['email'] : '';
-                $profile_data['dob'] 			=  (isset($me['birthday'])) ? $me['birthday'] : '';
-                $profile_data['image_url'] 		= 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';                
-                
-                $this->session->set_userdata($this->sess_data_fb, $profile_data);
-                $this->session->set_userdata($this->sess_connect_with, 'fb');
-                
-                redirect('register');
+            	// check 
+		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
+					redirect('dob-failed');
+				}
+				if($this->session->userdata($this->sess_name_dob) == ''){
+					$this->session->set_userdata('last_coke_uri', 'fb-connect');
+					redirect('dob');
+				}else{
+					$profile_data 					= array();            	             
+	                $profile_data['display_name'] 	= $me['name'];
+	                $profile_data['fb_id'] 			= $me['id'];                                
+	                $profile_data['email'] 			=  (isset($me['email'])) ? $me['email'] : '';
+	                $profile_data['dob'] 			=  (isset($me['birthday'])) ? $me['birthday'] : '';
+	                $profile_data['image_url'] 		= 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';                
+	                
+	                $this->session->set_userdata($this->sess_data_fb, $profile_data);
+	                $this->session->set_userdata($this->sess_connect_with, 'fb');
+	                
+	                redirect('register');
+				}            	
             }            
         }             
     }
 
     public function tw_connect()
 	{   		
-        $this->_already_logged_in();
+        $this->_already_logged_in();        
         
         // destroy session facebook
         if($this->session->userdata($this->sess_data_fb)){
@@ -1815,14 +1824,23 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			}
 			// pertamax register
 			else{
-				$profile_data 					= array();
-				$profile_data['twitter_id'] 	=  $data_tw->id;
-				$profile_data['screen_name'] 	=  $data_tw->screen_name;
-				$profile_data['display_name']	=  $data_tw->name;
-				$profile_data['image_url'] 		=  $data_tw->profile_image_url;
+				// check 
+		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
+					redirect('dob-failed');
+				}
+				if($this->session->userdata($this->sess_name_dob) == ''){
+					$this->session->set_userdata('last_coke_uri');
+					redirect('dob');
+				}else{
+					$profile_data 					= array();
+					$profile_data['twitter_id'] 	=  $data_tw->id;
+					$profile_data['screen_name'] 	=  $data_tw->screen_name;
+					$profile_data['display_name']	=  $data_tw->name;
+					$profile_data['image_url'] 		=  $data_tw->profile_image_url;
 
-				$this->session->set_userdata($this->sess_data_tw, $profile_data);
-				redirect('register');
+					$this->session->set_userdata($this->sess_data_tw, $profile_data);
+					redirect('register');
+				}				
 			}			
 
 			if(isset($redir) && $redir)
@@ -1855,7 +1873,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'email',
 			'label' => 'Alamat Email',
-			'rules' => 'required|max_length[60]|valid_email|callback__email_check|callback__string_email_tambahan|xss_clean',
+			'rules' => 'required|max_length[60]|valid_email|callback__string_email_tambahan|callback__email_check|xss_clean',
 		),
 		array(
 			'field' => 'password',
@@ -1870,12 +1888,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'name',
 			'label' => 'Nama Lengkap',
-			'rules' => 'trim|required|min_length[2]|callback__string_angka_spasi|xss_clean',
+			'rules' => 'trim|required|min_length[2]|callback__string_spasi|xss_clean',
 		),			
 		array(
 			'field' => 'phone',
 			'label' => 'Nomor HP',
-			'rules' => 'trim|required|numeric|is_natural|min_length[10]|max_length[15]|xss_clean',
+			'rules' => 'trim|required|numeric|is_natural|min_length[8]|max_length[20]|xss_clean',
 		),
 		array(
 			'field' => 'gender',
@@ -1887,7 +1905,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'label' => 'Syarat dan Ketentuan',
 			'rules' => 'required',
 		),	
-		array(
+		/*array(
 			'field'=>'dd', 
 			'label'=>'Day', 
 			'rules'=>'required|integer|trim|xss_clean'
@@ -1901,7 +1919,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'field'=>'yy', 
 			'label'=>'Year', 
 			'rules'=>'required|integer|trim|xss_clean'
-		),		
+		),*/		
 		array(
 
 			'field' => 'recaptcha_response_field',
@@ -1933,9 +1951,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'rules' => 'required'
 			)
 		);
-			
-		$this->form_validation->set_rules($this->validation_rules);
 		
+		#$this->form_validation->set_error_delimiters('<br>', '');
+		$this->form_validation->set_rules($this->validation_rules);		
 		if ($this->form_validation->run() or $this->ion_auth->logged_in())
 		{			
 			$redirect = $this->session->userdata('admin_redirect');
@@ -1967,12 +1985,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		
 		$this->form_validation->set_rules($this->register_validation_array);
 		if($this->input->post('register')){
-			if($this->form_validation->run()){
-				$dd = $this->input->post('dd');
-				$mm = $this->input->post('mm');
-				$yy = $this->input->post('yy');
-				$dob = $this->_check_dob($yy, $mm, $dd);
-				$dob_err = $dob;				
+			$dd = $this->input->post('dd');
+			$mm = $this->input->post('mm');
+			$yy = $this->input->post('yy');
+			$dob = $this->_check_dob($yy, $mm, $dd);
+			$dob_err = $dob;			
+			if($this->form_validation->run()){							
 				if($dob == ""){
 					$display_name 	= $this->input->post('name');				
 					$username 		= strtolower(str_replace(' ', '', $display_name));
@@ -2085,7 +2103,13 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 				$error = $this->_check_dob($yy, $mm, $dd);
 				if( $error == ''){
-					redirect('register');
+					$last = $this->session->userdata('last_coke_uri');
+					if(!$last){						
+						redirect('register');
+					}else{
+						$this->session->unset_userdata('last_coke_uri');
+						redirect($last);
+					}
 				}else{
 					redirect('dob-failed');
 				}				
@@ -2095,11 +2119,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$dob_day 	= dob_day();
 		$dob_month 	= dob_month();
 		$dob_year 	= dob_year();
+		date_default_timezone_set('Asia/Jakarta');		
+		$sekarang = explode('-', date('Y-n-j'));		
 
 		$this->template
 				->set('dob_day', $dob_day)	
 				->set('dob_month', $dob_month)	
-				->set('dob_year', $dob_year)	
+				->set('dob_year', $dob_year)
+				->set('sekarang', $sekarang)
 				->set('error', $error)
 				->build('coketune/dob');
 	}
@@ -2112,17 +2139,37 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				->build('coketune/dob_failed');
 	}
 
-	public function forget_password(){
+	public function reset_password(){
 		$this->_already_logged_in();
-		
+
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__check_reset_email');
+		if($this->form_validation->run()){
+
+		}	
+
+		$this->template				
+				->build('coketune/reset_password');	
 	}
 
-	public function reset_password(){
-		
+	public function change_password($token = null){			
+		if( !$this->coketune_m->check_token($token)){
+			redirect();
+		}
+
+		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean|callback__password_complexcity');
+		$this->form_validation->set_rules('re-password', 'Ulangi Password', 'required|trim|xss_clean|matches[password]');
+		if($this->form_validation->run()){
+			$pass = $this->input->post('password');	
+
+		}
+
+		$this->template				
+				->build('coketune/change_password');	
 	}
 
 	public function profile(){
 		$this->_restricted_area();
+
 		$this->template				
 				->build('coketune/profile');
 	}
@@ -2138,7 +2185,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	private function _already_logged_in(){
 		if ($this->current_user && $this->current_user->group == 'user') {
 			$this->session->set_flashdata('flash_message', lang('user:already_logged_in'));
-			redirect();
+			redirect('profile');
 		}
 	}
 
@@ -2148,8 +2195,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 	}
 
-
-	private function _check_dob($yy, $mm, $dd){
+	private function _check_dob($yy, $mm, $dd){		
 		$error = "";
 		if( is_valid_date($yy, $mm, $dd) ){
 			if( is_thirteen_or_more($yy, $mm, $dd) ){
@@ -2184,6 +2230,15 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 	}
 
+	public function _string_spasi($string){
+		if(preg_match('/[^a-zA-Z\s]+/ism', $string)){
+			$this->form_validation->set_message('_string_spasi', 'Bagian %s hanya string dan spasi');
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+
 	public function _string_email_tambahan($string){
 		if(preg_match('/[^a-zA-Z0-9_\.@]+/ism', $string)){
 			$this->form_validation->set_message('_string_email_tambahan', 'Bagian %s invalid string');
@@ -2209,6 +2264,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			return false;
 		}else{
 			return true;
+		}
+	}
+
+	public function _check_reset_email($string){		
+		if(!$this->coketune_m->check_email_reset($mail)){
+			$this->form_validation->set_message('_check_reset_email', 'Email tidak ditemukan');
 		}
 	}
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/	
