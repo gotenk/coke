@@ -1,5 +1,4 @@
 <?php include 'header.php'; ?>
-<?php include 'file-nav.php'; ?>
 
 <main>
 		

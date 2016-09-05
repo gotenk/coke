@@ -6,17 +6,14 @@
 		<div id="background-img" class="fluid-img">
 			<div id="register-inner" class="container">
 				<div class="row">
-					<div class="panel" id="social-register">
-						<div class="button-action-wrapper social-button">
-							<a href="#" class="button rounded login-button fb">
-								<i class="social-icon fb"></i>
-								<span>register with facebook</span>
-							</a>
-							<a href="#" class="button rounded login-button tw">
-								<i class="social-icon tw"></i>
-								<span>register with twitter</span>
-							</a>
-						</div> <!-- .button-action-wrapper -->
+					<div class="panel profile" id="social-register">
+						<div class="userProfile-image">
+							<img src="img/coke/demo-user-profile-picture.jpg"/>
+						</div> <!-- .image -->
+						<div class="userProfile-info">
+							<div class="name">Tatjana saphira</div>
+							<div class="detail"><span class="gender">female</span></div>
+						</div> <!-- .userProfile-info -->						
 					</div> <!-- .panel -->
 					<div id="figure" class="wide panel">or</div>
 					<div class="panel" id="email-register">
@@ -31,14 +28,6 @@
 							<div class="column">
 								<label for="email" class="sub-title">alamat email<span>*</span></label>
 								<input id="email" type="email" placeholder="alamat email mu">
-							</div> <!-- .column -->
-							<div class="column">
-								<label for="password" class="sub-title">kata sandi<span>*</span></label>
-								<input id="password" type="password" placeholder="kata sandi baru">
-							</div> <!-- .column -->
-							<div class="column">
-								<label for="re-password" class="sub-title">konfirmasi kata sandi<span>*</span></label>
-								<input id="re-password" type="password" placeholder="ulangi kata sandi">
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="phone" class="sub-title">nomer ponsel<span>*</span></label>

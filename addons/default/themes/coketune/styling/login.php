@@ -1,5 +1,4 @@
 <?php include 'header-fluid.php'; ?>
-<?php include 'file-nav.php'; ?>
 
 <main>
 	
