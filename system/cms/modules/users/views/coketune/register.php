@@ -32,7 +32,7 @@
 								<?php
 									$name_value = '';
 									if($this->input->post('name')){
-										$name_value = $this->input->post('display_name');
+										$name_value = $this->input->post('name');
 									}else{
 										if(isset($session['display_name'])){
 											$name_value = $session['display_name'];
@@ -70,12 +70,12 @@
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
 								<div class="custom-radio-button">
-								    <input type="radio" id="m-option" name="gender" value="male" <?php echo ($this->input->post('gender') == 'male') ? 'checked' : '';?>>
+								    <input type="radio" id="m-option" name="gender" value="m" <?php echo ($this->input->post('gender') == 'male') ? 'checked' : '';?>>
 								    <label for="m-option"><span></span>Laki-laki</label>
 								    <div class="check"></div>								    
 								</div> <!-- .custom-radio-button -->
 								<div class="custom-radio-button">
-								    <input type="radio" id="f-option" name="gender" value="female" <?php echo ($this->input->post('gender') == 'female') ? 'checked' : '';?>>
+								    <input type="radio" id="f-option" name="gender" value="f" <?php echo ($this->input->post('gender') == 'female') ? 'checked' : '';?>>
 								    <label for="f-option"><span></span>Perempuan</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->

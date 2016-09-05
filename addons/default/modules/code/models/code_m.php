@@ -92,4 +92,15 @@ class Code_m extends MY_Model
 
         return $this->db->get();
     }
+
+    public function checkExistingCode($data)
+    {
+        return $this->db
+            ->select('*')
+            ->from('alfamart_code')
+            ->where('transaction_code', $data['transaction_code'])
+            ->or_where('unique_code', $data['alfamart_code'])
+            ->get()
+            ->row();
+    }
 }
