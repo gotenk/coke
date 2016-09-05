@@ -42,6 +42,11 @@ class Code extends Public_Controller
 
     public function index()
     {
+        if (!$this->current_user) {
+            $this->session->set_flashdata('message', array('Silahkan login terlebih dahulu'));
+            redirect();
+        }
+
         $vendor = $this->input->post('vendor');
 
         if ($vendor == 'alfamart') {
