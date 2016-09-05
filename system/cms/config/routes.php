@@ -63,6 +63,7 @@ $route['fb-connect']            = 'users/fb_connect';
 $route['tw-connect']	          = 'users/tw_connect';
 $route['register']	          = 'users/register';
 $route['login']	          = 'users/login';
+$route['dob']	          = 'users/dob';
 //$route['vine-connect']					= 'users/vine_login';
 //$route['instagram-connect']				= 'users/instagram_callback';
 //$route['check-parent-email']			= 'users/check_parent_email';

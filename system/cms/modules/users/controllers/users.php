@@ -20,7 +20,7 @@ class Users extends Public_Controller
 		parent::__construct();
 
 		// Load the required classes
-		$this->load->model(array('user_m', 'profile_m'));
+		$this->load->model(array('user_m', 'profile_m', 'coketune_m'));
 		$this->load->helper(array('user', 'coketune'));
 		$this->lang->load('user');
 		$this->load->library('form_validation');
@@ -1891,6 +1891,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	public function register(){
 		$this->_already_logged_in();
+		$this->_is_dob_session();
 
 		$session = $this->session->userdata($this->sess_data_fb); 
 		if($this->session->userdata($this->sess_data_tw)){
@@ -1961,6 +1962,52 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	public function dob(){
 		$this->_already_logged_in();
+		$error = '';
+		$rules = array(
+			array(
+				'field'=>'dd', 
+				'label'=>'Day', 
+				'rules'=>'required|integer|trim|xss_clean'
+			),
+			array(
+				'field'=>'mm', 
+				'label'=>'Month', 
+				'rules'=>'required|integer|trim|xss_clean'
+			),
+			array(
+				'field'=>'yy', 
+				'label'=>'Year', 
+				'rules'=>'required|integer|trim|xss_clean'
+			),
+		);		
+		
+
+		$this->form_validation->set_rules($rules);
+		if($this->input->post('f_submit_dob')){
+			if($this->form_validation->run()){
+				$dd = $this->input->post('dd');
+				$mm = $this->input->post('mm');
+				$yy = $this->input->post('yy');
+				if( is_thirteen_or_more($yy, $mm, $dd) ){
+					$this->session->set_userdata($this->sess_dob, "{$yy}-{$mm}-{$dd}");
+					redirect('register');
+				}else{
+					$this->session->set_userdata($this->sess_dob, 'false');
+					$error = 'ops! maaf. untuk saat ini kamu belum bisa memenuhi syarat. terima kasih telah berpartisipasi.';
+				}
+			}
+		}		
+
+		$dob_day 	= dob_day();
+		$dob_month 	= dob_month();
+		$dob_year 	= dob_year();
+
+		$this->template
+				->set('dob_day', $dob_day)	
+				->set('dob_month', $dob_month)	
+				->set('dob_year', $dob_year)	
+				->set('error', $error)
+				->build('coketune/dob');
 	}
 
 	public function forget_password(){
@@ -1993,6 +2040,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if(!$this->current_user){
 			redirect();
 		}
+	}
+
+	private function _is_dob_session(){
+		if( $this->session->userdata($this->sess_name_dob) == 'false' ){
+			redirect('dob');
+		}	
 	}
 
 	public function deb(){
