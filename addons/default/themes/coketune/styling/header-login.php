@@ -38,6 +38,8 @@
 
 <body>
 
+	<?php include 'file-nav.php'; ?>
+
 	<header>
 		<div id="header-inner" class="container">
 			<div class="row">

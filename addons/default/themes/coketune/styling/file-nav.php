@@ -1,17 +1,6 @@
 <div id="file-nav">
 	PAGE
 	<a href="javascript:void(0)" id="file-nav-toggle">></a>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#file-nav-toggle').on('click', function(){
-				if($('#file-nav').hasClass('active')){
-					$('#file-nav').removeClass('active');
-				}else{
-					$('#file-nav').addClass('active');
-				}
-			})
-		})
-	</script>
 	<div>
         <?php
 	if ($handle = opendir('.')) {
