@@ -39,7 +39,7 @@
 										}
 									}
 								?>
-								<input onkeypress="return allLetter(event)" id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
+								<input onkeypress="return allLetterspace(event)" id="username" type="text" style="text-transform:capitalize;" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
 								<p><?php echo form_error('name')?></p>
 							</div> <!-- .column -->
 							<div class="column">
