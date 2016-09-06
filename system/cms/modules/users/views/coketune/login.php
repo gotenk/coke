@@ -38,13 +38,13 @@
 								<input type="submit" class="button rounded border primary" name="login" value="masuk">
 							</div> <!-- .button-action-wrapper -->
 							
-							<span class="linkk center"><a href="#">Lupa kata sandi?</a></span>
+							<span class="linkk center"><a href="{{ url:site uri="reset-password"}}">Lupa kata sandi?</a></span>
 							
 							<div class="border-figure"></div>
 							
 							<div class="button-action-wrapper column">
 								<label class="sub-title">Pengguna baru?</label>
-								<input type="submit" class="button rounded border primary register" name="register" value="daftar">
+								<input type="submit" class="button rounded border primary register" name="register" value="daftar">								
 							</div> <!-- .button-action-wrapper -->							
 							
 						<?php echo form_close();?> <!-- #user-register -->
