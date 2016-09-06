@@ -69,6 +69,7 @@ $route['profile']             = 'users/profile';
 $route['code-check']	          = 'code/index';
 $route['reset-password']	          = 'users/reset_password';
 $route['change-password(/:any)?']	          = 'users/change_password$1';
+$route['cara-mengikuti-kompetisi']	= 'users/cara_ikut_kompetisi';
 //$route['vine-connect']					= 'users/vine_login';
 //$route['instagram-connect']				= 'users/instagram_callback';
 //$route['check-parent-email']			= 'users/check_parent_email';
