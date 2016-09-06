@@ -8,7 +8,7 @@
 			</div> <!-- .title -->
 			<div class="row">
 				<figure>
-					<div class="image"><img src="img/coke/method_step1.png"/></div>
+					<div class="image"><img src="{{ url:site }}addons/default/themes/coketune/img/coke/method_step1.png"/></div>
 					<figcaption>
 						<h3>step 1</h3>
 						<div class="text">
@@ -17,7 +17,7 @@
 					</figcaption>
 				</figure>
 				<figure>
-					<div class="image"><img src="img/coke/method_step2.png"/></div>
+					<div class="image"><img src="{{ url:site }}addons/default/themes/coketune/img/coke/method_step2.png"/></div>
 					<figcaption>
 						<h3>step 2</h3>
 						<div class="text">
@@ -27,7 +27,7 @@
 					</figcaption>
 				</figure>
 				<figure>
-					<div class="image"><img src="img/coke/method_step3.png"/></div>
+					<div class="image"><img src="{{ url:site }}addons/default/themes/coketune/img/coke/method_step3.png"/></div>
 					<figcaption>
 						<h3>step 3</h3>
 						<div class="text">
