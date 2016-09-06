@@ -1,46 +1,56 @@
-<?php echo validation_errors();?>
+
 <main>
-	<section id="login">
-		<div id="background-img" class="fluid-img">
-			<div id="login-inner" class="container">
+	<section id="register">
+		<div id="background-img" class="fluid-img register">
+			<div id="register-inner" class="container">
 				<div class="row">
-					<div class="panel" id="social-login">
+					<div class="panel" id="social-register">
 						<div class="button-action-wrapper social-button">
 							<a href="{{ url:site uri="fb-connect"}}" class="button rounded login-button fb">
 								<i class="social-icon fb"></i>
-								<span>login with facebook</span>
+								<span>register with facebook</span>
 							</a>
-							<a href="{{ url:site uri="tw-connect"}}" class="button rounded login-button tw">
+							<a href="{{url:site uri="tw-connect"}}" class="button rounded login-button tw">
 								<i class="social-icon tw"></i>
-								<span>login with twitter</span>
+								<span>register with twitter</span>
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
-					<div id="figure" class="wide panel">or</div>
-					
-					<div class="panel" id="email-login">
-						<?php echo cmc_form_open('user-login', site_url('login'));?>						
-						<div class="title">
-							<h4>log in with email</h4>
-						</div> <!-- .title -->
-						<div class="column">
-							<label for="email">email</label>
-							<input class="ipt" type="text" id="email" placeholder="your email address" name="email">
-							<?php #echo form_error('email');?>
-						</div> <!-- .column -->
-						<div class="column">
-							<label for="password">password</label>
-							<input class="ipt" type="password" id="password" placeholder="your password" name="password">
-							<?php #echo form_error('password');?>
-						</div> <!-- .column -->
-						<div class="button-action-wrapper">
-							<input type="submit" class="button rounded primary" name="login" value="login">
-						</div> <!-- .button-action-wrapper -->
-						<?php echo form_close();?>
-					</div> <!-- .panel -->						
+					<div id="figure" class="wide panel">atau masuk dengan email</div>
+					<div class="panel" id="email-register">
+						<?php echo cmc_form_open('user-register', site_url('login'));?>	
+							<div class="column">
+								<label for="email" class="sub-title">alamat email<span>*</span></label>
+								<input id="email" name="email" class="transparent" type="email" placeholder="alamat email mu">
+							</div> <!-- .column -->
+							<div class="column">
+								<label for="password" class="sub-title">kata sandi<span>*</span></label>
+								<input id="password" name="password" class="transparent" type="password" placeholder="kata sandi baru">
+							</div> <!-- .column -->
+							<?php echo form_error('email', '<div class="column allert"><p class="error">', '</p></div>'); ?>
+							<!-- .column -->
+							<div class="column">
+								<div id="captcha">
+									<div class="g-recaptcha" data-sitekey="6Ld1aikTAAAAAJf-jN1_IhnqipH_FjSXb0l8Gzrk"></div>
+								</div> <!-- #captcha -->
+							</div> <!-- .column -->
+							<div class="button-action-wrapper login">
+								<input type="submit" class="button rounded border primary" name="login" value="masuk">
+							</div> <!-- .button-action-wrapper -->
+							
+							<span class="linkk center"><a href="#">Lupa kata sandi?</a></span>
+							
+							<div class="border-figure"></div>
+							
+							<div class="button-action-wrapper column">
+								<label class="sub-title">Pengguna baru?</label>
+								<input type="submit" class="button rounded border primary register" name="register" value="daftar">
+							</div> <!-- .button-action-wrapper -->							
+							
+						<?php echo form_close();?> <!-- #user-register -->
+					</div> <!-- .panel -->
 				</div> <!-- .row -->
-			</div> <!-- #login-inner -->
+			</div> <!-- #register-inner -->
 		</div> <!-- #background-img -->
 	</section> <!-- #login -->
-	
 </main>

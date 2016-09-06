@@ -1951,7 +1951,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'rules' => 'required'
 			)
 		);
-		
+		$this->form_validation->set_message('required', 'KATA SANDI / EMAIL SALAH');
+		$this->form_validation->set_message('_check_login', 'KATA SANDI / EMAIL SALAH');
 		#$this->form_validation->set_error_delimiters('<br>', '');
 		$this->form_validation->set_rules($this->validation_rules);		
 		if ($this->form_validation->run() or $this->ion_auth->logged_in())
@@ -2164,11 +2165,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 
 		$this->template				
-				->build('coketune/change_password');	
+				->build('');	
 	}
 
 	public function profile(){
-		$this->_restricted_area();
+		// $this->_restricted_area();
 
 		$this->template				
 				->build('coketune/profile');
@@ -2273,6 +2274,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 	}
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/	
+	
+
+	public function cara_ikut_kompetisi()
+	{
+		$this->template->build('coketune/cara_ikut');
+	}
 
 
 }
