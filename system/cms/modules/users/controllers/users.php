@@ -1930,6 +1930,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	public function home(){
 		$this->template
+				->set('home', 'home')
 				->build('coketune/home');
 	}
 
@@ -1962,6 +1963,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 			redirect('profile');
 		}		
+
+		if($this->input->post('register')){
+			$this->_already_logged_in();
+			if($this->session->userdata($this->sess_name_dob_status) == 'false'){
+				redirect('dob-failed');
+			}
+			if($this->session->userdata($this->sess_name_dob) == ''){
+				redirect('dob');
+			}
+		}
 
 		$this->template
 				->build('coketune/login');	
@@ -2176,12 +2187,38 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 
+	public function daftar_pemenang(){
+		$limit = 20;
+		$winners = array();
+		$is_next = '';
+		$offset = 0;		
 
 
+		#$winners = $this->coketune_m->data_pemenang($offset, $limit);	
 
+		if ($this->input->is_ajax_request())
+		{
+			$this->template->set_layout(false);
+		}
+
+		$this->template
+			->title('Daftar Pemenang')
+			->set('is_next', $is_next)
+			->set('home', 'home')
+			->set('winners', $winners);
+
+		$this->input->is_ajax_request() ? 
+			$this->template->build('coketune/winner_table') : 
+			$this->template->build('coketune/winner_frame');
+	}
+
+
+	// belom
 	private function _submit_code(){
 		$this->_restricted_area();		
 	}
+
+
 
 	private function _already_logged_in(){
 		if ($this->current_user && $this->current_user->group == 'user') {
@@ -2279,6 +2316,10 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	public function cara_ikut_kompetisi()
 	{
 		$this->template->build('coketune/cara_ikut');
+	}
+
+	public function testing(){
+		$this->coketune_m->search_pemenang();
 	}
 
 
