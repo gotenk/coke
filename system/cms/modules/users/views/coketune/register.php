@@ -54,7 +54,7 @@
 										}
 									}
 								?>
-								<input id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
+								<input onkeypress="return emailValidation(event)" id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
 								<p><?php echo form_error('email')?></p>
 							</div> <!-- .column -->
 							<div class="column">
@@ -69,7 +69,7 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="phone" class="sub-title">nomer ponsel<span>*</span></label>
-								<input id="phone" type="text" placeholder="08X-XXXXXXXXX" name="phone" value="<?php echo set_value('phone');?>">
+								<input onkeypress="return numeric(event)" id="phone" type="text" placeholder="08X-XXXXXXXXX" name="phone" value="<?php echo set_value('phone');?>">
 								<p><?php echo form_error('phone')?></p>
 							</div> <!-- .column -->
 							<div class="column half">
