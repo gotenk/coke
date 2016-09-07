@@ -14,13 +14,20 @@ class Coketune_m extends MY_Model
 	    			->where('active', 1)
                     ->where('group_id', 2)
 		    		->where('email', $email)
-		    		->get('users')->row();
+		    		->get('users')->row();        
+        return $result;
+    }
+
+    public function create_token($result = array()){
         if($result){
-            $data_update['forgotten_password_code'] = substr(hash('sha256', $result->id.$result->salt.time()), 0, 40); 
-            $this->usr_update($result->id, $data_update);
-            return true;
+            $token = substr(hash('sha256', $result->id.$result->salt.time()), 0, 40);
+            $data_update['forgotten_password_code'] = $token; 
+            $update = $this->usr_update($result->id, $data_update);
+            if($update){
+                return $token;
+            }            
         }
-        return false;		
+        return false;
     }
 
     public function usr_update($id, $data){

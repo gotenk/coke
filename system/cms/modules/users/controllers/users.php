@@ -2154,9 +2154,20 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	public function reset_password(){
 		$this->_already_logged_in();
 
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__string_email_tambahan|callback__check_reset_email');
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__string_email_tambahan');
 		if($this->form_validation->run()){
-			pre('ok, redirrect ndi?');
+			$email = $this->input->post('email');
+			$email_status = $this->coketune_m->check_email_reset($email);
+			if($email_status){
+				$token = $this->coketune_m->create_token($email_status);
+				if($token){
+					// send email
+					// bla bla bla
+					$link = site_url('change-password/'.$token);
+					pre('link to test '. $link);
+					pre('success, redirrect ndi?');
+				}				
+			}			
 		}
 
 		$this->template
@@ -2312,14 +2323,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}else{
 			return true;
 		}
-	}
-
-	public function _check_reset_email($string){
-		if(!$this->coketune_m->check_email_reset($string)){
-			$this->form_validation->set_message('_check_reset_email', 'Email tidak ditemukan');
-			return false;
-		}
-	}
+	}	
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/
 
 
