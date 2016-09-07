@@ -10,7 +10,7 @@
 							if (isset($session['twitter_id'])) {
 								?>
 								<div class="userProfile-image">
-									<img src="<?=$session['image_url']?>"/>
+									<img src="<?=$session['image_url_https']?>"/>
 								</div> <!-- .image -->
 								<div class="userProfile-info">
 									<div class="name"><?=$session['display_name']?></div>
