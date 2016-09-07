@@ -78,9 +78,11 @@
 
     </div> <!-- #header-inner -->
 
-    {{ if { url:segments segment="1" } == '' }}
+    {{ if exists home }}
     {{ theme:partial name="home" }}
-    {{ elseif { url:segments segment="1" } == 'cara-mengikuti-kompetisi'}}
+    {{ endif }}
+    
+    {{ if { url:segments segment="1" } == 'cara-mengikuti-kompetisi' }}
     {{ theme:partial name="howto" }}
     {{ endif }}
 
