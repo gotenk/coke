@@ -2154,9 +2154,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	public function reset_password(){
 		$this->_already_logged_in();
 
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__check_reset_email');
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__string_email_tambahan|callback__check_reset_email');
 		if($this->form_validation->run()){
-
+			pre('ok, redirrect ndi?');
 		}
 
 		$this->template
@@ -2164,19 +2164,28 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	public function change_password($token = null){
-		if( !$this->coketune_m->check_token($token)){
+		$istoken = $this->coketune_m->check_token($token);
+		if( !$istoken ){
 			redirect();
 		}
 
 		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean|callback__password_complexcity');
 		$this->form_validation->set_rules('re-password', 'Ulangi Password', 'required|trim|xss_clean|matches[password]');
 		if($this->form_validation->run()){
-			$pass = $this->input->post('password');
+			$pass = $this->input->post('password');				
+			$password	= $this->ion_auth_model->hash_password($pass, $istoken->salt);			
 
+			$dnew['password'] = $password;
+			$dnew['forgotten_password_code'] = '';
+			$updt = $this->coketune_m->usr_update($istoken->id, $dnew);
+
+			if($updt){
+				redirect('login');
+			}			
 		}
 
 		$this->template
-				->build('');
+				->build('coketune/change_password');
 	}
 
 	public function profile(){
@@ -2306,8 +2315,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	public function _check_reset_email($string){
-		if(!$this->coketune_m->check_email_reset($mail)){
+		if(!$this->coketune_m->check_email_reset($string)){
 			$this->form_validation->set_message('_check_reset_email', 'Email tidak ditemukan');
+			return false;
 		}
 	}
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/

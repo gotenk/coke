@@ -10,18 +10,31 @@ class Coketune_m extends MY_Model
 
     public function check_email_reset($email){
     	$result =  $this->db
+                    ->select('id, salt')
 	    			->where('active', 1)
+                    ->where('group_id', 2)
 		    		->where('email', $email)
-		    		->get('users');		    		
-		return $result->row();
+		    		->get('users')->row();
+        if($result){
+            $data_update['forgotten_password_code'] = substr(hash('sha256', $result->id.$result->salt.time()), 0, 40); 
+            $this->usr_update($result->id, $data_update);
+            return true;
+        }
+        return false;		
+    }
+
+    public function usr_update($id, $data){
+        $this->db->where('id', $id);
+        $this->db->update('users', $data);
+        return $this->db->affected_rows() == 1;   
     }
 
     public function check_token($token){
     	$result = $this->db
+                    ->select('id, salt') 
     				->where('active', 1)
 		    		->where('forgotten_password_code', $token)
-		    		->get('users');
-		    		pre($this->db->last_query());
+		    		->get('users');		    		
 		return $result->row();
     }
 
