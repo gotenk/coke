@@ -1800,6 +1800,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
            	);
 			$data_tw = $this->twitter->get('account/verify_credentials', $params);
 
+			var_dump($data_tw);
+
 			// db check value
 			$data = $this->profile_m->get_profile(array('tw_id'=>$id_twitter,'tw_access_token'=>serialize($access_token)));
 
