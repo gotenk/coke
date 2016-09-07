@@ -16,8 +16,8 @@
 
 <?php echo form_open('register', array('id' => 'register')) ?>
 <ul>
-	
-	<?php var_dump($this->session->userdata('connect_with'))?>
+	<?=var_dump(Settings::get('auto_username'))?>
+
 	<?php if ( ! Settings::get('auto_username')): ?>
 	<li>
 		<label for="username"><?php echo lang('user:username') ?></label>
