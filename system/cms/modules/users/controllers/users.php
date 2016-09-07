@@ -1799,9 +1799,6 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
                'include_email' => true,
            	);
 			$data_tw = $this->twitter->get('account/verify_credentials', $params);
-
-			var_dump($data_tw);
-
 			// db check value
 			$data = $this->profile_m->get_profile(array('tw_id'=>$id_twitter,'tw_access_token'=>serialize($access_token)));
 
@@ -1839,6 +1836,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$profile_data['screen_name'] 	=  $data_tw->screen_name;
 					$profile_data['display_name']	=  $data_tw->name;
 					$profile_data['image_url'] 		=  $data_tw->profile_image_url;
+					$profile_data['data_full']		= $data_tw;
 
 					$this->session->set_userdata($this->sess_data_tw, $profile_data);
 					redirect('register');
