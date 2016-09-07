@@ -8,24 +8,24 @@
 			<div id="register-inner" class="container">
 				<div class="row">
 
-					<?php if (isset($session['twitter_id'])) { ?>
+					<?php if (isset($session['twitter_id'])) { $display_name = explode(' ', $session['display_name']); ?>
 					<div class="panel profile" id="social-register">
 						<div class="userProfile-image">
 							<img src="<?=$session['image_url_https']?>"/>
 						</div> <!-- .image -->
 						<div class="userProfile-info">
-							<div class="name"><?=$session['display_name']?></div>
+							<div class="name"><?=$display_name[0]?></div>
 							<div class="detail"><span class="gender"></span></div>
 							<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
 						</div> <!-- .userProfile-info -->
 					</div>						
-					<?php } else  if (isset($session['fb_id'])) { ?>
+					<?php } else  if (isset($session['fb_id'])) { $display_name = explode(' ', $session['display_name']); ?>
 					<div class="panel profile" id="social-register">
 						<div class="userProfile-image">
 							<img src="<?=$session['image_url']?>"/>
 						</div> <!-- .image -->
 						<div class="userProfile-info">
-							<div class="name"><?=$session['display_name']?></div>
+							<div class="name"><?=$display_name[0]?></div>
 							<div class="detail"><span class="gender"></span></div>
 						</div> <!-- .userProfile-info -->						
 					</div> <!-- .panel -->
