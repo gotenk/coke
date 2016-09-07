@@ -1,5 +1,8 @@
 <h2 class="page-title" id="page_title"><?php echo lang('user:register_header') ?></h2>
 
+
+<?php var_dump($this->session->userdata('connect_with'))?>
+
 <p>
 	<span id="active_step"><?php echo lang('user:register_step1') ?></span> -&gt;
 	<span><?php echo lang('user:register_step2') ?></span>
