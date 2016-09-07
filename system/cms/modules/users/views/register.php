@@ -1,7 +1,6 @@
 <h2 class="page-title" id="page_title"><?php echo lang('user:register_header') ?></h2>
 
 
-<?php var_dump($this->session->userdata('connect_with'))?>
 
 <p>
 	<span id="active_step"><?php echo lang('user:register_step1') ?></span> -&gt;
@@ -18,6 +17,7 @@
 <?php echo form_open('register', array('id' => 'register')) ?>
 <ul>
 	
+	<?php var_dump($this->session->userdata('connect_with'))?>
 	<?php if ( ! Settings::get('auto_username')): ?>
 	<li>
 		<label for="username"><?php echo lang('user:username') ?></label>
