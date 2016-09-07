@@ -29,7 +29,7 @@
 							<div class="detail"><span class="gender"></span></div>
 						</div> <!-- .userProfile-info -->						
 					</div> <!-- .panel -->
-					<?php } { ?>
+					<?php } else { ?>
 
 					<div class="panel" id="social-register">
 						<div class="button-action-wrapper social-button">
