@@ -1,7 +1,3 @@
-<?php
-	var_dump($session);
- ?>
-
 <main>
 	<section id="register">
 		<div id="background-img" class="fluid-img <?=isset($session)?'register':''?>">
