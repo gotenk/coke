@@ -60,7 +60,29 @@
         <nav id="top">
           <ul>
             <li><a href="{{ url:site uri="cara-mengikuti-kompetisi"}}">cara mengikuti kompetisi</a></li>
-            <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
+                      
+            <?php if($this->current_user):?>
+              <li>
+                <a href="{{ url:site uri="profile"}}">
+                  <div class="row">
+                    <div class="userProfile-image">
+                      <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>
+                        <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                      <?php else:?>
+                        <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                      <?php endif;?>
+                    </div> <!-- .image -->
+                    <div class="userProfile-info">
+                      <div class="name text-link"><?php echo $this->session->userdata('display_name');?></div>
+                    </div> <!-- .userProfile-info -->
+                  </div> <!-- .row -->
+                </a>
+              </li>
+              <li><a href="{{ url:site uri="logout"}}">keluar</a></li>
+            <?php else:?>
+              <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
+            <?php endif;?>
+
           </ul>
         </nav> <!-- #top -->
         <!-- END NAVIGATION WIDE SCREEN -->
@@ -68,9 +90,31 @@
 
       <!-- NAVIGATION MOBILE -->
       <nav id="mobile">
-        <ul>
+        <ul>          
+          
+          <?php if($this->current_user):?>
+            <li>
+              <div class="row profile">
+                <div class="userProfile-image">
+                  <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>
+                    <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                  <?php else:?>
+                    <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                  <?php endif;?>
+                </div> <!-- .image -->
+                <div class="userProfile-info">
+                  <div class="name text-link"><?php echo $this->session->userdata('display_name');?></div>
+                  <a href="{{ url:site uri="logout"}}" class="link">keluar</a>
+                </div> <!-- .userProfile-info -->
+              </div> <!-- .row -->
+            </li>          
+          <?php endif;?>
+
           <li><a href="{{ url:site }}">beranda</a></li>
+          <?php if(!$this->current_user):?>
           <li><a href="{{ url:site uri="login"}}">masuk</a> <span style="color:white;"> / <a href="{{ url:site uri="register"}}">daftar</a></li>
+          <?php endif;?>
+
           <li><a href="{{ url:site uri="cara-mengikuti-kompetisi" }}">cara mengikuti kompetisi</a></li>
           <li><a href="{{ url:site uri="cara-mengikuti-kompetisi"}}#page">syarat dan ketentuan</a></li>
           <li><a href="cara-mengikuti-kompetisi">kebijakan privasi</a></li>

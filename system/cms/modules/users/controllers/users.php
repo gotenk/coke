@@ -1959,8 +1959,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if ($this->form_validation->run() or $this->ion_auth->logged_in())
 		{
 			$redirect = $this->session->userdata('admin_redirect');
-			$this->session->unset_userdata('admin_redirect');
-
+			$this->session->unset_userdata('admin_redirect');			
 			redirect('profile');
 		}
 
@@ -2205,6 +2204,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$total 	= $this->coketune_m->count_code_user($this->current_user->id);
 		$codes 	= $this->coketune_m->code_user($this->current_user->id);	
 		$user 	= $this->profile_m->get_profile(array('user_id'=>$this->current_user->id));	
+		$this->session->set_userdata('display_name', $user->display_name);
+		$this->session->set_userdata('photo_profile', $user->photo_profile);			
+			
 
 		$this->template
 				->set('total', $total)
