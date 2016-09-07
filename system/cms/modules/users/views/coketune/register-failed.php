@@ -13,9 +13,6 @@
 								</span> <!-- .error-m -->
 							</div> <!-- .psst -->
 							<div class="linkk">Lihat&nbsp;<a href="#">Syarat dan Ketentuan</a></div>
-							<div class="button-action-wrapper">
-								<input type="submit" class="button rounded border primary" name="register" value="daftar">
-							</div> <!-- .button-action-wrapper -->
 						</form> <!-- #user-register -->
 					</div> <!-- .panel -->
 				</div> <!-- .row -->
