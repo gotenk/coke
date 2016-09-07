@@ -1,11 +1,10 @@
-<?=var_dump($session)?>
-
 <main>
 	<section id="register">
 		<div id="background-img" class="fluid-img">
 			<div id="register-inner" class="container">
 				<div class="row">
-				<?php if (isset($session['twitter_id'])) { ?>
+
+					<?php if (isset($session['twitter_id'])) { ?>
 					<div class="panel-profile" id="social-register">
 						<div class="userProfile-image">
 							<img src="<?=$session['image_url_https']?>"/>
@@ -16,7 +15,8 @@
 							<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
 						</div> <!-- .userProfile-info -->
 					</div>						
-				<?php } else { ?>
+					<?php } else { ?>
+
 					<div class="panel" id="social-register">
 						<div class="button-action-wrapper social-button">
 							<a href="<?php echo site_url('fb-connect')?>" class="button rounded login-button fb">
@@ -27,11 +27,12 @@
 								<i class="social-icon tw"></i>
 								<span>register with twitter</span>
 							</a>
-						</div>
-					</div>
-				<?php } ?>
-						 <!-- .button-action-wrapper -->
+						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
+
+					<?php } ?>
+
+
 					<div id="figure" class="wide panel">or</div>
 					<div class="panel" id="email-register">
 						<div class="title">
