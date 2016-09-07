@@ -5,21 +5,19 @@
 		<div id="background-img" class="fluid-img">
 			<div id="register-inner" class="container">
 				<div class="row">
+				<?php if (isset($session['twitter_id'])) { ?>
+					<div class="panel-profile" id="social-register">
+						<div class="userProfile-image">
+							<img src="<?=$session['image_url_https']?>"/>
+						</div> <!-- .image -->
+						<div class="userProfile-info">
+							<div class="name"><?=$session['display_name']?></div>
+							<div class="detail"><span class="gender">female</span></div>
+							<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
+						</div> <!-- .userProfile-info -->
+					</div>						
+				<?php } else { ?>
 					<div class="panel" id="social-register">
-						<?php
-							if (isset($session['twitter_id'])) {
-								?>
-								<div class="userProfile-image">
-									<img src="<?=$session['image_url_https']?>"/>
-								</div> <!-- .image -->
-								<div class="userProfile-info">
-									<div class="name"><?=$session['display_name']?></div>
-									<div class="detail"><span class="gender">female</span></div>
-									<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
-								</div> <!-- .userProfile-info -->						
-								<?php
-							} else { ?>
-
 						<div class="button-action-wrapper social-button">
 							<a href="<?php echo site_url('fb-connect')?>" class="button rounded login-button fb">
 								<i class="social-icon fb"></i>
@@ -30,7 +28,8 @@
 								<span>register with twitter</span>
 							</a>
 						</div>
-							<?php } ?>
+					</div>
+				<?php } ?>
 						 <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
 					<div id="figure" class="wide panel">or</div>
