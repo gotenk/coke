@@ -6,6 +6,20 @@
 			<div id="register-inner" class="container">
 				<div class="row">
 					<div class="panel" id="social-register">
+						<?php
+							if (isset($session['twitter_id'])) {
+								?>
+								<div class="userProfile-image">
+									<img src="<?=$session['image_url']?>"/>
+								</div> <!-- .image -->
+								<div class="userProfile-info">
+									<div class="name"><?=$session['display_name']?></div>
+									<div class="detail"><span class="gender">female</span></div>
+									<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
+								</div> <!-- .userProfile-info -->						
+								<?php
+							} else { ?>
+
 						<div class="button-action-wrapper social-button">
 							<a href="<?php echo site_url('fb-connect')?>" class="button rounded login-button fb">
 								<i class="social-icon fb"></i>
@@ -15,7 +29,9 @@
 								<i class="social-icon tw"></i>
 								<span>register with twitter</span>
 							</a>
-						</div> <!-- .button-action-wrapper -->
+						</div>
+							<?php } ?>
+						 <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
 					<div id="figure" class="wide panel">or</div>
 					<div class="panel" id="email-register">
