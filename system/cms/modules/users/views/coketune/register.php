@@ -1,9 +1,5 @@
-<?php #echo validation_errors()?>
-<?php
-	/*if($dob_err){
-		echo $dob_err;
-	}*/
-?>
+<?=var_dump($session)?>
+
 <main>
 	<section id="register">
 		<div id="background-img" class="fluid-img">
