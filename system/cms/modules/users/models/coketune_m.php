@@ -91,20 +91,39 @@ class Coketune_m extends MY_Model
         return $result;
     }
 
-    public function date_input_code_user($user_id){
+    public function code_user($user_id, $offset='', $limit=''){
         $str = "SELECT * FROM
                 (
                     SELECT unique_code as kode_unik, transaction_code, date_created as tanggal
                     FROM default_alfamart_code 
-                    WHERE user_id = 1
+                    WHERE user_id = {$user_id}
                     UNION ALL
                     SELECT code as kode_unik, '' as transaction_code, date_used as tanggal
                     FROM default_indomaret_code
                     WHERE is_used = 1
-                    AND user_id = 1
+                    AND user_id = {$user_id}
                 ) sub
-                ORDER BY tanggal DESC";
+                ORDER BY tanggal DESC ";
+        if($offset && $limit){
+            $str .= "LIMIT {$offset}, {$limit}";
+        }
         $result = $this->db->query($str);
         return $result->row();
+    }
+
+    public function count_code_user($user_id){
+        $str = "SELECT COUNT(*) AS total FROM
+                (
+                    SELECT unique_code as kode_unik
+                    FROM default_alfamart_code 
+                    WHERE user_id = {$user_id}
+                    UNION ALL
+                    SELECT code as kode_unik
+                    FROM default_indomaret_code
+                    WHERE is_used = 1
+                    AND user_id = {$user_id}
+                ) sub";
+        $query = $this->db->query($str)->row();
+        return $query->total;        
     }
 }

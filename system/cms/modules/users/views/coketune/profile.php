@@ -8,11 +8,14 @@
 					<div id="userProfile-inner" class="container">
 						<div class="row">
 							<div class="userProfile-image">
-								<img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+								<?php if($user->photo_profile && is_file($user->photo_profile)):?>
+								<?php else:?>
+									<img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+								<?php endif;?>
 							</div> <!-- .image -->
 							<div class="userProfile-info">
-								<div class="name">Tatjana saphira</div>
-								<div class="detail"><span class="age">19</span>,&nbsp;<span class="gender">female</span></div>
+								<div class="name"><?php echo $user->display_name;?></div>
+								<div class="detail"><span class="age"><?php echo profile_get_umur($user->dob_date_format);?></span>,&nbsp;<span class="gender"><?php echo profile_gender_format($user->gender);?></span></div>
 							</div> <!-- .userProfile-info -->
 						</div> <!-- .row -->
 					</div> <!-- #userProfile-inner -->
@@ -101,7 +104,7 @@
 					
 					<div id="user-code-data">
 						<div class="title">
-							<h3><span class="value">12</span>kode unik yang sudah terdaftar</h3>
+							<h3><span class="value"><?php echo $total;?></span>kode unik yang sudah terdaftar</h3>
 						</div> <!-- .title -->
 						<div class="data" id="user-data-result">
 							<table>
@@ -111,71 +114,23 @@
 										<th>kode unik</th>
 										<th>kode transaksi</th>
 									</tr>
+									<?php if($codes):
+											foreach($codes as $code):
+									?>
 									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>																		
-									<tr>
-										<td data-th="TANGGAL">29 nov</td>
-										<td data-th="KODE UNIK">#cokeTune_0431xxxxx_333xxx</td>
-										<td data-th="KODE TRANSAKSI">#cokeTune_0431xxxxx_333xxx</td>
-									</tr>
+										<td data-th="TANGGAL"><?php echo profile_date_format($code->tanggal);?></td>
+										<td data-th="KODE UNIK"><?php echo $code->kode_unik;?></td>
+										<td data-th="KODE TRANSAKSI"><?php echo $code->transaction_code;?></td>
+									</tr>			
+									<?php 
+											endforeach;
+										endif;
+									?>
 								</tbody>
 							</table>
 							
 							<div class="button-action-wrapper">
-								<a href="#" class="button primary rounded border">kembali</a>
+								<a href="{{ uri:site }}" class="button primary rounded border">kembali</a>
 							</div> <!-- .button-action-wrapper -->
 							
 						</div> <!-- .data -->

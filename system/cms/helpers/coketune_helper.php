@@ -71,3 +71,33 @@ if (!function_exists('dob_day'))
 		return $result;		
 	}
 }
+
+if (!function_exists('profile_date_format'))
+{
+	function profile_date_format($strdatetime){		
+		$datetime = new DateTime($strdatetime);		
+		return $datetime->format('j M');		
+	}
+}
+
+if (!function_exists('profile_gender_format'))
+{
+	function profile_gender_format($str){
+		$data['m'] = 'Male';
+		$data['f'] = 'Female';		
+
+		return isset($data[$str]) ? $data[$str] : $str;
+	}
+}
+
+if (!function_exists('profile_get_umur'))
+{
+	function profile_get_umur($str){		
+		$now = new DateTime();
+		$dob = DateTime::createFromFormat('Y-n-j', $str);
+		if($dob){			
+			$diff = $now->diff($dob);
+			return $diff->y;
+		}
+	}
+}

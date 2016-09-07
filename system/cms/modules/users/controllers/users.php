@@ -2024,7 +2024,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 						$connect_with = $this->session->userdata($this->sess_connect_with);
 						$profile_data['phone'] = $this->input->post('phone');
 						$profile_data['gender'] = $this->input->post('gender');
-						$profile_data['dob'] = strtotime("{$yy}-{$mm}-{$yy}");
+						$profile_data['dob_date_format'] = "{$yy}-{$mm}-{$dd}";
 
 						#$profile_data['kode_unik'] = $this->input->post('kode_unik');
 						#$profile_data['kode_transaksi'] = $this->input->post('kode_transaksi');
@@ -2200,9 +2200,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	public function profile(){
-		// $this->_restricted_area();
+		$this->_restricted_area();
+
+		$total 	= $this->coketune_m->count_code_user($this->current_user->id);
+		$codes 	= $this->coketune_m->code_user($this->current_user->id);	
+		$user 	= $this->profile_m->get_profile(array('user_id'=>$this->current_user->id));	
 
 		$this->template
+				->set('total', $total)
+				->set('codes', $codes)
+				->set('user', $user)
 				->build('coketune/profile');
 	}
 
