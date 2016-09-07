@@ -12,7 +12,7 @@
 									<p>Ops! Maaf, untuk saat ini kamu belum memenuhi syarat. Terima kasih telah berpartisipasi!</p>
 								</span> <!-- .error-m -->
 							</div> <!-- .psst -->
-							<div class="linkk">Lihat&nbsp;<a href="#">Syarat dan Ketentuan</a></div>
+							<div class="linkk">Lihat&nbsp;<a href="{{ url:site uri="cara-mengikuti-kompetisi"}}#page">Syarat dan Ketentuan</a></div>
 						</form> <!-- #user-register -->
 					</div> <!-- .panel -->
 				</div> <!-- .row -->
