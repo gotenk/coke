@@ -5,7 +5,7 @@
 				<div class="row">
 
 					<?php if (isset($session['twitter_id'])) { ?>
-					<div class="panel-profile" id="social-register">
+					<div class="panel profile" id="social-register">
 						<div class="userProfile-image">
 							<img src="<?=$session['image_url_https']?>"/>
 						</div> <!-- .image -->
