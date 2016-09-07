@@ -2143,7 +2143,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				->build('coketune/dob');
 	}
 
-	public function dob_failed(){
+	public function register_failed(){
 		if($this->session->userdata($this->sess_name_dob_status) != 'false'){
 			redirect();
 		}
