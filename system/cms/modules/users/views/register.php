@@ -16,7 +16,6 @@
 
 <?php echo form_open('register', array('id' => 'register')) ?>
 <ul>
-	<?=var_dump(Settings::get('auto_username'))?>
 
 	<?php if ( ! Settings::get('auto_username')): ?>
 	<li>
