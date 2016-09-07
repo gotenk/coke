@@ -18,6 +18,7 @@
 <ul>
 
 	<?php if ( ! Settings::get('auto_username')): ?>
+	<?=var_dump($_user)?>
 	<li>
 		<label for="username"><?php echo lang('user:username') ?></label>
 		<input type="text" name="username" maxlength="100" value="<?php echo $_user->username ?>" />
