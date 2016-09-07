@@ -1,3 +1,7 @@
+<?php
+	var_dump($session);
+ ?>
+
 <main>
 	<section id="register">
 		<div id="background-img" class="fluid-img <?=isset($session)?'register':''?>">
@@ -11,11 +15,21 @@
 						</div> <!-- .image -->
 						<div class="userProfile-info">
 							<div class="name"><?=$session['display_name']?></div>
-							<div class="detail"><span class="gender">female</span></div>
+							<div class="detail"><span class="gender"></span></div>
 							<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
 						</div> <!-- .userProfile-info -->
 					</div>						
-					<?php } else { ?>
+					<?php } else  if (isset($session['fb_id'])) { ?>
+					<div class="panel profile" id="social-register">
+						<div class="userProfile-image">
+							<img src="<?=$session['image_url']?>"/>
+						</div> <!-- .image -->
+						<div class="userProfile-info">
+							<div class="name"><?=$session['display_name']?></div>
+							<div class="detail"><span class="gender"></span></div>
+						</div> <!-- .userProfile-info -->						
+					</div> <!-- .panel -->
+					<?php } { ?>
 
 					<div class="panel" id="social-register">
 						<div class="button-action-wrapper social-button">
@@ -33,7 +47,7 @@
 					<?php } ?>
 
 
-					<div id="figure" class="wide panel">or</div>
+					<div id="figure" class="wide panel"> <?= isset($session) ? 'lengkapi' : 'or' ?></div>
 					<div class="panel" id="email-register">
 						<div class="title">
 							<h4>daftar</h4>
