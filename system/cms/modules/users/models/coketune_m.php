@@ -62,8 +62,7 @@ class Coketune_m extends MY_Model
                     ->get('pemenang');
         return $q->row();
     }
-
-
+ 
     public function search_pemenang(){
         $total = 50;        
         $limit = 10;
@@ -73,7 +72,7 @@ class Coketune_m extends MY_Model
         pre($range);
 
     }
-
+ 
     private function _create_range($offset, $limit, $total, $result){ 
         $next = $offset + $limit;
 
@@ -90,5 +89,22 @@ class Coketune_m extends MY_Model
         }
 
         return $result;
+    }
+
+    public function date_input_code_user($user_id){
+        $str = "SELECT * FROM
+                (
+                    SELECT unique_code as kode_unik, transaction_code, date_created as tanggal
+                    FROM default_alfamart_code 
+                    WHERE user_id = 1
+                    UNION ALL
+                    SELECT code as kode_unik, '' as transaction_code, date_used as tanggal
+                    FROM default_indomaret_code
+                    WHERE is_used = 1
+                    AND user_id = 1
+                ) sub
+                ORDER BY tanggal DESC";
+        $result = $this->db->query($str);
+        return $result->row();
     }
 }
