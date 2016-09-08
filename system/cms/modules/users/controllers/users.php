@@ -1291,43 +1291,45 @@ class Users extends Public_Controller
 			$this->form_validation->set_message('_password_complexcity','Password minimal 8 karakter terdiri minimal 1 huruf, 1 angka dan 1 karakter spesial.');
 			preg_match('/[^a-zA-Z0-9]+/ism', $pass,$matches);
 			preg_match('/[0-9]+/ism', $pass,$matches2);
-			//var_dump($matches);
 			if(!empty($matches[0][0]) && isset($matches2[0][0]) && ($matches2[0][0]!='') ) {
 				//compare with old password
 				if($user_id!=0)
 				{
 					//echo $user_id;
-					$user_info = $this->user_m->get(array('id' => $user_id));
-					if($this->method == 'edit' && $this->input->post('old_password'))
+					if($this->method == 'change_password_2' && $this->input->post('old_password'))
 					{
 						if(!$this->_check_old_password($this->input->post('old_password'),$user_id))
 						{
+							$this->form_validation->set_message('_password_complexcity','Password Lama Salah');
 							return false;
 						}
 					}
+					// } else {
 
-					if($user_info)
-					{
-						$hashed_new_pass = $this->ion_auth_model->hash_password($pass ,$user_info->salt?$user_info->salt:'');
-						$data_tst = $this->history_password_m->get_by(array('password_new'=>$hashed_new_pass,'user_id'=>$user_id));
+					// 	$user_info = $this->user_m->get(array('id' => $user_id));
+					// 	if($user_info)
+					// 	{
+					// 		$hashed_new_pass = $this->ion_auth_model->hash_password($pass ,$user_info->salt?$user_info->salt:'');
+					// 		// $data_tst = $this->history_password_m->get_by(array('password_new'=>$hashed_new_pass,'user_id'=>$user_id));
 
-						if($data_tst || ( $hashed_new_pass == $user_info->password))
-						{
-							$this->form_validation->set_message('_password_complexcity','Password tidak boleh sama dengan password lama.');
-							return false;
-						}
-						else {
-							$this->history_password_m->insert(array('user_id'=>$user_id,
-																	'password_new'=>$hashed_new_pass,
-																	'password_old'=>$user_info->password,
-																	'salt'=>$user_info->salt,
-																	'message'=>'password edited',
-																	'created_on'=>now()
-																	));
-							return true;
-						}
+					// 		if($hashed_new_pass == $user_info->password)
+					// 		{
+					// 			$this->form_validation->set_message('_password_complexcity','Password baru tidak boleh sama dengan password lama.');
+					// 			return false;
+					// 		}
+					// 		else {
+					// 			$this->history_password_m->insert(array('user_id'=>$user_id,
+					// 													'password_new'=>$hashed_new_pass,
+					// 													'password_old'=>$user_info->password,
+					// 													'salt'=>$user_info->salt,
+					// 													'message'=>'password edited',
+					// 													'created_on'=>now()
+					// 													));
+					// 			return true;
+					// 		}
+					// 	}
 
-					}
+					// }
 				}
 				return true;
 			}
@@ -2157,9 +2159,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$email = $this->input->post('email');
 			$email_status = $this->coketune_m->check_email_reset($email);
 
-			$data_send = $this->send_email_confirmation($email,$email_status->id);
+			if ($email_status) {
+				/*belum dapat kirim email*/
+				$data_send = $this->send_email_confirmation($email,$email_status->id);
+			}
 
-			var_dump($data_send);
 			// if($email_status){
 			// 	$token = $this->coketune_m->create_token($email_status);
 			// 	if($token){
@@ -2205,6 +2209,31 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				->build('coketune/change_password');
 	}
 
+	public function change_password_2()
+	{
+		if (!$this->current_user && !$this->current_user->group == 'user') {
+			redirect();
+		}
+		$this->form_validation->set_rules('old_password', 'Password Lama', 'required|trim|xss_clean|callback__password_complexcity['.$this->current_user->id.']');
+		$this->form_validation->set_rules('password', 'Password Baru', 'required|trim|xss_clean|callback__password_complexcity');
+		$this->form_validation->set_rules('re-password', 'Ulangi Password Baru', 'required|trim|xss_clean|matches[password]');
+		
+		if($this->form_validation->run()){
+
+			$email			= $this->current_user->email;
+			$old_password 	= $this->input->post('old_password');
+			$new_password   = $this->input->post('password');
+
+
+
+			$password	= $this->ion_auth->change_password($email, $old_password, $new_password);			
+
+			if($password){
+				redirect('logout');
+			}			
+		}
+		$this->template->build('coketune/change_password_2');
+	}
 	public function profile(){
 		$this->_restricted_area();
 

@@ -16,6 +16,7 @@
 							<div class="userProfile-info">
 								<div class="name"><?php echo $user->display_name;?></div>
 								<div class="detail"><span class="age"><?php echo profile_get_umur($user->dob_date_format);?></span>,&nbsp;<span class="gender"><?php echo profile_gender_format($user->gender);?></span></div>
+								<div class="detail text-link"><a style="text-decoration: none;color: white" href="<?=site_url()?>pass-change">Reset Password</a></div>
 							</div> <!-- .userProfile-info -->
 						</div> <!-- .row -->
 					</div> <!-- #userProfile-inner -->
