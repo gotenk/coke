@@ -2,7 +2,8 @@
 
 class Admin_alfamart extends Admin_Controller
 {
-    protected $redirect = ADMIN_URL.'/code/alfamart';
+
+    protected $redirect;
 
     public function __construct()
     {
@@ -10,7 +11,7 @@ class Admin_alfamart extends Admin_Controller
 
         $this->load->model(array('code_m'));
         $this->lang->load('code');
-
+        $this->redirect = ADMIN_URL.'/code/alfamart';
         $this->template->active_section = 'alfamart';
     }
 
