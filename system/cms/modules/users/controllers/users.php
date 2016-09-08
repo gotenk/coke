@@ -1126,11 +1126,8 @@ class Users extends Public_Controller
 	{
 		if ($this->ion_auth->email_check($email))
 		{
-			$this->form_validation->set_message('_email_check', lang('user:error_email'));
+			$this->form_validation->set_message('_email_check', 'Email Salah';
 			return false;
-		}else{
-			$check_email = $this->_email_block($email);
-			return $check_email;
 		}
 
 		return true;
@@ -2057,6 +2054,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							$this->session->unset_userdata($this->sess_connect_with);
 							$this->session->unset_userdata($this->sess_name_dob);
 							$this->session->unset_userdata($this->sess_name_dob_status);
+							$this->session->unset_userdata('code_temp');
 							$this->session->unset_userdata('access_token');
 
 							//active and login
