@@ -131,7 +131,7 @@
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
 								<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
-							<!-- <div class="column">
+							<div class="column">
 								<div id="captcha">
 									<div>
 	                                    <script type="text/javascript">
@@ -154,7 +154,7 @@
 	                                </div>
 	                                <p><?php echo form_error('recaptcha_response_field')?></p>
 								</div> 
-							</div> --> 
+							</div> 
 							<div class="column">
 								<div class="custom-check-button">
 								    <input type="checkbox" id="terms" name="term" <?php echo ($this->input->post('term') == 'on') ? 'checked' : '';?>>

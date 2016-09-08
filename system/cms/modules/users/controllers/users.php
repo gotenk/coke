@@ -1469,7 +1469,7 @@ class Users extends Public_Controller
 			$user = $this->ion_auth->get_user($id);
 		// Add in some extra details
 			$data['subject']	= Settings::get('site_name') . ' - Change Password';
-			$data['slug'] 		= 'lupa-password';
+			$data['slug'] 		= 'forgotten_password';
 			$data['to'] 		= $parent_email;
 			$data['from'] 		= Settings::get('server_email');
 			$data['from_name']	= Settings::get('site_name');
@@ -1478,7 +1478,6 @@ class Users extends Public_Controller
 			$data['name']		= $user->display_name;
 			// send the email using the template event found in system/cms/templates/
 			$results = Events::trigger('email', $data, 'array');
-			var_dump($data);
 			foreach ($results as $result)
 			{
 				if ( ! $result)
@@ -1920,12 +1919,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'label'=>'Year',
 			'rules'=>'required|integer|trim|xss_clean'
 		),*/
-		// array(
+		array(
 
-		// 	'field' => 'recaptcha_response_field',
-		// 	'label' => 'Security Code',
-		// 	'rules' => 'trim|xss_clean|callback__recaptcha_check_custom'
-		// ),
+			'field' => 'recaptcha_response_field',
+			'label' => 'Security Code',
+			'rules' => 'trim|xss_clean|callback__recaptcha_check_custom'
+		),
 	);
 
 	public function home(){
