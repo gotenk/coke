@@ -68,6 +68,7 @@ $route['register-failed']	          = 'users/register_failed';
 $route['profile']             = 'users/profile';
 $route['code-check']	          = 'code/index';
 $route['reset-password']	          = 'users/reset_password';
+$route['pass-change']	          = 'users/change_password_2';
 $route['change-password(/:any)?']	          = 'users/change_password$1';
 $route['cara-mengikuti-kompetisi']	= 'users/cara_ikut_kompetisi';
 $route['daftar-pemenang']	= 'users/daftar_pemenang';
