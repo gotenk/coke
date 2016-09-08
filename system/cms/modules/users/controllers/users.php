@@ -1478,7 +1478,7 @@ class Users extends Public_Controller
 			$data['name']		= $user->display_name;
 			// send the email using the template event found in system/cms/templates/
 			$results = Events::trigger('email', $data, 'array');
-			var_dump($results);
+			var_dump($data);
 			foreach ($results as $result)
 			{
 				if ( ! $result)
