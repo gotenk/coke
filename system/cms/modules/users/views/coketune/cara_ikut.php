@@ -195,54 +195,7 @@
 	<section id="code" class="wrapper sub">
 		<div id="code-inner" class="container inner">
 			<div class="row">
-				<div class="vendor">
-					<ul id="tab" class="tabbb">
-						<li class="current" data-tab="tab-1">
-							<a href="javascript:void(0)"><span></span><img src="{{ url:site }}addons/default/themes/coketune/img/coke/vendor_alfamart.png"/></a>
-						</li>
-						<li data-tab="tab-2">
-							<a href="javascript:void(0)"><span></span><img src="{{ url:site }}addons/default/themes/coketune/img/coke/vendor_indomaret.png"/></a>
-							<span></span>
-						</li>
-					</ul>
-					<form id="input-id">
-						<div id="input-inner">
-							<div id="tab-1" class="tab-container current">
-								<span class="panel">
-									<label>kode unik</label>
-									<input type="text" placeholder="ketik kode unik di sini"/>
-								</span> <!-- .panel -->
-								<span class="panel">
-									<label>kode transaksi</label>
-									<input type="text" placeholder="ketik kode transaksi di sini"/>
-								</span> <!-- .panel -->
-							</div> <!-- #vendor-a -->
-							<div id="tab-2" class="tab-container">
-								<span class="panel">
-									<label>kode unik</label>
-									<input type="text" placeholder="ketik kode unik di sini"/>
-								</span> <!-- .panel -->
-							</div> <!-- #vendor-b -->
-							<div class="psst">
-								<span class="error-m">
-									Ops! Masukkan kode yang masih berlaku atau kode yang belum pernah kamu gunakan sebelumnya
-								</span> <!-- .error-m -->
-							</div> <!-- .psst -->
-						</div> <!-- #input-inner -->
-						<div class="opt">
-							<div id="captcha">
-								<div>
-									<!-- CAPTCHA GOES HERE -->
-									<div class="g-recaptcha" data-sitekey="6Ld1aikTAAAAAJf-jN1_IhnqipH_FjSXb0l8Gzrk"></div>
-									<!-- END -->
-								</div>
-							</div> <!-- #captcha -->
-							<div class="button-action-wrapper">
-								<a href="#" class="button rounded border">submit</a>
-							</div> <!-- .button-action-wrapper -->
-						</div> <!-- .opt -->
-					</form>
-				</div> <!-- .vendor -->
+				{{ code:code_page }}
 			</div> <!-- .row -->
 		</div> <!-- $code-inner -->
 		<div class="container-shadow bottom"></div>

@@ -18,4 +18,10 @@ class Plugin_code extends Plugin
     {
         return $this->load->view('code/plugin/code', array(), true);
     }
+
+    public function code_page_landscape()
+    {
+        # code...
+        return $this->load->view('code/plugin/code_landscape', array(), true);
+    }
 }

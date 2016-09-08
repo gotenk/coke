@@ -125,11 +125,11 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
-								<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
+								<input id="code-id" type="text" value="<?=isset($code_temp['code'])?$code_temp['code']:''?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+								<input id="code-tr" value="<?=isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:''?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
 							<div class="column">
 								<div id="captcha">

@@ -1990,6 +1990,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 		$dob_ar = explode('-', $this->session->userdata($this->sess_name_dob));
 
+		$code_temp = $this->session->userdata('code_temp');
+
 		$session = $this->session->userdata($this->sess_data_fb);
 		if($this->session->userdata($this->sess_data_tw)){
 			$session = $this->session->userdata($this->sess_data_tw);
@@ -2075,6 +2077,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					->set('session', $session)
 					->set('dob_ar', $dob_ar)
 					->set('dob_err', $dob_err)
+					->set('code_temp', $code_temp)
 					->build('coketune/register');
 	}
 
