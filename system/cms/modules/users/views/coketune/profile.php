@@ -131,7 +131,7 @@
 							</table>
 							
 							<div class="button-action-wrapper">
-								<a href="{{ uri:site }}" class="button primary rounded border">kembali</a>
+								<a href="<?=site_url()?>" class="button primary rounded border">kembali</a>
 							</div> <!-- .button-action-wrapper -->
 							
 						</div> <!-- .data -->
