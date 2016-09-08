@@ -2031,7 +2031,6 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 						if($connect_with == 'fb'){
 							$imgfb = $this->grab_facebook_picture($id); //download img
 							$session = $this->session->userdata($this->sess_data_fb);
-							$profile_data['facebook_name'] 	= $session['display_name'];
 							$profile_data['fb_id'] 			= $session['fb_id'];
 							$profile_data['photo_profile'] 	= $imgfb;
 						}else if($connect_with == 'tw'){
