@@ -1126,7 +1126,7 @@ class Users extends Public_Controller
 	{
 		if ($this->ion_auth->email_check($email))
 		{
-			$this->form_validation->set_message('_email_check', 'Email Salah';
+			$this->form_validation->set_message('_email_check', 'Email Salah');
 			return false;
 		}
 
