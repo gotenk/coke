@@ -1468,15 +1468,15 @@ class Users extends Public_Controller
 		{
 			$user = $this->ion_auth->get_user($id);
 		// Add in some extra details
-			$data['subject']	= Settings::get('site_name') . ' - Email Konfirmasi Orang Tua';
-			$data['slug'] 		= 'parent-email';
+			$data['subject']	= Settings::get('site_name') . ' - Change Password';
+			$data['slug'] 		= 'forgotten_password';
 			$data['to'] 		= $parent_email;
 			$data['from'] 		= Settings::get('server_email');
 			$data['from_name']	= Settings::get('site_name');
 			$data['reply-to']	= Settings::get('contact_email');
-			$data['link']		= site_url(array('konfirmasi-orang-tua',$user->forgotten_password_code));
+			$data['link']		= site_url(array('change-password',$user->forgotten_password_code));
 			$data['name']		= $user->display_name;
-
+			var_dump($data);
 			// send the email using the template event found in system/cms/templates/
 			$results = Events::trigger('email', $data, 'array');
 			foreach ($results as $result)
@@ -2159,6 +2159,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$email_status = $this->coketune_m->check_email_reset($email);
 
 			$data_send = $this->send_email_confirmation($email,$email_status->id);
+
 			var_dump($data_send);
 			// if($email_status){
 			// 	$token = $this->coketune_m->create_token($email_status);
