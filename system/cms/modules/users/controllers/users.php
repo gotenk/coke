@@ -1469,16 +1469,16 @@ class Users extends Public_Controller
 			$user = $this->ion_auth->get_user($id);
 		// Add in some extra details
 			$data['subject']	= Settings::get('site_name') . ' - Change Password';
-			$data['slug'] 		= 'forgotten_password';
+			$data['slug'] 		= 'lupa-password';
 			$data['to'] 		= $parent_email;
 			$data['from'] 		= Settings::get('server_email');
 			$data['from_name']	= Settings::get('site_name');
 			$data['reply-to']	= Settings::get('contact_email');
 			$data['link']		= site_url(array('change-password',$user->forgotten_password_code));
 			$data['name']		= $user->display_name;
-			var_dump($data);
 			// send the email using the template event found in system/cms/templates/
 			$results = Events::trigger('email', $data, 'array');
+			var_dump($results);
 			foreach ($results as $result)
 			{
 				if ( ! $result)
