@@ -1920,12 +1920,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'label'=>'Year',
 			'rules'=>'required|integer|trim|xss_clean'
 		),*/
-		array(
+		// array(
 
-			'field' => 'recaptcha_response_field',
-			'label' => 'Security Code',
-			'rules' => 'trim|xss_clean|callback__recaptcha_check_custom'
-		),
+		// 	'field' => 'recaptcha_response_field',
+		// 	'label' => 'Security Code',
+		// 	'rules' => 'trim|xss_clean|callback__recaptcha_check_custom'
+		// ),
 	);
 
 	public function home(){
@@ -2157,16 +2157,23 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if($this->form_validation->run()){
 			$email = $this->input->post('email');
 			$email_status = $this->coketune_m->check_email_reset($email);
-			if($email_status){
-				$token = $this->coketune_m->create_token($email_status);
-				if($token){
-					// send email
-					// bla bla bla
-					$link = site_url('change-password/'.$token);
-					pre('link to test '. $link);
-					pre('success, redirrect ndi?');
-				}				
-			}			
+
+			$data_send = $this->send_email_confirmation($email,$email_status->id);
+			var_dump($data_send);
+			// if($email_status){
+			// 	$token = $this->coketune_m->create_token($email_status);
+			// 	if($token){
+
+
+
+
+			// 		// send email
+			// 		// bla bla bla
+			// 		$link = site_url('change-password/'.$token);
+			// 		pre('link to test '. $link);
+			// 		pre('success, redirrect ndi?');
+			// 	}				
+			// }			
 		}
 
 		$this->template
