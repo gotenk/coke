@@ -1,12 +1,12 @@
 <?php #echo validation_errors()?>
-<?php 
+<?php
 	/*if($dob_err){
 		echo $dob_err;
 	}*/
 ?>
 <main>
 	<section id="register">
-		<div id="background-img" class="fluid-img">
+		<div id="background-img" class="fluid-img register">
 			<div id="register-inner" class="container">
 				<div class="row">
 					<div class="panel" id="social-register">
@@ -25,7 +25,7 @@
 					<div class="panel" id="email-register">
 						<div class="title">
 							<h4>daftar</h4>
-						</div> <!-- .title -->						
+						</div> <!-- .title -->
 						<?php echo cmc_form_open('user-register', site_url('register'), 'id="user-register"');?>
 							<div class="column">
 								<label for="username" class="sub-title">nama lengkap<span>*</span></label>
@@ -37,9 +37,9 @@
 										if(isset($session['display_name'])){
 											$name_value = $session['display_name'];
 										}
-									}											
+									}
 								?>
-								<input id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">								
+								<input id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
 								<p><?php echo form_error('name')?></p>
 							</div> <!-- .column -->
 							<div class="column">
@@ -52,7 +52,7 @@
 										if(isset($session['email'])){
 											$email_value = $session['email'];
 										}
-									}											
+									}
 								?>
 								<input id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
 								<p><?php echo form_error('email')?></p>
@@ -77,7 +77,7 @@
 								<div class="custom-radio-button">
 								    <input type="radio" id="m-option" name="gender" value="m" <?php echo ($this->input->post('gender') == 'male') ? 'checked' : '';?>>
 								    <label for="m-option"><span></span>Laki-laki</label>
-								    <div class="check"></div>								    
+								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
 								<div class="custom-radio-button">
 								    <input type="radio" id="f-option" name="gender" value="f" <?php echo ($this->input->post('gender') == 'female') ? 'checked' : '';?>>
@@ -97,7 +97,7 @@
 									</div> <!-- .child -->
 									<div class="child">
 										<input readonly type="text" id="year" placeholder="YYYY" class="center" name="yy" value="<?php echo (isset($dob_ar[0])) ? $dob_ar[0] : '' ;?>"/>
-									</div> <!-- .child -->									
+									</div> <!-- .child -->
 								</div> <!-- .devide-3 -->
 								<p><?php echo $dob_err;?></p>
 							</div> <!-- .column -->
@@ -110,7 +110,7 @@
 								<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
 							<div class="column">
-								<div id="captcha">									
+								<div id="captcha">
 									<div>
 	                                    <script type="text/javascript">
 	                                        var verifyCallback = function(response) {
@@ -129,7 +129,7 @@
 	                                    <div id="html_element"></div>
 	                                    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 	                                    <input type="hidden" name="recaptcha_response_field" value="" readonly="readonly" />
-	                                </div>	                                
+	                                </div>
 	                                <p><?php echo form_error('recaptcha_response_field')?></p>
 								</div> <!-- #captcha -->
 							</div> <!-- .column -->
@@ -152,4 +152,4 @@
 			</div> <!-- #register-inner -->
 		</div> <!-- #background-img -->
 	</section> <!-- #login -->
-</main>	
+</main>
