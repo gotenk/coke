@@ -1,6 +1,7 @@
 <?php include 'header-fluid.php'; ?>
 
 <main>
+	
 	<section id="register">
 		<div id="background-img" class="fluid-img register">
 			<div id="register-inner" class="container">
