@@ -1876,12 +1876,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'password',
 			'label' => 'Password',
-			'rules' => 'trim|required|xss_clean|callback__password_complexcity',
+			'rules' => 'trim|required|xss_clean|max_length[60]|callback__password_complexcity',
 		),
 		array(
 			'field' => 're-password',
 			'label' => 'Konfirmasi Password',
-			'rules' => 'trim|required|xss_clean|matches[password]',
+			'rules' => 'trim|required|xss_clean|max_length[60]|matches[password]',
 		),
 		array(
 			'field' => 'name',
