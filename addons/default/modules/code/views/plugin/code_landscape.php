@@ -9,10 +9,10 @@
 					<div class="column">
 						<label>lokasi pembelian</label>
 						<ul id="tab" class="tabbb">
-							<li class="current" data-tab="tab-1" data-name="alfamart">
+							<li class="vendor-list current" data-tab="tab-1" data-name="alfamart">
 								<a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_alfamart.png" }}" alt=""/></a>
 							</li>
-							<li data-tab="tab-2" data-name="indomaret">
+							<li class="vendor-list" data-tab="tab-2" data-name="indomaret">
 							  <a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_indomaret.png" }}" alt=""/></a>
   							</li>
 						</ul> <!-- #tab -->
