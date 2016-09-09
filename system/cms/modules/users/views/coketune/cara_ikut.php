@@ -36,9 +36,6 @@
 					</figcaption>
 				</figure>
 			</div> <!-- .row -->
-			<div class="action-button-wrapper">
-				<a href="#" class="button rounded border box-shadow primary">lihat selengkapnya</a>
-			</div> <!-- .action-button-wrapper -->
 		</div> <!-- #method-inner -->
 	</section> <!-- #method -->
 
