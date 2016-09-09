@@ -45,22 +45,22 @@ class Code extends Public_Controller
     {
         $vendor = $this->input->post('vendor');
 
-        // If user is not logged in, save code input in session and redirect them to the registration page.
-        if ($this->belum_login()) {
-            $this->session->set_userdata('code_temp', [
-                'vendor'         => $vendor,
-                'code'           => ($vendor == 'alfamart') ? $this->input->post('alfamart_code') : $this->input->post('indomaret_code'),
-                'code_transaksi' => ($vendor == 'alfamart') ? $this->input->post('transaction_code') : ''
-            ]);
-
-            echo json_encode(array('message' => 0));
-            return;
-        }
-
         if ($vendor == 'alfamart') {
             $this->form_validation->set_rules($this->alfamart_validation);
 
             if ($this->form_validation->run()) {
+                // If user is not logged in, save code input in session and redirect them to the registration page
+                if ($this->belum_login()) {
+                    $this->session->set_userdata('code_temp', [
+                        'vendor'         => $vendor,
+                        'code'           => $this->input->post('alfamart_code'),
+                        'code_transaksi' => $this->input->post('transaction_code')
+                    ]);
+
+                    echo json_encode(array('message' => 0));
+                    return;
+                }
+
                 $data = array(
                     'alfamart_code'    => $this->input->post('alfamart_code'),
                     'transaction_code' => $this->input->post('transaction_code'),
@@ -82,6 +82,18 @@ class Code extends Public_Controller
             $this->form_validation->set_rules($this->indomaret_validation);
 
             if ($this->form_validation->run()) {
+                // If user is not logged in, save code input in session and redirect them to the registration page
+                if ($this->belum_login()) {
+                    $this->session->set_userdata('code_temp', [
+                        'vendor'         => $vendor,
+                        'code'           => $this->input->post('indomaret_code'),
+                        'code_transaksi' => ''
+                    ]);
+
+                    echo json_encode(array('message' => 0));
+                    return;
+                }
+
                 $data = array('indomaret_code' => $this->input->post('indomaret_code'));
 
                 $result = $this->indomaretCodeCheck($data);
