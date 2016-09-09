@@ -12,7 +12,7 @@
 				<div id="list">
 					<div class="search-panel">
 						<label for="search" id="icon-search"><i class="icon only icon-search">search</i></label>
-						<input id="search" type="text" placeholder="Cari nama kamu..."/>
+						<input id="search" type="text" placeholder="Cari nama kamu..." onkeypress="return allLetterspace(event)" />
 					</div> <!-- .search-panel -->
 
 					<div id="winner-result">

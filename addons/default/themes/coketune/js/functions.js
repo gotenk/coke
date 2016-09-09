@@ -49,14 +49,20 @@ $(document).ready(function(){
         }
     });
 
-    $('#icon-search').click(function(){
-        ngajax_search($('#search').val());
+    $('#icon-search').click(function(){        
+        var keyword = $('#search').val();
+        if(keyword!=''){
+            ngajax_search(keyword);            
+        }
     });
 
     $('#search').keyup(function(e){
         if(e.keyCode == 13){
-            ngajax_search($('#search').val());
-        }        
+            var keyword = $('#search').val();
+            if(keyword!=''){
+                ngajax_search(keyword);
+            }            
+        }
     });
 
     function ngajax(next){        
