@@ -158,6 +158,15 @@ class Code extends Public_Controller
             return array('message' => 'Kode yang dimasukkan salah.');
         }
 
+        $success = array(
+            'user_id'          => $this->current_user->id,
+            'unique_code'      => $data['alfamart_code'],
+            'transaction_code' => $data['transaction_code'],
+            'date_created'     => date('Y-m-d H:i:s'),
+        );
+
+        $this->code_m->insertData('alfamart_code', $success);
+
         return array('message' => '1');
     }
 
