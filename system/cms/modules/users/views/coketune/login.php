@@ -25,7 +25,7 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="password" class="sub-title">kata sandi<span>*</span></label>
-								<input id="password" name="password" class="transparent" type="password" placeholder="kata sandi baru">
+								<input id="password" name="password" class="transparent" type="password" placeholder="kata sandi">
 							</div> <!-- .column -->
 							<?php echo form_error('email', '<div class="column allert"><p class="error">', '</p></div>'); ?>
 							<!-- .column -->
