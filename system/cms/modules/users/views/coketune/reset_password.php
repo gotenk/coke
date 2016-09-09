@@ -3,7 +3,7 @@
 		<div id="background-img" class="fluid-img register">
 			<div id="register-inner" class="container">
 				<div class="row">
-					<div id="figure" class="wide panel">lupa kata sandi</div>
+					<div id="figure" class="wide panel no-transform">Lupa Kata Sandi</div>
 					<div class="panel" id="email-register">
 						<div class="title">
 							<h4>masukan email kamu</h4>
