@@ -45,7 +45,7 @@ class Code extends Public_Controller
     {
         $vendor = $this->input->post('vendor');
 
-        if ($vendor == 'alfamart') {
+        if ($vendor == 'alfamart' || $vendor == 'alfamidi') {
             $this->form_validation->set_rules($this->alfamart_validation);
 
             if ($this->form_validation->run()) {
@@ -62,6 +62,7 @@ class Code extends Public_Controller
                 }
 
                 $data = array(
+                    'vendor'           => $vendor,
                     'alfamart_code'    => $this->input->post('alfamart_code'),
                     'transaction_code' => $this->input->post('transaction_code'),
                 );
@@ -173,6 +174,7 @@ class Code extends Public_Controller
 
         $success = array(
             'user_id'          => $this->current_user->id,
+            'vendor'           => $data['vendor'],
             'unique_code'      => $data['alfamart_code'],
             'transaction_code' => $data['transaction_code'],
             'date_created'     => date('Y-m-d H:i:s'),
