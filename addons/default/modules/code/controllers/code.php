@@ -6,12 +6,12 @@ class Code extends Public_Controller
         array(
             'field' => 'alfamart_code',
             'label' => 'Kode Unik',
-            'rules' => 'required|trim|xss_clean|htmlspecialchars'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars|callback__alphanumeric'
         ),
         array(
             'field' => 'transaction_code',
             'label' => 'Kode Transaksi',
-            'rules' => 'required|trim|xss_clean|htmlspecialchars'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars|callback__alphanumeric'
         ),
         array(
             'field' => 'recaptcha_response_field',
@@ -24,7 +24,7 @@ class Code extends Public_Controller
         array(
             'field' => 'indomaret_code',
             'label' => 'Kode Unik',
-            'rules' => 'required|trim|xss_clean|htmlspecialchars'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars|callback__alphanumeric'
         ),
         array(
             'field' => 'recaptcha_response_field',
@@ -44,6 +44,19 @@ class Code extends Public_Controller
     public function index()
     {
         $vendor = $this->input->post('vendor');
+
+        // If user is not logged in, save code input in session and redirect them to the registration page.
+        if ($this->belum_login()) {
+            $this->session->set_userdata('code_temp', [
+                'vendor'         => $vendor,
+                'code'           => ($vendor == 'alfamart') ? $this->input->post('alfamart_code') : $this->input->post('indomaret_code'),
+                'code_transaksi' => ($vendor == 'alfamart') ? $this->input->post('transaction_code') : ''
+            ]);
+
+            echo json_encode(array('message' => 0));
+            return;
+        }
+
         if ($vendor == 'alfamart') {
             $this->form_validation->set_rules($this->alfamart_validation);
 
@@ -52,20 +65,15 @@ class Code extends Public_Controller
                     'alfamart_code'    => $this->input->post('alfamart_code'),
                     'transaction_code' => $this->input->post('transaction_code'),
                 );
+
                 $result = $this->alfamartCodeCheck($data);
 
-                if (self::belum_login()) {
-                    echo json_encode($result);
-                    return;
-                }
-                echo json_encode([
-                    'message' => 'Kode Valid'
-                    ]);
+                echo json_encode($result);
                 return;
             }
 
             $error = array(
-                'message' => form_error('alfamart_code').form_error('transaction_code').form_error('recaptcha_response_field')
+                'message' => form_error('alfamart_code').'<br>'.form_error('transaction_code').'<br>'.form_error('recaptcha_response_field')
             );
 
             echo json_encode($error);
@@ -77,38 +85,25 @@ class Code extends Public_Controller
                 $data = array('indomaret_code' => $this->input->post('indomaret_code'));
 
                 $result = $this->indomaretCodeCheck($data);
-                
-                if (self::belum_login()) {
-                    echo json_encode($result);
-                    return;
-                }
 
-                echo json_encode([
-                    'message' => 'Kode Valid'
-                    ]);
+                echo json_encode($result);
                 return;
             }
 
             $error = array(
-                'message' => form_error('indomaret_code').form_error('recaptcha_response_field')
+                'message' => form_error('indomaret_code').'<br>'.form_error('recaptcha_response_field')
             );
 
             echo json_encode($error);
             return;
         }
-
-        // if (!$this->current_user) {
-            
-        //     echo json_encode(array('message' => 'Silahkan login terlebih dahulu'));
-        //     return;
-        // }
     }
-
 
     private function belum_login() {
         if (!$this->current_user) {
             return true;
         }
+
         return false;
     }
 
@@ -121,7 +116,7 @@ class Code extends Public_Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_URL, $url);
 
         $result = curl_exec($ch);
         curl_close($ch);
@@ -142,16 +137,15 @@ class Code extends Public_Controller
 
         if ($existing) {
             // Code has been used
-            if (!self::belum_login()) {
-                $fail = array(
-                    'user_id'               => $this->current_user->id,
-                    'ip_address'            => $this->input->ip_address(),
-                    'fail_unique_code'      => $data['alfamart_code'],
-                    'fail_transaction_code' => $data['transaction_code'],
-                    'date_failed'           => date('Y-m-d H:i:s'),
-                );
-                // $this->code_m->insertData('alfamart_fail', $fail);
-            }
+            $fail = array(
+                'user_id'               => $this->current_user->id,
+                'ip_address'            => $this->input->ip_address(),
+                'fail_unique_code'      => $data['alfamart_code'],
+                'fail_transaction_code' => $data['transaction_code'],
+                'date_failed'           => date('Y-m-d H:i:s'),
+            );
+
+            // $this->code_m->insertData('alfamart_fail', $fail);
 
             return array('message' => 'Kode sudah pernah digunakan.');
         }
@@ -164,12 +158,6 @@ class Code extends Public_Controller
             return array('message' => 'Kode yang dimasukkan salah.');
         }
 
-        $this->session->set_userdata('code_temp',[
-            'vendor'        => 'alfamart',
-            'code'          => $data['alfamart_code'],
-            'code_transaksi'=> $data['transaction_code']
-        ]);
-
         return array('message' => '1');
     }
 
@@ -179,21 +167,13 @@ class Code extends Public_Controller
 
         if ($code && $code->is_used == '0') {
             // Code found and has not been used
+            $data = array(
+                'user_id'   => $this->current_user->id,
+                'is_used'   => 1,
+                'date_used' => date('Y-m-d H:i:s'),
+            );
 
-            if (!self::belum_login()) {
-                $data = array(
-                    'user_id'   => $this->current_user->id,
-                    'is_used'   => 1,
-                    'date_used' => date('Y-m-d H:i:s'),
-                );
             // $this->code_m->updateData('indomaret_code', $data, 'code', $data['indomaret_code']);
-            }
-
-            $this->session->set_userdata('code_temp',[
-                'vendor'        => 'indomaret',
-                'code'          => $data['indomaret_code'],
-                'code_transaksi'=> ''
-            ]);
 
             return array('message' => '1');
         }
@@ -212,7 +192,7 @@ class Code extends Public_Controller
             $kurang = 8 - $length;
             $tambahan = '';
 
-            for($i = 0; $i < $kurang; $i++){
+            for ($i = 0; $i < $kurang; $i++) {
                 $tambahan .= '0';
             }
 
@@ -220,5 +200,16 @@ class Code extends Public_Controller
         }
 
         return strtoupper($hasil);
+    }
+
+    public function _alphanumeric($string)
+    {
+        if (!preg_match('/[^a-zA-Z0-9\s]+/ism', $string)) {
+            return true;
+        }
+
+        $this->form_validation->set_message('_alphanumeric', 'Kode input hanya boleh berupa angka dan huruf.');
+
+        return false;
     }
 }

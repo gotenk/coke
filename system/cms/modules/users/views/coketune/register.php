@@ -14,7 +14,7 @@
 							<div class="detail"><span class="gender"></span></div>
 							<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
 						</div> <!-- .userProfile-info -->
-					</div>						
+					</div>
 					<?php } else  if (isset($session['fb_id'])) { $display_name = explode(' ', $session['display_name']); ?>
 					<div class="panel profile" id="social-register">
 						<div class="userProfile-image">
@@ -23,7 +23,7 @@
 						<div class="userProfile-info">
 							<div class="name"><?=$display_name[0]?></div>
 							<div class="detail"><span class="gender"></span></div>
-						</div> <!-- .userProfile-info -->						
+						</div> <!-- .userProfile-info -->
 					</div> <!-- .panel -->
 					<?php } else { ?>
 
@@ -131,6 +131,7 @@
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
 								<input id="code-tr" value="<?=isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:''?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
+							<input type="hidden" name="vendor" value="<?=isset($code_temp['vendor'])?$code_temp['vendor']:''?>">
 							<div class="column">
 								<div id="captcha">
 									<div>
@@ -153,8 +154,8 @@
 	                                    <input type="hidden" name="recaptcha_response_field" value="" readonly="readonly" />
 	                                </div>
 	                                <p><?php echo form_error('recaptcha_response_field')?></p>
-								</div> 
-							</div> 
+								</div>
+							</div>
 							<div class="column">
 								<div class="custom-check-button">
 								    <input type="checkbox" id="terms" name="term" <?php echo ($this->input->post('term') == 'on') ? 'checked' : '';?>>

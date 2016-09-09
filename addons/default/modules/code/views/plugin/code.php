@@ -13,17 +13,17 @@
             <div id="tab-1" class="tab-container current">
                 <span class="panel">
                     <label>kode unik</label>
-                    <input type="text" placeholder="ketik kode unik di sini" id="alfamart-code" name="alfamart_code" />
+                    <input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="alfamart-code" name="alfamart_code" />
                 </span> <!-- .panel -->
                 <span class="panel">
                     <label>kode transaksi</label>
-                    <input type="text" placeholder="ketik kode transaksi di sini" id="transaction-code" name="transaction_code" />
+                    <input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode transaksi di sini" id="transaction-code" name="transaction_code" />
                 </span> <!-- .panel -->
             </div> <!-- #vendor-a -->
             <div id="tab-2" class="tab-container">
                 <span class="panel">
                     <label>kode unik</label>
-                    <input type="text" placeholder="ketik kode unik di sini" id="indomaret-code" name="indomaret_code" />
+                    <input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="indomaret-code" name="indomaret_code" />
                 </span> <!-- .panel -->
             </div> <!-- #vendor-b -->
             <div class="psst">

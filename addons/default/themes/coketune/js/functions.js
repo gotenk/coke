@@ -26,8 +26,12 @@ $(document).ready(function(){
                 recaptcha_response_field: recaptcha_response_field
             }),
             success: function (result) {
-                $('.error-m').html(result.message);
-                if (window.grecaptcha) grecaptcha.reset();
+                if (result.message == 0) {
+                    window.location.href = BASE_URL+'dob';
+                } else {
+                    $('.error-m').html(result.message);
+                    if (window.grecaptcha) grecaptcha.reset();
+                }
             }
         });
     });
@@ -36,23 +40,23 @@ $(document).ready(function(){
         e.preventDefault();
         var offset = parseInt($('#pagination-pemenang').attr('data-offset'));
         var is_next = parseInt($('#pagination-pemenang').attr('data-is-next'));
-        if(offset!=0){            
+        if(offset!=0){
             ngajax( (offset - 20));
         }
     });
-    
+
     $('#winner-result').on('click', '#next', function(e){
-        e.preventDefault();        
+        e.preventDefault();
         var is_next = parseInt($('#pagination-pemenang').attr('data-is-next'));
-        if(is_next!=0){            
+        if(is_next!=0){
             ngajax(is_next);
         }
     });
 
-    $('#icon-search').click(function(){        
+    $('#icon-search').click(function(){
         var keyword = $('#search').val();
         if(keyword!=''){
-            ngajax_search(keyword);            
+            ngajax_search(keyword);
         }
     });
 
@@ -61,16 +65,16 @@ $(document).ready(function(){
             var keyword = $('#search').val();
             if(keyword!=''){
                 ngajax_search(keyword);
-            }            
+            }
         }
     });
 
-    function ngajax(next){        
+    function ngajax(next){
         $.ajax({
             url: BASE_URL+'daftar-pemenang',
-            type: 'post',            
+            type: 'post',
             data: $.extend(tokens, {f_offset:next}),
-            success: function (result) {                
+            success: function (result) {
                 $('#winner-result').empty();
                 $('#winner-result').append(result);
             }
@@ -80,9 +84,9 @@ $(document).ready(function(){
     function ngajax_search(keyword){
         $.ajax({
             url: BASE_URL+'search-pemenang',
-            type: 'post',            
+            type: 'post',
             data: $.extend(tokens, {keyword:keyword}),
-            success: function (result) {                
+            success: function (result) {
                 $('#winner-result').empty();
                 $('#winner-result').append(result);
             }
