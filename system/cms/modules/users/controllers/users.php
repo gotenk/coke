@@ -1970,14 +1970,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			redirect('profile');
 		}
 
-
 		if($this->input->post('register')){
 			$this->_already_logged_in();
 			if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 				redirect('register-failed');
-			}
-			if($this->session->userdata($this->sess_name_dob) == ''){
+			}else if($this->session->userdata($this->sess_name_dob) == ''){
 				redirect('dob');
+			}else{
+				redirect('register');
 			}
 		}
 
