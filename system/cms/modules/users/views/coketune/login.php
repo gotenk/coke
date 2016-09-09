@@ -16,7 +16,7 @@
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
-					<div id="figure" class="wide panel">atau masuk dengan email</div>
+					<div id="figure" class="wide panel no-transform">atau masuk dengan email</div>
 					<div class="panel" id="email-register">
 						<?php echo cmc_form_open('user-register', site_url('login'));?>	
 							<div class="column">
