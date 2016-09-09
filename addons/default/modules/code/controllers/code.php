@@ -145,7 +145,7 @@ class Code extends Public_Controller
                 'date_failed'           => date('Y-m-d H:i:s'),
             );
 
-            // $this->code_m->insertData('alfamart_fail', $fail);
+            $this->code_m->insertData('alfamart_fail', $fail);
 
             return array('message' => 'Kode sudah pernah digunakan.');
         }
@@ -173,7 +173,7 @@ class Code extends Public_Controller
                 'date_used' => date('Y-m-d H:i:s'),
             );
 
-            // $this->code_m->updateData('indomaret_code', $data, 'code', $data['indomaret_code']);
+            $this->code_m->updateData('indomaret_code', $data, 'code', $data['indomaret_code']);
 
             return array('message' => '1');
         }
