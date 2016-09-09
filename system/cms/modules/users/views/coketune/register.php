@@ -65,7 +65,7 @@
 									}
 								?>
 								<input onkeypress="return allLetterspace(event)" id="username" type="text" style="text-transform:capitalize;" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
-								<p><?php echo form_error('name')?></p>
+								<?php echo form_error('name')?>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="email" class="sub-title">alamat email<span>*</span></label>
@@ -80,22 +80,22 @@
 									}
 								?>
 								<input onkeypress="return emailValidation(event)" id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
-								<p><?php echo form_error('email')?></p>
+								<?php echo form_error('email')?>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="password" class="sub-title">kata sandi<span>*</span></label>
 								<input id="password" type="password" placeholder="kata sandi baru" name="password" value="<?php echo set_value('password');?>">
-								<p><?php echo form_error('password')?></p>
+								<?php echo form_error('password')?>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="re-password" class="sub-title">konfirmasi kata sandi<span>*</span></label>
 								<input id="re-password" type="password" placeholder="ulangi kata sandi" name="re-password" value="<?php echo set_value('re-password');?>">
-								<p><?php echo form_error('re-password')?></p>
+								<?php echo form_error('re-password')?>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="phone" class="sub-title">nomer ponsel<span>*</span></label>
 								<input onkeypress="return numeric(event)" id="phone" type="number" placeholder="08X-XXXXXXXXX" name="phone" value="<?php echo set_value('phone');?>">
-								<p><?php echo form_error('phone')?></p>
+								<?php echo form_error('phone')?>
 							</div> <!-- .column -->
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
@@ -113,7 +113,7 @@
 								    <label for="f-option"><span></span>Perempuan</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
-								<p><?php echo form_error('gender')?></p>
+								<?php echo form_error('gender')?>
 							</div> <!-- .column -->
 							<div class="column">
 								<label class="sub-title">tanggal lahir<span>*</span></label>
@@ -133,6 +133,7 @@
 							<div class="column">
 								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
 								<input id="code-id" type="text" value="<?=isset($code_temp['code'])?$code_temp['code']:''?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
+								<?php echo form_error('kode_unik')?>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
@@ -160,7 +161,7 @@
 	                                    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 	                                    <input type="hidden" name="recaptcha_response_field" value="" readonly="readonly" />
 	                                </div>
-	                                <p><?php echo form_error('recaptcha_response_field')?></p>
+	                                <?php echo form_error('recaptcha_response_field')?>
 								</div>
 							</div>
 							<div class="column">
@@ -171,7 +172,7 @@
 								    	</label>
 								    <span class="text">Saya telah memahami dan menyetujui Syarat dan Ketentuan Promosi</span>
 								</div> <!-- .custom-radio-button -->
-								<p><?php echo form_error('term')?></p>
+								<?php echo form_error('term')?>
 							</div> <!-- .column -->
 							<div class="button-action-wrapper">
 								<input type="submit" class="button rounded border primary" name="register" value="daftar">

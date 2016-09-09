@@ -1905,6 +1905,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'label' => 'Syarat dan Ketentuan',
 			'rules' => 'required',
 		),
+		array(
+			'field' => 'kode_unik',
+			'label' => 'Kode Unik',
+			'rules' => 'required|trim|xss_clean|callback__string_angka_spasi',
+		),
 		/*array(
 			'field'=>'dd',
 			'label'=>'Day',
