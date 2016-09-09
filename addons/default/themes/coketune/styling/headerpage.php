@@ -33,13 +33,12 @@
 	<meta name="msapplication-square310x310logo" content="img/lib/favicon/mstile-310x310.png" />
 	<!-- end Favicon -->
 	
-	<link rel="stylesheet" href="css/file-nav.css">
 	<link rel="stylesheet" href="css/main.css">
-
-	<script type="text/javascript" src="js/jquery.js"></script>
 </head>
 
 <body>
+
+	<?php include 'file-nav.php'; ?>
 
 	<header>
 		<div id="header-inner" class="container">
@@ -86,7 +85,7 @@
 					</div> <!-- .text -->
 					<div class="button-action-wrapper">
 						<a href="#" class="button rounded border">jadi backpacker</a>
-					</div> <!-- .button-action-wrapper -->
+					</div> <!-- .button-action-wrapper -->					
 				</div> <!-- #banner-content -->
 			</div> <!-- #background-img -->
 		</div> <!-- #hero -->

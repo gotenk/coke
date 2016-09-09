@@ -7,7 +7,7 @@
 			<div id="register-inner" class="container">
 				<div class="row">
 					<div class="panel" id="email-register">
-						<div class="title">
+						<div class="title fluid-size">
 							<h4>perbarui kata sandi</h4>
 						</div> <!-- .title -->
 						<form id="user-register">

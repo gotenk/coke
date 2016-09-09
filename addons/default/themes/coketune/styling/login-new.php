@@ -18,7 +18,7 @@
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
-					<div id="figure" class="wide panel">atau masuk dengan email</div>
+					<div id="figure" class="wide panel no-transform">Atau masuk dengan email</div>
 					<div class="panel" id="email-register">
 						<form id="user-register">
 							<div class="column">

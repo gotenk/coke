@@ -58,6 +58,7 @@
 		<div id="code-inner" class="container inner">
 			<div class="row">
 				<div class="vendor">
+					<span class="label">LOKASI PEMBELIAN</span>
 					<ul id="tab" class="tabbb">
 						<li class="current" data-tab="tab-1">
 							<a href="javascript:void(0)"><span></span><img src="img/coke/vendor_alfamart.png" alt=""/></a>
