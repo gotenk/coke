@@ -43,11 +43,14 @@
 					<?php } ?>
 
 
-					<div id="figure" class="wide panel"> <?= isset($session) ? 'lengkapi' : 'or' ?></div>
+					<div id="figure" class="wide panel"> <?= isset($session) ? 'lengkapi data kamu' : 'or' ?></div>
 					<div class="panel" id="email-register">
+						<?php if (!isset($session)){?>
 						<div class="title">
 							<h4>daftar</h4>
 						</div> <!-- .title -->
+						<?php }?>
+
 						<?php echo cmc_form_open('user-register', site_url('register'), 'id="user-register"');?>
 							<div class="column">
 								<label for="username" class="sub-title">nama lengkap<span>*</span></label>
@@ -97,12 +100,16 @@
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
 								<div class="custom-radio-button">
-								    <input type="radio" id="m-option" name="gender" value="m" <?php echo ($this->input->post('gender') == 'm') ? 'checked' : '';?>>
+									<?php 																			
+										$gender_m = ($this->input->post('gender') == 'm') ? 'checked' : ((isset($session['gender']) && $session['gender']=='male') ? 'checked' : '');
+										$gender_f = ($this->input->post('gender') == 'f') ? 'checked' : ((isset($session['female']) && $session['female']=='female') ? 'checked' : '');
+									?>
+								    <input type="radio" id="m-option" name="gender" value="m" <?php echo $gender_m;?>>
 								    <label for="m-option"><span></span>Laki-laki</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
 								<div class="custom-radio-button">
-								    <input type="radio" id="f-option" name="gender" value="f" <?php echo ($this->input->post('gender') == 'f') ? 'checked' : '';?>>
+								    <input type="radio" id="f-option" name="gender" value="f" <?php echo $gender_f;?>>
 								    <label for="f-option"><span></span>Perempuan</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->

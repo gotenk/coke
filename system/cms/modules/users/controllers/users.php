@@ -1696,7 +1696,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 					redirect('register-failed');
 				}
-				if($this->session->userdata($this->sess_name_dob) == ''){
+				if(!$this->session->userdata($this->sess_name_dob)){
 					$this->session->set_userdata('last_coke_uri', 'fb-connect');
 					redirect('dob');
 				}else{
@@ -1825,8 +1825,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				// check
 		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 					redirect('register-failed');
-				}
-				if($this->session->userdata($this->sess_name_dob) == ''){
+				}				
+				if(!$this->session->userdata($this->sess_name_dob)){
 					$this->session->set_userdata('last_coke_uri');
 					redirect('dob');
 				}else{
