@@ -1,7 +1,6 @@
 <main>
-
-	<section id="register" class="date-check fullScreen register">
-		<div id="background-img" class="fluid-img">
+	<section id="register" class="date-check fullScreen">
+		<div id="background-img" class="fluid-img register">
 			<div id="register-inner" class="container">
 				<div class="row">
 					<div class="panel" id="email-register">
