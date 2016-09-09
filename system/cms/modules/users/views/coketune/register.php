@@ -84,7 +84,7 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="password" class="sub-title">kata sandi<span>*</span></label>
-								<input id="password" type="password" placeholder="kata sandi baru" name="password" value="<?php echo set_value('password');?>">
+								<input id="password" type="password" placeholder="kata sandi" name="password" value="<?php echo set_value('password');?>">
 								<?php echo form_error('password')?>
 							</div> <!-- .column -->
 							<div class="column">
