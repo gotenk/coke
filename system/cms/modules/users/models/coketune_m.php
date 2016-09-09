@@ -14,18 +14,18 @@ class Coketune_m extends MY_Model
 	    			->where('active', 1)
                     ->where('group_id', 2)
 		    		->where('email', $email)
-		    		->get('users')->row();        
+		    		->get('users')->row();
         return $result;
     }
 
     public function create_token($result = array()){
         if($result){
             $token = substr(hash('sha256', $result->id.$result->salt.time()), 0, 40);
-            $data_update['forgotten_password_code'] = $token; 
+            $data_update['forgotten_password_code'] = $token;
             $update = $this->usr_update($result->id, $data_update);
             if($update){
                 return $token;
-            }            
+            }
         }
         return false;
     }
@@ -33,15 +33,15 @@ class Coketune_m extends MY_Model
     public function usr_update($id, $data){
         $this->db->where('id', $id);
         $this->db->update('users', $data);
-        return $this->db->affected_rows() == 1;   
+        return $this->db->affected_rows() == 1;
     }
 
     public function check_token($token){
     	$result = $this->db
-                    ->select('id, salt') 
+                    ->select('id, salt')
     				->where('active', 1)
 		    		->where('forgotten_password_code', $token)
-		    		->get('users');		    		
+		    		->get('users');
 		return $result->row();
     }
 
@@ -66,24 +66,24 @@ class Coketune_m extends MY_Model
                     ->get('pemenang', $limit, $newoffset);
         return ($q->row()) ? $newoffset : 0;
     }
-    
+
 
     // cari pemenang
     public function search_pemenang($keyword){
-        $total = $this->count_by();        
+        $total = $this->count_by();
         $limit = 20;
 
         $range = $this->_create_range(0, $limit, $total, array());
         #pre($range);
         $str = "SELECT *
-                FROM 
+                FROM
                 (
                     SELECT *,
                     @rownum := @rownum + 1 AS posisi
                     FROM default_pemenang p
                     JOIN (SELECT @rownum := 0) r
                 )sub
-                WHERE sub.name = '$keyword' ";        
+                WHERE sub.name = '$keyword' ";
         $pemenang = $this->db->query($str)->row();
         #pre($pemenang);
         if($pemenang){
@@ -92,7 +92,7 @@ class Coketune_m extends MY_Model
             $offset = 0;
             foreach($range as $k=>$v){
                 if($posisi >=$v[0] && $posisi<=$v[1]){
-                    $offset = $v[0];                    
+                    $offset = $v[0];
                     break;
                 }
             }
@@ -102,15 +102,15 @@ class Coketune_m extends MY_Model
             $result['pemenangs']    = $pemenangs;
             $result['pemenang_id']  = $pemenang->pemenang_id;
             $result['offset']       = $offset;
-            return $result;          
+            return $result;
         }
 
         return $pemenang;
 
     }
-    
+
     // buat nyari offset
-    private function _create_range($offset, $limit, $total, $result){ 
+    private function _create_range($offset, $limit, $total, $result){
         $next = $offset + $limit;
 
         if($offset == 0){
@@ -133,7 +133,7 @@ class Coketune_m extends MY_Model
         $str = "SELECT * FROM
                 (
                     SELECT unique_code as kode_unik, transaction_code, date_created as tanggal
-                    FROM default_alfamart_code 
+                    FROM default_alfamart_code
                     WHERE user_id = {$user_id}
                     UNION ALL
                     SELECT code as kode_unik, '' as transaction_code, date_used as tanggal
@@ -146,7 +146,7 @@ class Coketune_m extends MY_Model
             $str .= "LIMIT {$offset}, {$limit}";
         }
         $result = $this->db->query($str);
-        return $result->row();
+        return $result->result();
     }
 
     // count data inputan user
@@ -155,7 +155,7 @@ class Coketune_m extends MY_Model
         $str = "SELECT COUNT(*) AS total FROM
                 (
                     SELECT unique_code as kode_unik
-                    FROM default_alfamart_code 
+                    FROM default_alfamart_code
                     WHERE user_id = {$user_id}
                     UNION ALL
                     SELECT code as kode_unik
@@ -164,6 +164,6 @@ class Coketune_m extends MY_Model
                     AND user_id = {$user_id}
                 ) sub";
         $query = $this->db->query($str)->row();
-        return $query->total;        
+        return $query->total;
     }
 }
