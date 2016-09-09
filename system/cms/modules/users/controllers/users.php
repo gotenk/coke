@@ -1673,7 +1673,7 @@ class Users extends Public_Controller
             $me =array();
             try
             {
-                $me = $this->facebook->api('/me?fields=id,email,name,gender,birthday');
+                $me = $this->facebook->api('/me?fields=id,email,name,gender,birthday');                
             }
             catch(FacebookApiException $e)
             {
@@ -1703,6 +1703,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$profile_data 					= array();
 	                $profile_data['display_name'] 	= $me['name'];
 	                $profile_data['fb_id'] 			= $me['id'];
+	                $profile_data['gender'] 		= (isset($me['gender'])) ? $me['gender'] : '';
 	                $profile_data['email'] 			=  (isset($me['email'])) ? $me['email'] : '';
 	                $profile_data['dob'] 			=  (isset($me['birthday'])) ? $me['birthday'] : '';
 	                $profile_data['image_url'] 		= 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';
@@ -2164,7 +2165,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 			if ($email_status) {
 				/*belum dapat kirim email*/
-				$data_send = $this->send_email_confirmation($email,$email_status->id);
+				$data_send = $this->send_email_confirmation($email,$email_status->id);				
 			}
 
 			// if($email_status){

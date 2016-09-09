@@ -22,7 +22,7 @@
 						</div> <!-- .image -->
 						<div class="userProfile-info">
 							<div class="name"><?=$display_name[0]?></div>
-							<div class="detail"><span class="gender"></span></div>
+							<div class="detail"><span class="gender"><?php echo $session['gender']?></span></div>
 						</div> <!-- .userProfile-info -->
 					</div> <!-- .panel -->
 					<?php } else { ?>
