@@ -27,8 +27,13 @@ $(document).ready(function(){
             }),
             success: function (result) {
                 if (result.message == 0) {
+                    // User belum login - redirect ke halaman register
                     window.location.href = BASE_URL+'dob';
+                } else if (result.message == 1) {
+                    // User sudah login dan kode valid - redirect ke halaman profile
+                    window.location.href = BASE_URL+'profile';
                 } else {
+                    // Tampilkan pesan error
                     $('.error-m').html(result.message);
                     if (window.grecaptcha) grecaptcha.reset();
                 }
