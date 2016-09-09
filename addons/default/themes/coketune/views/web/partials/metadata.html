@@ -66,8 +66,8 @@
                 <a href="{{ url:site uri="profile"}}">
                   <div class="row">
                     <div class="userProfile-image">
-                      <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>
-                        <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                      <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>                        
+                        <img src="<?php echo base_url().$this->session->userdata('photo_profile')?>"/>
                       <?php else:?>
                         <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
                       <?php endif;?>

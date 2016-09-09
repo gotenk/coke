@@ -9,6 +9,7 @@
 						<div class="row">
 							<div class="userProfile-image">
 								<?php if($user->photo_profile && is_file($user->photo_profile)):?>
+									<img src="<?php echo base_url().$user->photo_profile?>"/>
 								<?php else:?>
 									<img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
 								<?php endif;?>
