@@ -26,9 +26,78 @@ $(document).ready(function(){
                 recaptcha_response_field: recaptcha_response_field
             }),
             success: function (result) {
-                $('.error-m').html(result.message);
-                if (window.grecaptcha) grecaptcha.reset();
+                if (result.message == 0) {
+                    // User belum login - redirect ke halaman register
+                    window.location.href = BASE_URL+'login';
+                } else if (result.message == 1) {
+                    // User sudah login dan kode valid - redirect ke halaman profile
+                    window.location.href = BASE_URL+'profile';
+                } else {
+                    // Tampilkan pesan error
+                    $('.error-m').html(result.message);
+                    $('#alfamart-code').val('');
+                    $('#transaction-code').val('');
+                    $('#indomaret-code').val('');
+                    if (window.grecaptcha) grecaptcha.reset();
+                }
             }
         });
     });
+
+    $('#winner-result').on('click', '#prev', function(e){
+        e.preventDefault();
+        var offset = parseInt($('#pagination-pemenang').attr('data-offset'));
+        var is_next = parseInt($('#pagination-pemenang').attr('data-is-next'));
+        if(offset!=0){
+            ngajax( (offset - 20));
+        }
+    });
+
+    $('#winner-result').on('click', '#next', function(e){
+        e.preventDefault();
+        var is_next = parseInt($('#pagination-pemenang').attr('data-is-next'));
+        if(is_next!=0){
+            ngajax(is_next);
+        }
+    });
+
+    $('#icon-search').click(function(){
+        var keyword = $('#search').val();
+        if(keyword!=''){
+            ngajax_search(keyword);
+        }
+    });
+
+    $('#search').keyup(function(e){
+        if(e.keyCode == 13){
+            var keyword = $('#search').val();
+            if(keyword!=''){
+                ngajax_search(keyword);
+            }
+        }
+    });
+
+    function ngajax(next){
+        $.ajax({
+            url: BASE_URL+'daftar-pemenang',
+            type: 'post',
+            data: $.extend(tokens, {f_offset:next}),
+            success: function (result) {
+                $('#winner-result').empty();
+                $('#winner-result').append(result);
+            }
+        });
+    }
+
+    function ngajax_search(keyword){
+        $.ajax({
+            url: BASE_URL+'search-pemenang',
+            type: 'post',
+            data: $.extend(tokens, {keyword:keyword}),
+            success: function (result) {
+                $('#winner-result').empty();
+                $('#winner-result').append(result);
+            }
+        });
+    }
 });

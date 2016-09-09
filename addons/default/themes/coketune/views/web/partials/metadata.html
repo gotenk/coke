@@ -3,12 +3,17 @@
 
 <head>
   <meta charset="utf-8">
-  <title> Coca Cola </title>
+  <title> Coca-Cola </title>
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
   <meta name="robots" content="" />
+
+
+  <!-- Favicon -->
+
+
 
   <!-- Favicon -->
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ theme:image_url file= "lib/favicon/apple-icon-57x57.png" }}" />
@@ -19,18 +24,26 @@
   <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ theme:image_url file= "lib/favicon/apple-icon-120x120.png" }}" />
   <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ theme:image_url file= "lib/favicon/apple-icon-76x76.png" }}" />
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-icon-152x152.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-icon-144x144.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-icon-180x180.png" }}" />
   <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon//android-icon-192x192.png" }}" sizes="192x192" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-96x96.png" }}" sizes="96x96" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-32x32.png" }}" sizes="32x32" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-16x16.png" }}" sizes="16x16" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-96x96.png" }}" sizes="96x96" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-72x72.png" }}" sizes="72x72" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-48x48.png" }}" sizes="48x48" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-36x36.png" }}" sizes="36x36" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-144x144.png"}}" sizes="144x144" />
   <meta name="theme-color" content="#da532c" />
-  <meta name="application-name" content="&nbsp;"/>
+  <meta name="application-name" content="Coke-Tune"/>
   <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-70x70.png" }}" />
   <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-144x144.png" }}" />
+  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-150x150.png" }}" />
+  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-310x310.png" }}" />
 
   <!-- end Favicon -->
 
   {{ theme:css file="main.css" }}
+  {{ theme:css file="additional.css" }}
 </head>
 
 <body>
@@ -46,8 +59,33 @@
         <!-- NAVIGATION WIDE SCREEN -->
         <nav id="top">
           <ul>
-            <li><a href="{{ url:site}}">cara mengikuti kompetisi</a></li>
-            <li><a href="{{ url:site uri="login"}}">masuk</a>/<a href="{{ url:site uri="register"}}">daftar</a></li>
+            <li><a href="{{ url:site uri="cara-mengikuti-kompetisi"}}">cara mengikuti kompetisi</a></li>
+                      
+            <?php if($this->current_user):if($this->current_user->group == 'user'):?>
+              <li>
+                <a href="{{ url:site uri="profile"}}">
+                  <div class="row">
+                    <div class="userProfile-image">
+                      <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>                        
+                        <img src="<?php echo base_url().$this->session->userdata('photo_profile')?>"/>
+                      <?php else:?>
+                        <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                      <?php endif;?>
+                    </div> <!-- .image -->
+                    <div class="userProfile-info">
+                      <div class="name text-link"><?php echo $this->session->userdata('display_name');?></div>
+                    </div> <!-- .userProfile-info -->
+                  </div> <!-- .row -->
+                </a>
+              </li>
+              <li><a href="{{ url:site uri="logout"}}">keluar</a></li>
+              <?php else:?>              
+              <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
+              <?php endif;?>
+            <?php else:?>
+              <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
+            <?php endif;?>
+
           </ul>
         </nav> <!-- #top -->
         <!-- END NAVIGATION WIDE SCREEN -->
@@ -55,21 +93,45 @@
 
       <!-- NAVIGATION MOBILE -->
       <nav id="mobile">
-        <ul>
+        <ul>          
+          
+          <?php if($this->current_user): if($this->current_user->group == 'user'):?>
+            <li>
+              <div class="row profile">
+                <div class="userProfile-image">
+                  <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>
+                    <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                  <?php else:?>
+                    <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
+                  <?php endif;?>
+                </div> <!-- .image -->
+                <div class="userProfile-info">
+                  <div class="name text-link"><?php echo $this->session->userdata('display_name');?></div>
+                  <a href="{{ url:site uri="logout"}}" class="link">keluar</a>
+                </div> <!-- .userProfile-info -->
+              </div> <!-- .row -->
+            </li>          
+          <?php endif;endif;?>
+
           <li><a href="{{ url:site }}">beranda</a></li>
-          <li><a href="{{ url:site uri="login"}}">masuk</a>/<a href="{{ url:site uri="register"}}">daftar</a></li>
-          <li><a href="{{ url:site }}">cara mengikuti kompetisi</a></li>
-          <li><a href="{{ url:site uri="syarat-dan-ketentuan"}}">syarat dan ketentuan</a></li>
-          <li><a href="{{ url:site uri="kebijakan-privasi"}}">kebijakan privasi</a></li>
+          <?php if(!$this->current_user):?>
+          <li><a href="{{ url:site uri="login"}}">masuk</a> <span style="color:white;"> / <a href="{{ url:site uri="register"}}">daftar</a></li>
+          <?php endif;?>
+
+          <li><a href="{{ url:site uri="cara-mengikuti-kompetisi" }}">cara mengikuti kompetisi</a></li>
+          <li><a href="{{ url:site uri="cara-mengikuti-kompetisi"}}#page">syarat dan ketentuan</a></li>
+          <li><a href="cara-mengikuti-kompetisi">kebijakan privasi</a></li>
         </ul>
       </nav> <!-- #mobile -->
       <!-- END NAVIGATION MOBILE -->
 
     </div> <!-- #header-inner -->
 
-    {{ if { url:segments segment="1" } == '' }}
+    {{ if exists home }}
     {{ theme:partial name="home" }}
-    {{ elseif { url:segments segment="1" } == 'cara-mengikuti-kompetisi'}}
+    {{ endif }}
+
+    {{ if { url:segments segment="1" } == 'cara-mengikuti-kompetisi' }}
     {{ theme:partial name="howto" }}
     {{ endif }}
 

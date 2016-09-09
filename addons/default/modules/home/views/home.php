@@ -15,11 +15,11 @@
 
 			<div class="input" style="">
 				<label>NAME <span>*</span></label>
-				<input type="text" name="" value="" class="input-text-global" placeholder="Nama Anda" />
+				<input onkeypress="return allLetter(event)" type="text" name="" value="" class="input-text-global" placeholder="Nama Anda" />
 			</div>
 			<div class="input" style="">
 				<label>EMAIL <span>*</span></label>
-				<input type="text" name="" value="" class="input-text-global" placeholder="nama@email.com" />
+				<input onkeypress="return emailValidation(event)" type="text" name="" value="" class="input-text-global" placeholder="nama@email.com" />
 			</div>
 			<div class="input" style="">
 				<label>KATA SANDI <span>*</span></label>
@@ -31,7 +31,7 @@
 			</div>
 			<div class="input" style="">
 				<label>NOMOR PONSEL <span>*</span></label>
-				<input type="text" name="" value="" class="input-text-global" placeholder="08xxxxxxxxx" />
+				<input onkeypress="return numeric(event)" type="text" name="" value="" class="input-text-global" placeholder="08xxxxxxxxx" />
 			</div>
 			<div class="input" style="">
 				<label>JENIS KELAMIN <span>*</span></label>

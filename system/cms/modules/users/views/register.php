@@ -1,5 +1,7 @@
 <h2 class="page-title" id="page_title"><?php echo lang('user:register_header') ?></h2>
 
+
+
 <p>
 	<span id="active_step"><?php echo lang('user:register_step1') ?></span> -&gt;
 	<span><?php echo lang('user:register_step2') ?></span>
@@ -14,7 +16,7 @@
 
 <?php echo form_open('register', array('id' => 'register')) ?>
 <ul>
-	
+
 	<?php if ( ! Settings::get('auto_username')): ?>
 	<li>
 		<label for="username"><?php echo lang('user:username') ?></label>

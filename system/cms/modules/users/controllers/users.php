@@ -24,6 +24,7 @@ class Users extends Public_Controller
 		$this->load->helper(array('user', 'coketune'));
 		$this->lang->load('user');
 		$this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
 
 		$this->social_media_list =array('vine','instagram','twitter','facebook');
 	}
@@ -213,7 +214,7 @@ class Users extends Public_Controller
 	}
 
 
-	
+
 
 
 	public function twitter_callback()
@@ -1126,11 +1127,8 @@ class Users extends Public_Controller
 	{
 		if ($this->ion_auth->email_check($email))
 		{
-			$this->form_validation->set_message('_email_check', lang('user:error_email'));
+			$this->form_validation->set_message('_email_check', 'Email Salah');
 			return false;
-		}else{
-			$check_email = $this->_email_block($email);
-			return $check_email;
 		}
 
 		return true;
@@ -1291,43 +1289,45 @@ class Users extends Public_Controller
 			$this->form_validation->set_message('_password_complexcity','Password minimal 8 karakter terdiri minimal 1 huruf, 1 angka dan 1 karakter spesial.');
 			preg_match('/[^a-zA-Z0-9]+/ism', $pass,$matches);
 			preg_match('/[0-9]+/ism', $pass,$matches2);
-			//var_dump($matches);
 			if(!empty($matches[0][0]) && isset($matches2[0][0]) && ($matches2[0][0]!='') ) {
 				//compare with old password
 				if($user_id!=0)
 				{
 					//echo $user_id;
-					$user_info = $this->user_m->get(array('id' => $user_id));
-					if($this->method == 'edit' && $this->input->post('old_password'))
+					if($this->method == 'change_password_2' && $this->input->post('old_password'))
 					{
 						if(!$this->_check_old_password($this->input->post('old_password'),$user_id))
 						{
+							$this->form_validation->set_message('_password_complexcity','Password Lama Salah');
 							return false;
 						}
 					}
+					// } else {
 
-					if($user_info)
-					{
-						$hashed_new_pass = $this->ion_auth_model->hash_password($pass ,$user_info->salt?$user_info->salt:'');
-						$data_tst = $this->history_password_m->get_by(array('password_new'=>$hashed_new_pass,'user_id'=>$user_id));
+					// 	$user_info = $this->user_m->get(array('id' => $user_id));
+					// 	if($user_info)
+					// 	{
+					// 		$hashed_new_pass = $this->ion_auth_model->hash_password($pass ,$user_info->salt?$user_info->salt:'');
+					// 		// $data_tst = $this->history_password_m->get_by(array('password_new'=>$hashed_new_pass,'user_id'=>$user_id));
 
-						if($data_tst || ( $hashed_new_pass == $user_info->password))
-						{
-							$this->form_validation->set_message('_password_complexcity','Password tidak boleh sama dengan password lama.');
-							return false;
-						}
-						else {
-							$this->history_password_m->insert(array('user_id'=>$user_id,
-																	'password_new'=>$hashed_new_pass,
-																	'password_old'=>$user_info->password,
-																	'salt'=>$user_info->salt,
-																	'message'=>'password edited',
-																	'created_on'=>now()
-																	));
-							return true;
-						}
+					// 		if($hashed_new_pass == $user_info->password)
+					// 		{
+					// 			$this->form_validation->set_message('_password_complexcity','Password baru tidak boleh sama dengan password lama.');
+					// 			return false;
+					// 		}
+					// 		else {
+					// 			$this->history_password_m->insert(array('user_id'=>$user_id,
+					// 													'password_new'=>$hashed_new_pass,
+					// 													'password_old'=>$user_info->password,
+					// 													'salt'=>$user_info->salt,
+					// 													'message'=>'password edited',
+					// 													'created_on'=>now()
+					// 													));
+					// 			return true;
+					// 		}
+					// 	}
 
-					}
+					// }
 				}
 				return true;
 			}
@@ -1468,15 +1468,14 @@ class Users extends Public_Controller
 		{
 			$user = $this->ion_auth->get_user($id);
 		// Add in some extra details
-			$data['subject']	= Settings::get('site_name') . ' - Email Konfirmasi Orang Tua';
-			$data['slug'] 		= 'parent-email';
+			$data['subject']	= Settings::get('site_name') . ' - Change Password';
+			$data['slug'] 		= 'forgotten_password';
 			$data['to'] 		= $parent_email;
 			$data['from'] 		= Settings::get('server_email');
 			$data['from_name']	= Settings::get('site_name');
 			$data['reply-to']	= Settings::get('contact_email');
-			$data['link']		= site_url(array('konfirmasi-orang-tua',$user->forgotten_password_code));
+			$data['link']		= site_url(array('change-password',$user->forgotten_password_code));
 			$data['name']		= $user->display_name;
-
 			// send the email using the template event found in system/cms/templates/
 			$results = Events::trigger('email', $data, 'array');
 			foreach ($results as $result)
@@ -1518,7 +1517,7 @@ class Users extends Public_Controller
 		$allsess = $this->session->userdata($this->sess_data_fb);
 		$base_image_url = $allsess['image_url'];
 		##$base_image_url = 'https://graph.facebook.com/1190790074277929/picture?type=large';
-		$conf = 'uploads/users/';		
+		$conf = 'uploads/users/';
 		$fulldir = $conf.$id.'/';
 
 		//curl get json real img url
@@ -1531,25 +1530,25 @@ class Users extends Public_Controller
 		    #die('Curl failed: ' . curl_error($ch));
 		    return '';
 		}
-		curl_close($ch);		
+		curl_close($ch);
 		$decode = json_decode($result);
 
 		// get full url and img name
 		$image_full_url = $decode->data->url;
 		$image_name_full = basename($image_full_url);
-		$exp = explode('?', $image_name_full);		
-		$image_name = $exp[0];			
+		$exp = explode('?', $image_name_full);
+		$image_name = $exp[0];
 
 		//path
-		$cli_path = $this->input->is_cli_request() ? '/var/www/html/' : ''; 	
+		$cli_path = $this->input->is_cli_request() ? '/var/www/html/' : '';
 
 		// check upload folder 'users'
 		if(! is_dir($cli_path.$conf) ){
-			$r = mkdir($cli_path.$conf, 0755, true);			
-		}				
+			$r = mkdir($cli_path.$conf, 0755, true);
+		}
 
 		// map folder
-		$map = directory_map($fulldir, 1);		
+		$map = directory_map($fulldir, 1);
 
 		// no folder no img
 		if( !$map || count($map)==0)
@@ -1557,8 +1556,8 @@ class Users extends Public_Controller
 			if(! is_dir( $fulldir))
 			{
 				$result = mkdir(  $fulldir, 0755, true);
-			}			
-			
+			}
+
 			curl_download_image($image_full_url, $fulldir.$image_name);
 
 			return $fulldir.$image_name;
@@ -1566,12 +1565,12 @@ class Users extends Public_Controller
 
 		// fodler ok img wis ono
 		else if( count($map)  &&   (isset($map[0]) && in_array($image_name, $map)) )
-		{						
+		{
 			return $fulldir.$image_name;
 		}
 
 		else // lain lain
-		{			
+		{
 			if(! is_dir( $cli_path.$conf.$id))
 			{
 				$result = mkdir(  $cli_path.$conf.$id,0755,true);
@@ -1586,15 +1585,15 @@ class Users extends Public_Controller
 
 	/*plan*/
 	public function grab_twitter_picture($id)
-	{	
+	{
 		$this->load->helper('file');
-		$this->load->helper('directory');				
+		$this->load->helper('directory');
 
 		//path
-		$cli_path = $this->input->is_cli_request() ? '/var/www/html/' : ''; 
-		$conf = 'uploads/users/';	
+		$cli_path = $this->input->is_cli_request() ? '/var/www/html/' : '';
+		$conf = 'uploads/users/';
 
-		// img url string		
+		// img url string
 		$allsess = $this->session->userdata($this->sess_data_tw);
 		$base_image_url = $allsess['image_url'];
 		$explode = explode('_normal', $base_image_url);
@@ -1603,11 +1602,11 @@ class Users extends Public_Controller
 
 		// check upload folder 'users'
 		if(! is_dir($cli_path.$conf) ){
-			$r = mkdir($cli_path.$conf, 0755, true);			
+			$r = mkdir($cli_path.$conf, 0755, true);
 		}
-		
-		// path per user		
-		$map = directory_map($cli_path.$conf.$id.'/', 1);		
+
+		// path per user
+		$map = directory_map($cli_path.$conf.$id.'/', 1);
 
 		// no folder no img
 		if( !$map || count($map)==0)
@@ -1615,7 +1614,7 @@ class Users extends Public_Controller
 			if(! is_dir( $cli_path.$conf.$id))
 			{
 				$result = mkdir(  $cli_path.$conf.$id,0755,true);
-			}			
+			}
 
 			curl_download_image($image_url, $cli_path.$conf.$id.'/'.$image_name);
 
@@ -1624,12 +1623,12 @@ class Users extends Public_Controller
 
 		// fodler ok img wis ono
 		else if( count($map)  &&   (isset($map[0]) && in_array($image_name, $map)) )
-		{			
+		{
 			return $conf.$id.'/'.$image_name;
 		}
 
 		else // lain lain
-		{			
+		{
 			if(! is_dir( $cli_path.$conf.$id))
 			{
 				$result = mkdir(  $cli_path.$conf.$id,0755,true);
@@ -1649,7 +1648,7 @@ class Users extends Public_Controller
 
 	public function fb_connect()
     {
-    	$this->_already_logged_in();    	
+    	$this->_already_logged_in();
 
         $redir = site_url('');
 
@@ -1658,9 +1657,9 @@ class Users extends Public_Controller
         	$this->session->unset_userdata($this->sess_data_tw);
         }
 
-        //facebook session not found 
+        //facebook session not found
         if(!$this->facebook->getUser())
-        {        	                               
+        {
             $data_url = $this->facebook->getLoginUrl(
 	        	array(
 					'redirect_uri'=>site_url(uri_string()).( ($redir) ? '?redirect='.rawurlencode($redir) : '' ),
@@ -1671,7 +1670,7 @@ class Users extends Public_Controller
             #redirect($data_url);
             return;
         }
-        else {            
+        else {
             $me =array();
             try
             {
@@ -1680,69 +1679,70 @@ class Users extends Public_Controller
             catch(FacebookApiException $e)
             {
                 echo '<html><head><META HTTP-EQUIV="REFRESH"
-CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_query($this->input->get()):'').'"><title>Sedang Di Arahkan Ulang</title></head><body>tunggu sebentar</body></html>';                
+CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_query($this->input->get()):'').'"><title>Sedang Di Arahkan Ulang</title></head><body>tunggu sebentar</body></html>';
                 return;
-            }                 
+            }
             $this->facebook->setExtendedAccessToken();
-                        
+
             // login
-            $data_user = $this->profile_m->get_profile(array('fb_id'=>$me['id']));                        
-            if ($data_user){ //wis ono            	
+            $data_user = $this->profile_m->get_profile(array('fb_id'=>$me['id']));
+            if ($data_user){ //wis ono
                 //force login
                 if($this->ion_auth->force_login($data_user->user_id))
-                {                	                	
+                {
                     redirect(site_url('profile'));
                 }
             }else { // register
-            	// check 
+            	// check
 		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
-					redirect('dob-failed');
+					redirect('register-failed');
 				}
-				if($this->session->userdata($this->sess_name_dob) == ''){
+				if(!$this->session->userdata($this->sess_name_dob)){
 					$this->session->set_userdata('last_coke_uri', 'fb-connect');
 					redirect('dob');
 				}else{
-					$profile_data 					= array();            	             
+					$profile_data 					= array();
 	                $profile_data['display_name'] 	= $me['name'];
-	                $profile_data['fb_id'] 			= $me['id'];                                
+	                $profile_data['fb_id'] 			= $me['id'];
+	                $profile_data['gender'] 		= (isset($me['gender'])) ? $me['gender'] : '';
 	                $profile_data['email'] 			=  (isset($me['email'])) ? $me['email'] : '';
 	                $profile_data['dob'] 			=  (isset($me['birthday'])) ? $me['birthday'] : '';
-	                $profile_data['image_url'] 		= 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';                
-	                
+	                $profile_data['image_url'] 		= 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';
+
 	                $this->session->set_userdata($this->sess_data_fb, $profile_data);
 	                $this->session->set_userdata($this->sess_connect_with, 'fb');
-	                
+
 	                redirect('register');
-				}            	
-            }            
-        }             
+				}
+            }
+        }
     }
 
     public function tw_connect()
-	{   		
-        $this->_already_logged_in();        
-        
+	{
+        $this->_already_logged_in();
+
         // destroy session facebook
         if($this->session->userdata($this->sess_data_fb)){
         	$this->session->unset_userdata($this->sess_data_fb);
-        }		
+        }
 
 		// 2. verify
 		if(isset($_REQUEST['oauth_verifier']))
 		{
 			/* If the oauth_token is old redirect to the connect page. */
 			if (isset($_REQUEST['oauth_token']) && isset( $_SESSION['oauth_token']) && ($_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) ) {
-				unset($_SESSION['oauth_token']);				
+				unset($_SESSION['oauth_token']);
 			}
 
 			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
 			$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'), (isset($_SESSION['oauth_token'])? $_SESSION['oauth_token']: FALSE), (isset($_SESSION['oauth_token_secret']))?$_SESSION['oauth_token_secret'] :false ));
 
 			/* Request access tokens from twitter */
-			$access_token = $this->twitter->getAccessToken($_REQUEST['oauth_verifier']);			
+			$access_token = $this->twitter->getAccessToken($_REQUEST['oauth_verifier']);
 
 			if(! isset($access_token['oauth_token']) && !isset($access_token['oauth_token_secret']) )
-			{				
+			{
 				redirect(site_url('tw-connect'));
 			}
 			/* Save the access tokens. Normally these would be saved in a database for future use. */
@@ -1757,16 +1757,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			  	/* The user has been verified and the access tokens can be saved for future use */
 			  	#$_SESSION['status_twitter'] = 'verified';
 			  	#$_SESSION['register_status']='tw';
-			} else {				
+			} else {
 			  	redirect(site_url('tw-connect'));
-			}			
+			}
 		}
 
 
 		// 1. Build authorize URL, access token
 		if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
-				$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'),null,null));				
-				
+				$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'),null,null));
+
 				$twitter_callback = uri_string();
 				$request_token = $this->twitter->getRequestToken(site_url($twitter_callback));
 				$_SESSION['oauth_token'] = $token = $request_token['oauth_token'];
@@ -1776,8 +1776,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			switch ($this->twitter->http_code) {
 			  	case 200:
 			    	/* Build authorize URL and redirect user to Twitter. */
-			    	$url = $this->twitter->getAuthorizeURL($token);		
-			  
+			    	$url = $this->twitter->getAuthorizeURL($token);
+
 			    	header('Location: ' . $url);
 					return;
 			    	break;
@@ -1786,49 +1786,48 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			    	echo 'Could not connect to Twitter. Refresh the page or try again later.';
 			}
 		} // 3. cek ke db
-		else {		
+		else {
 			$access_token 	= $this->session->userdata('access_token');
 			$id_twitter 	= isset($access_token['user_id'])? $access_token['user_id'] :false;
-			##$redir 			= $this->input->get('redirect');	
+			##$redir 			= $this->input->get('redirect');
 			$this->session->set_userdata($this->sess_connect_with, 'tw');
 
-			$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'), $access_token['oauth_token'],$access_token['oauth_token_secret']));						
+			$this->load->library('twitter',array(Settings::get('consumer_key'), Settings::get('consumer_key_secret'), $access_token['oauth_token'],$access_token['oauth_token_secret']));
 			$params = array(
                'include_entities' => true,
                'include_status' => false,
                'include_email' => true,
            	);
 			$data_tw = $this->twitter->get('account/verify_credentials', $params);
-
 			// db check value
 			$data = $this->profile_m->get_profile(array('tw_id'=>$id_twitter,'tw_access_token'=>serialize($access_token)));
 
 			// id tw ok, access token ok
 			if($data && isset($data->user_id))
-			{				
+			{
 				if($this->ion_auth->force_login($data->user_id))
-				{					
+				{
 					$this->session->set_userdata('access_token',$access_token);
-					$redir = site_url('profile');					
+					$redir = site_url('profile');
 					echo '<script>window.location.href="'.$redir.'";</script>';
 					return;
 				}
-			} 
+			}
 			// id tw ok but not access_token in db
 			else if ($id_twitter && ($data_update = $this->profile_m->get_profile(array('tw_id'=>$id_twitter))))
 			{
 				if(serialize($access_token) != ($data_update->twitter_access_token))
 				{
-					$this->profile_m->update_by(array('tw_id'=>$id_twitter),array('tw_access_token'=>serialize($access_token)));					
+					$this->profile_m->update_by(array('tw_id'=>$id_twitter),array('tw_access_token'=>serialize($access_token)));
 				}
 			}
 			// pertamax register
 			else{
-				// check 
+				// check
 		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
-					redirect('dob-failed');
-				}
-				if($this->session->userdata($this->sess_name_dob) == ''){
+					redirect('register-failed');
+				}				
+				if(!$this->session->userdata($this->sess_name_dob)){
 					$this->session->set_userdata('last_coke_uri');
 					redirect('dob');
 				}else{
@@ -1837,19 +1836,20 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$profile_data['screen_name'] 	=  $data_tw->screen_name;
 					$profile_data['display_name']	=  $data_tw->name;
 					$profile_data['image_url'] 		=  $data_tw->profile_image_url;
+					$profile_data['image_url_https']=  $data_tw->profile_image_url_https;
 
 					$this->session->set_userdata($this->sess_data_tw, $profile_data);
 					redirect('register');
-				}				
-			}			
+				}
+			}
 
 			if(isset($redir) && $redir)
 			{
-				echo '<script>window.location.href="'.site_url(rawurldecode($redir)).'";</script>';				
+				echo '<script>window.location.href="'.site_url(rawurldecode($redir)).'";</script>';
 			}
 			else
 			{
-				echo '<script>window.location.href="'.site_url().'";</script>';				
+				echo '<script>window.location.href="'.site_url().'";</script>';
 			}
 
 		}
@@ -1862,13 +1862,13 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 
 
-/*-----------------------------------------------------------COKE TUNE-----------------------------------------------------------*/	
+/*-----------------------------------------------------------COKE TUNE-----------------------------------------------------------*/
 
-	private $sess_name_dob 		= 'sess_dob';		
+	private $sess_name_dob 		= 'sess_dob';
 	private $sess_name_dob_status	= 'dob_status';
 	private $sess_connect_with	= 'connect_with';
 	private $sess_data_fb		= 'data_fb';
-	private $sess_data_tw		= 'data_tw';	
+	private $sess_data_tw		= 'data_tw';
 	private $register_validation_array = array(
 		array(
 			'field' => 'email',
@@ -1878,18 +1878,18 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'password',
 			'label' => 'Password',
-			'rules' => 'trim|required|xss_clean|callback__password_complexcity',
+			'rules' => 'trim|required|xss_clean|max_length[60]|callback__password_complexcity',
 		),
 		array(
 			'field' => 're-password',
 			'label' => 'Konfirmasi Password',
-			'rules' => 'trim|required|xss_clean|matches[password]',
+			'rules' => 'trim|required|xss_clean|max_length[60]|matches[password]',
 		),
 		array(
 			'field' => 'name',
 			'label' => 'Nama Lengkap',
 			'rules' => 'trim|required|min_length[2]|callback__string_spasi|xss_clean',
-		),			
+		),
 		array(
 			'field' => 'phone',
 			'label' => 'Nomor HP',
@@ -1899,27 +1899,32 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'field' => 'gender',
 			'label' => 'Jenis Kelamin',
 			'rules' => 'trim|required|xss_clean',
-		),					
+		),
 		array(
 			'field' => 'term',
 			'label' => 'Syarat dan Ketentuan',
 			'rules' => 'required',
-		),	
+		),
+		array(
+			'field' => 'kode_unik',
+			'label' => 'Kode Unik',
+			'rules' => 'required|trim|xss_clean|callback__string_angka_spasi',
+		),
 		/*array(
-			'field'=>'dd', 
-			'label'=>'Day', 
+			'field'=>'dd',
+			'label'=>'Day',
 			'rules'=>'required|integer|trim|xss_clean'
 		),
 		array(
-			'field'=>'mm', 
-			'label'=>'Month', 
+			'field'=>'mm',
+			'label'=>'Month',
 			'rules'=>'required|integer|trim|xss_clean'
 		),
 		array(
-			'field'=>'yy', 
-			'label'=>'Year', 
+			'field'=>'yy',
+			'label'=>'Year',
 			'rules'=>'required|integer|trim|xss_clean'
-		),*/		
+		),*/
 		array(
 
 			'field' => 'recaptcha_response_field',
@@ -1930,6 +1935,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	public function home(){
 		$this->template
+				->set('home', 'home')
 				->build('coketune/home');
 	}
 
@@ -1938,6 +1944,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 			redirect();
 		}
+
+		$this->_already_logged_in();
 
 		$this->validation_rules = array(
 			array(
@@ -1951,19 +1959,30 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				'rules' => 'required'
 			)
 		);
-		
+		$this->form_validation->set_message('required', 'KATA SANDI / EMAIL SALAH');
+		$this->form_validation->set_message('_check_login', 'KATA SANDI / EMAIL SALAH');
 		#$this->form_validation->set_error_delimiters('<br>', '');
-		$this->form_validation->set_rules($this->validation_rules);		
-		if ($this->form_validation->run() or $this->ion_auth->logged_in())
-		{			
+		$this->form_validation->set_rules($this->validation_rules);
+		if ($this->form_validation->run())
+		{
 			$redirect = $this->session->userdata('admin_redirect');
-			$this->session->unset_userdata('admin_redirect');
-
+			$this->session->unset_userdata('admin_redirect');			
 			redirect('profile');
-		}		
+		}
+
+		if($this->input->post('register')){
+			$this->_already_logged_in();
+			if($this->session->userdata($this->sess_name_dob_status) == 'false'){
+				redirect('register-failed');
+			}else if($this->session->userdata($this->sess_name_dob) == ''){
+				redirect('dob');
+			}else{
+				redirect('register');
+			}
+		}
 
 		$this->template
-				->build('coketune/login');	
+				->build('coketune/login');
 	}
 
 
@@ -1971,68 +1990,69 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$dob_err = '';
 		$this->_already_logged_in();
 		if($this->session->userdata($this->sess_name_dob_status) == 'false'){
-			redirect('dob-failed');
+			redirect('register-failed');
 		}
 		if($this->session->userdata($this->sess_name_dob) == ''){
 			redirect('dob');
 		}
 		$dob_ar = explode('-', $this->session->userdata($this->sess_name_dob));
 
-		$session = $this->session->userdata($this->sess_data_fb); 
+		$code_temp = $this->session->userdata('code_temp');
+
+		$session = $this->session->userdata($this->sess_data_fb);
 		if($this->session->userdata($this->sess_data_tw)){
 			$session = $this->session->userdata($this->sess_data_tw);
-		}		
-		
+		}
+
 		$this->form_validation->set_rules($this->register_validation_array);
 		if($this->input->post('register')){
 			$dd = $this->input->post('dd');
 			$mm = $this->input->post('mm');
 			$yy = $this->input->post('yy');
 			$dob = $this->_check_dob($yy, $mm, $dd);
-			$dob_err = $dob;			
-			if($this->form_validation->run()){							
+			$dob_err = $dob;
+			if($this->form_validation->run()){
 				if($dob == ""){
-					$display_name 	= $this->input->post('name');				
+					$display_name 	= $this->input->post('name');
 					$username 		= strtolower(str_replace(' ', '', $display_name));
 					$password 		= $this->input->post('password');
 					$email 			= $this->input->post('email');
 					$valid_email  	= $this->input->post('email');
 
-					// tambahan				
+					// tambahan
 					$profile_data = array();
 					$profile_data['display_name'] = $display_name;
 
 
 					// insert user
-					$id = $this->ion_auth->register($username, $password, $email, $valid_email, null, $profile_data);	
+					$id = $this->ion_auth->register($username, $password, $email, $valid_email, null, $profile_data);
 
 					// register ion berhasil
 					if($id){
 						// columns not use stream, update manual
-						$connect_with = $this->session->userdata($this->sess_connect_with);					
+						$connect_with = $this->session->userdata($this->sess_connect_with);
 						$profile_data['phone'] = $this->input->post('phone');
-						$profile_data['gender'] = $this->input->post('gender');						
-						$profile_data['dob'] = strtotime("{$yy}-{$mm}-{$yy}");
-						
+						$profile_data['gender'] = $this->input->post('gender');
+						$profile_data['dob_date_format'] = "{$yy}-{$mm}-{$dd}";
+
 						#$profile_data['kode_unik'] = $this->input->post('kode_unik');
-						#$profile_data['kode_transaksi'] = $this->input->post('kode_transaksi');					
-						
+						#$profile_data['kode_transaksi'] = $this->input->post('kode_transaksi');
+
 						if($connect_with == 'fb'){
 							$imgfb = $this->grab_facebook_picture($id); //download img
 							$session = $this->session->userdata($this->sess_data_fb);
-							$profile_data['facebook_name'] 	= $session['display_name'];					
-							$profile_data['fb_id'] 			= $session['fb_id'];					
-							$profile_data['photo_profile'] 	= $imgfb;						
+							$profile_data['fb_id'] 			= $session['fb_id'];
+							$profile_data['photo_profile'] 	= $imgfb;
 						}else if($connect_with == 'tw'){
 							$imgtw = $this->grab_twitter_picture($id); //download img
 							$session = $this->session->userdata($this->sess_data_tw);
-							$profile_data['tw_screen_name'] 	= $session['screen_name'];					
+							$profile_data['tw_screen_name'] 	= $session['screen_name'];
 							$profile_data['tw_id']   			= $session['twitter_id'];
-							$profile_data['tw_access_token']   	= serialize($this->session->userdata('access_token'));					
+							$profile_data['tw_access_token']   	= serialize($this->session->userdata('access_token'));
 							$profile_data['tw_name'] 		= $session['display_name'];
-							$profile_data['photo_profile'] 		= $imgtw;						
+							$profile_data['photo_profile'] 		= $imgtw;
 						}
-						
+
 						$profile_reg = $this->coketune_m->register_profile($profile_data, $id);
 
 						// berhasil update profile
@@ -2043,6 +2063,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							$this->session->unset_userdata($this->sess_connect_with);
 							$this->session->unset_userdata($this->sess_name_dob);
 							$this->session->unset_userdata($this->sess_name_dob_status);
+							$this->session->unset_userdata('code_temp');
 							$this->session->unset_userdata('access_token');
 
 							//active and login
@@ -2053,24 +2074,25 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 						}else{
 							$this->ion_auth->delete_user($id);
 						}
-					}	
-				}				
+					}
+				}
 			}
 		}
-		
+
 
 		$this->template
 					->set('session', $session)
 					->set('dob_ar', $dob_ar)
 					->set('dob_err', $dob_err)
+					->set('code_temp', $code_temp)
 					->build('coketune/register');
 	}
 
 	public function dob(){
 		$this->_already_logged_in();
-		
+
 		if( $this->session->userdata($this->sess_name_dob_status) == 'false'){
-			redirect('dob-failed');
+			redirect('register-failed');
 		}else if($this->session->userdata($this->sess_name_dob) != ''){
 			redirect('register');
 		}
@@ -2078,18 +2100,18 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$error = '';
 		$rules = array(
 			array(
-				'field'=>'dd', 
-				'label'=>'Day', 
+				'field'=>'dd',
+				'label'=>'Day',
 				'rules'=>'required|integer|trim|xss_clean'
 			),
 			array(
-				'field'=>'mm', 
-				'label'=>'Month', 
+				'field'=>'mm',
+				'label'=>'Month',
 				'rules'=>'required|integer|trim|xss_clean'
 			),
 			array(
-				'field'=>'yy', 
-				'label'=>'Year', 
+				'field'=>'yy',
+				'label'=>'Year',
 				'rules'=>'required|integer|trim|xss_clean'
 			),
 		);
@@ -2104,83 +2126,192 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$error = $this->_check_dob($yy, $mm, $dd);
 				if( $error == ''){
 					$last = $this->session->userdata('last_coke_uri');
-					if(!$last){						
+					if(!$last){
 						redirect('register');
 					}else{
 						$this->session->unset_userdata('last_coke_uri');
 						redirect($last);
 					}
 				}else{
-					redirect('dob-failed');
-				}				
+					redirect('register-failed');
+				}
 			}
 		}
 
 		$dob_day 	= dob_day();
 		$dob_month 	= dob_month();
 		$dob_year 	= dob_year();
-		date_default_timezone_set('Asia/Jakarta');		
-		$sekarang = explode('-', date('Y-n-j'));		
+		date_default_timezone_set('Asia/Jakarta');
+		$sekarang = explode('-', date('Y-n-j'));
 
 		$this->template
-				->set('dob_day', $dob_day)	
-				->set('dob_month', $dob_month)	
+				->set('dob_day', $dob_day)
+				->set('dob_month', $dob_month)
 				->set('dob_year', $dob_year)
 				->set('sekarang', $sekarang)
 				->set('error', $error)
 				->build('coketune/dob');
 	}
 
-	public function dob_failed(){
+	public function register_failed(){
 		if($this->session->userdata($this->sess_name_dob_status) != 'false'){
 			redirect();
 		}
-		$this->template				
-				->build('coketune/dob_failed');
+		$this->template
+				->build('coketune/register-failed');
 	}
 
 	public function reset_password(){
 		$this->_already_logged_in();
 
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__check_reset_email');
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean|callback__string_email_tambahan');
 		if($this->form_validation->run()){
+			$email = $this->input->post('email');
+			$email_status = $this->coketune_m->check_email_reset($email);
 
-		}	
+			if ($email_status) {
+				/*belum dapat kirim email*/
+				$data_send = $this->send_email_confirmation($email,$email_status->id);				
+			}
 
-		$this->template				
-				->build('coketune/reset_password');	
+			// if($email_status){
+			// 	$token = $this->coketune_m->create_token($email_status);
+			// 	if($token){
+
+
+
+
+			// 		// send email
+			// 		// bla bla bla
+			// 		$link = site_url('change-password/'.$token);
+			// 		pre('link to test '. $link);
+			// 		pre('success, redirrect ndi?');
+			// 	}				
+			// }			
+		}
+
+		$this->template
+				->build('coketune/reset_password');
 	}
 
-	public function change_password($token = null){			
-		if( !$this->coketune_m->check_token($token)){
+	public function change_password($token = null){
+		$istoken = $this->coketune_m->check_token($token);
+		if( !$istoken ){
 			redirect();
 		}
 
 		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean|callback__password_complexcity');
 		$this->form_validation->set_rules('re-password', 'Ulangi Password', 'required|trim|xss_clean|matches[password]');
 		if($this->form_validation->run()){
-			$pass = $this->input->post('password');	
+			$pass = $this->input->post('password');				
+			$password	= $this->ion_auth_model->hash_password($pass, $istoken->salt);			
 
+			$dnew['password'] = $password;
+			$dnew['forgotten_password_code'] = '';
+			$updt = $this->coketune_m->usr_update($istoken->id, $dnew);
+
+			if($updt){
+				redirect('login');
+			}			
 		}
 
-		$this->template				
-				->build('coketune/change_password');	
+		$this->template
+				->build('coketune/change_password');
 	}
 
-	public function profile(){
+	public function change_password_2()
+	{		
+		$this->_restricted_area();
+		$this->form_validation->set_rules('old_password', 'Password Lama', 'required|trim|xss_clean|callback__password_complexcity['.$this->current_user->id.']');
+		$this->form_validation->set_rules('password', 'Password Baru', 'required|trim|xss_clean|callback__password_complexcity');
+		$this->form_validation->set_rules('re-password', 'Ulangi Password Baru', 'required|trim|xss_clean|matches[password]');
+		
+		if($this->form_validation->run()){
+
+			$email			= $this->current_user->email;
+			$old_password 	= $this->input->post('old_password');
+			$new_password   = $this->input->post('password');
+
+
+
+			$password	= $this->ion_auth->change_password($email, $old_password, $new_password);			
+
+			if($password){				
+				redirect('register');
+			}			
+		}
+		$this->template->build('coketune/change_password_2');
+	}
+	public function profile(){		
 		$this->_restricted_area();
 
-		$this->template				
+		$total 	= $this->coketune_m->count_code_user($this->current_user->id);
+		$codes 	= $this->coketune_m->code_user($this->current_user->id);	
+		$user 	= $this->profile_m->get_profile(array('user_id'=>$this->current_user->id));	
+		$this->session->set_userdata('display_name', $user->display_name);
+		$this->session->set_userdata('photo_profile', $user->photo_profile);			
+			
+
+		$this->template
+				->set('total', $total)
+				->set('codes', $codes)
+				->set('user', $user)
 				->build('coketune/profile');
 	}
 
 
+	public function daftar_pemenang(){
+		$limit = 20;
+		$winners = array();
+		$offset = $this->input->post('f_offset') ? ((int) $this->input->post('f_offset')) : 0;
 
+		$winners = $this->coketune_m->data_pemenang($offset, $limit);
+		$is_next = $this->coketune_m->is_berikutnya($offset, $limit);
 
+		if ($this->input->is_ajax_request())
+		{
+			$this->template->set_layout(false);
+		}
 
-	private function _submit_code(){
-		$this->_restricted_area();		
+		$this->template
+			->title('Daftar Pemenang')			
+			->set('home', 'home')
+			->set('is_next', $is_next)
+			->set('offset', $offset)
+			->set('winners', $winners);
+
+		$this->input->is_ajax_request() ?
+			$this->template->build('coketune/winner_table') :
+			$this->template->build('coketune/winner_frame');
 	}
+
+	public function search_pemenang(){
+		if ($this->input->is_ajax_request())
+		{
+			$keyword = $this->input->post('keyword');
+
+			#$keyword = 'w coke';
+			if($keyword && $this->all_letter_space($keyword)){
+				$search = $this->coketune_m->search_pemenang($keyword);
+				if($search){
+					$is_next = $this->coketune_m->is_berikutnya($search['offset'], 20);
+					$data['is_next'] 	= $is_next;
+					$data['offset'] 	= $search['offset'];
+					$data['winners'] 	= $search['pemenangs'];
+					$data['selected'] 	= $search['pemenang_id'];					
+					$this->load->view('coketune/winner_table_search', $data);
+				}				
+			}			
+		}
+	}
+
+
+	// belom
+	private function _submit_code(){
+		$this->_restricted_area();
+	}
+
+
 
 	private function _already_logged_in(){
 		if ($this->current_user && $this->current_user->group == 'user') {
@@ -2190,17 +2321,17 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	private function _restricted_area(){
-		if(!$this->current_user){
+		if(!$this->current_user || $this->current_user->group != 'user'){
 			redirect();
 		}
 	}
 
-	private function _check_dob($yy, $mm, $dd){		
+	private function _check_dob($yy, $mm, $dd){
 		$error = "";
 		if( is_valid_date($yy, $mm, $dd) ){
 			if( is_thirteen_or_more($yy, $mm, $dd) ){
-				$this->session->set_userdata($this->sess_name_dob, "{$yy}-{$mm}-{$dd}");				
-			}else{					
+				$this->session->set_userdata($this->sess_name_dob, "{$yy}-{$mm}-{$dd}");
+			}else{
 				$this->session->set_userdata($this->sess_name_dob_status, "false");
 				$error = 'Mohon maaf, untuk saat ini anda masih belum bisa mendaftar di situs Coke Breakpackers!';
 			}
@@ -2215,12 +2346,19 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 
-/*-----------------------------------------------------------END COKE TUNE-----------------------------------------------------------*/	
+/*-----------------------------------------------------------END COKE TUNE-----------------------------------------------------------*/
+
+	
+	public function all_letter_space($string){
+		if(!preg_match('/[^a-zA-Z0-9\s]+/ism', $string)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 
-
-
-/*-----------------------------------------------------------CALLBACK-----------------------------------------------------------*/	
+/*-----------------------------------------------------------CALLBACK-----------------------------------------------------------*/
 	public function _string_angka_spasi($string){
 		if(preg_match('/[^a-zA-Z0-9\s]+/ism', $string)){
 			$this->form_validation->set_message('_string_angka_spasi', 'Bagian %s invalid string');
@@ -2265,14 +2403,34 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}else{
 			return true;
 		}
+	}	
+/*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/
+
+
+	public function cara_ikut_kompetisi()
+	{
+		$this->template->build('coketune/cara_ikut');
+	}	
+
+
+	// HAPUS !
+
+	/*public function create_table_pemenang(){
+		$str = "CREATE TABLE `default_pemenang` ( `pemenang_id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` INT(11) NOT NULL , `name` VARCHAR(250) NOT NULL , PRIMARY KEY (`pemenang_id`)) ENGINE = InnoDB;";
+		var_dump($this->db->query($str));
 	}
 
-	public function _check_reset_email($string){		
-		if(!$this->coketune_m->check_email_reset($mail)){
-			$this->form_validation->set_message('_check_reset_email', 'Email tidak ditemukan');
+	public function insert_pemenang(){
+		foreach(range('a','z') as $i) {
+			$d['user_id'] = 0;
+			$d['name'] = $i.' coke';
+			$this->db->insert('default_pemenang', $d);
 		}
-	}
-/*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/	
 
-
+		foreach(range('a','z') as $i) {
+			$d['user_id'] = 0;
+			$d['name'] = $i.' tune';
+			$this->db->insert('default_pemenang', $d);
+		}
+	}*/
 }

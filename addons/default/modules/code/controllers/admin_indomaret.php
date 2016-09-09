@@ -4,7 +4,7 @@ ini_set('memory_limit', '-1');
 
 class Admin_indomaret extends Admin_Controller
 {
-    protected $redirect = ADMIN_URL.'/code/indomaret';
+    protected $redirect;
 
     public function __construct()
     {
@@ -12,7 +12,7 @@ class Admin_indomaret extends Admin_Controller
 
         $this->load->model(array('code_m'));
         $this->lang->load('code');
-
+        $this->redirect = ADMIN_URL.'/code/indomaret';
         $this->template->active_section = 'indomaret';
     }
 
