@@ -100,16 +100,32 @@
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
 								<div class="custom-radio-button">
-									<?php 																			
-										$gender_m = ($this->input->post('gender') == 'm') ? 'checked' : ((isset($session['gender']) && $session['gender']=='male') ? 'checked' : '');
-										$gender_f = ($this->input->post('gender') == 'f') ? 'checked' : ((isset($session['female']) && $session['female']=='female') ? 'checked' : '');
+									<?php 
+										$gender_m = '';
+										$gender_f = '';
+										$gender_m_tambahan = '';
+										$gender_f_tambahan = '';										
+
+										if( $this->input->post('gender') == 'm' ){
+											$gender_m = 'checked';
+										}else if( isset($session['gender']) && $session['gender']=='male' ){
+											$gender_m = 'checked';
+											$gender_f_tambahan = ' disabled';
+										}
+
+										if( $this->input->post('gender') == 'f' ){
+											$gender_f = 'checked';
+										}else if( isset($session['gender']) && $session['gender']=='female' ){
+											$gender_f = 'checked';
+											$gender_m_tambahan = ' disabled';
+										}										
 									?>
-								    <input type="radio" id="m-option" name="gender" value="m" <?php echo $gender_m;?>>
+								    <input type="radio" id="m-option" name="gender" value="m" <?php echo $gender_m.$gender_m_tambahan;?>>
 								    <label for="m-option"><span></span>Laki-laki</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
 								<div class="custom-radio-button">
-								    <input type="radio" id="f-option" name="gender" value="f" <?php echo $gender_f;?>>
+								    <input type="radio" id="f-option" name="gender" value="f" <?php echo $gender_f.$gender_f_tambahan;?>>
 								    <label for="f-option"><span></span>Perempuan</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
