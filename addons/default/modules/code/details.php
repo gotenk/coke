@@ -27,6 +27,10 @@ class Module_code extends Module
                 'indomaret' => array(
                     'name' => 'code:indomaret_title',
                     'uri'  => ADMIN_URL.'/code/indomaret'
+                ),
+                'pemenang' => array(
+                    'name' => 'code:pemenang_title',
+                    'uri'  => ADMIN_URL.'/code/daftar_pemenang'
                 )
             )
         );

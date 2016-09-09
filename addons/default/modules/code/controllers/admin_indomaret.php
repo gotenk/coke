@@ -1,7 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-ini_set('memory_limit', '-1');
-
 class Admin_indomaret extends Admin_Controller
 {
     protected $redirect;
@@ -48,6 +46,7 @@ class Admin_indomaret extends Admin_Controller
                 'code_id'      => $code->code_id,
                 'code'         => $code->code,
                 'is_used'      => ((int) $code->is_used === 1) ? 'Yes' : 'No',
+                'user_id'      => $code->user_id,
                 'user'         => $code->display_name,
                 'date_used'    => ($code->date_used != '0000-00-00 00:00:00') ? date('d M Y', strtotime($code->date_used)) : null,
                 'date_created' => date('d M Y', strtotime($code->date_created)),
@@ -69,32 +68,13 @@ class Admin_indomaret extends Admin_Controller
         : $this->template->build('admin/indomaret/index');
     }
 
-    public function upload()
-    {
-        // Since this method will process many codes,
-        // disable access on staging or live environment
-        if (BASE_URL != 'http://coke-tune.dev/') {
-            redirect($this->redirect);
-        }
+    // public function delete($id = 0)
+    // {
+    //     $this->code_m->deleteData('indomaret_code', 'code_id', $id);
+    //     $this->session->set_flashdata('success', lang('code:delete_code'));
 
-        $file = FCPATH.'/addons/default/modules/code/data/code.xlsx';
-
-        if (is_file($file)) {
-            $this->codeProcessing($file);
-        }
-
-        $this->template
-            ->title($this->module_details['name'])
-            ->build('admin/indomaret/upload');
-    }
-
-    public function delete($id = 0)
-    {
-        $this->code_m->deleteData('indomaret_code', 'code_id', $id);
-        $this->session->set_flashdata('success', lang('code:delete_code'));
-
-        redirect($this->redirect);
-    }
+    //     redirect($this->redirect);
+    // }
 
     public function action()
     {
@@ -107,6 +87,10 @@ class Admin_indomaret extends Admin_Controller
                 foreach ($ids as $id) {
                     if ($action == 'delete') {
                         $this->code_m->deleteData('indomaret_code', 'code_id', $id);
+                    }
+
+                    if ($action == 'winner') {
+                        //
                     }
                 }
 
@@ -121,36 +105,5 @@ class Admin_indomaret extends Admin_Controller
         }
 
         redirect($this->redirect);
-    }
-
-    private function codeProcessing($input)
-    {
-        #http://stackoverflow.com/questions/9695695/how-to-use-phpexcel-to-read-data-and-insert-into-database
-        $this->load->library('excel');
-
-        try {
-            $inputFileType = PHPExcel_IOFactory::identify($input);
-            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-            $objPHPExcel = $objReader->load($input);
-        } catch(Exception $e) {
-            die('Error: '.$e->getMessage());
-        }
-
-        $sheet = $objPHPExcel->getSheet(0);
-        $highestRow = $sheet->getHighestRow();
-        $highestColumn = $sheet->getHighestColumn();
-
-        for ($row = 1; $row <= $highestRow; $row++){
-            $rowData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row, null, true, false);
-
-            $data = array(
-                'code'         => $rowData[0][0],
-                'date_created' => date('Y-m-d H:i:s')
-            );
-
-            $this->code_m->insertIgnore('indomaret_code', $data);
-        }
-
-        return true;
     }
 }

@@ -1,6 +1,6 @@
 <div class="table_action_buttons">
-    <button class="btn red" value="delete" name="btnAction" type="submit" disabled="">
-        <span>Delete</span>
+    <button class="btn green" value="winner" name="btnAction" type="submit" disabled="">
+        <span>Set As Winner</span>
     </button>
 </div>
 
@@ -19,14 +19,20 @@
     </thead>
     <tbody>
         <?php foreach ($data as $value) { ?>
-            <tr class="item" id="<?= $value['code_id']; ?>">
-                <td><?= form_checkbox('action_to[]', $value['code_id']); ?></td>
+            <tr class="item" id="<?= $value['user_id']; ?>">
+                <td>
+                    <?php if ($value['user_id']) { ?>
+                        <?= form_checkbox('action_to[]', $value['user_id']); ?>
+                    <?php } ?>
+                </td>
                 <td><?= $value['unique_code']; ?></td>
                 <td><?= $value['transaction_code']; ?></td>
                 <td><?= $value['user']; ?></td>
                 <td><?= $value['date_created']; ?></td>
                 <td style="padding-top:10px; text-align: center;">
-                    <a href="<?= site_url(ADMIN_URL.'/code/indomaret/delete/'.$value['code_id']); ?>" title="<?= lang('global:delete'); ?>" class="btn red" onclick="return confirm('Are you sure?');"><?= lang('global:delete'); ?></a>
+                    <?php if ($value['user_id']) { ?>
+                        <a href="<?= site_url(ADMIN_URL.'/code/alfamart/winner/'.$value['user_id']); ?>" title="<?= lang('code:winner'); ?>" class="btn green" onclick="return confirm('Are you sure?');"><?= lang('code:winner'); ?></a>
+                    <?php } ?>
                 </td>
             </tr>
         <?php } ?>
@@ -38,7 +44,7 @@
 <br>
 
 <div class="table_action_buttons">
-    <button class="btn red" value="delete" name="btnAction" type="submit" disabled="">
-        <span>Delete</span>
+    <button class="btn green" value="winner" name="btnAction" type="submit" disabled="">
+        <span>Set As Winner</span>
     </button>
 </div>

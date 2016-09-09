@@ -4,6 +4,7 @@ $lang['code:main_menu']              = 'Code';
 
 $lang['code:alfamart_title']         = 'Alfamart';
 $lang['code:indomaret_title']        = 'Indomaret';
+$lang['code:pemenang_title']         = 'Winner List';
 
 $lang['code:code_label']             = 'Code';
 $lang['code:unique_code_label']      = 'Unique Code';
@@ -16,6 +17,7 @@ $lang['code:yes_label']              = 'Yes';
 $lang['code:no_label']               = 'No';
 
 $lang['code:code_list']              = 'Code List';
-$lang['code:no_data']                = 'No code available';
+$lang['code:no_data']                = 'No data available';
 $lang['code:error']                  = 'An error has occured';
 $lang['code:delete_code']            = 'Success to delete code';
+$lang['code:winner']                 = 'Set As Winner';

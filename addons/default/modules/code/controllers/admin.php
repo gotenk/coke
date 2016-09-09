@@ -14,6 +14,49 @@ class Admin extends Admin_Controller
 
     public function index()
     {
-        redirect(ADMIN_URL.'/code/alfamart');
+        redirect(ADMIN_URL.'/code/daftar_pemenang');
+    }
+
+    public function daftar_pemenang()
+    {
+        $this->template->active_section = 'pemenang';
+
+        $parameter = array('is_used' => 'all');
+
+        if ($this->input->post('f_is_used')) {
+            $parameter['is_used'] = $this->input->post('f_is_used');
+        }
+
+        if ($this->input->post('f_code')) {
+            $parameter['code'] = $this->input->post('f_code');
+        }
+
+        $data = array();
+        $per_page = Settings::get('records_per_page');
+        $total_rows = $this->code_m->getPemenangList($parameter)->num_rows();
+        $pagination = create_pagination(ADMIN_URL.'/code/daftar_pemenang/index', $total_rows, $per_page, 5);
+        $lists = $this->code_m->getPemenangList($parameter, $pagination)->result();
+
+        foreach ($lists as $list) {
+            $data[] = array(
+                'pemenang_id' => $list->pemenang_id,
+                'user_id'     => $list->user_id,
+                'name'        => $list->name,
+            );
+        }
+
+        $this->input->is_ajax_request() and $this->template->set_layout(false);
+
+        $this->template
+            ->title($this->module_details['name'])
+            ->append_js('admin/filter.js')
+            ->set_partial('filters', 'admin/pemenang/partials/filters')
+            ->set('total_rows', $total_rows)
+            ->set('pagination', $pagination)
+            ->set('data', $data);
+
+        $this->input->is_ajax_request()
+        ? $this->template->build('admin/pemenang/tables/table')
+        : $this->template->build('admin/pemenang/index');
     }
 }

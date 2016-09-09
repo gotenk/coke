@@ -47,6 +47,7 @@ class Admin_alfamart extends Admin_Controller
                 'code_id'          => $code->code_id,
                 'unique_code'      => $code->unique_code,
                 'transaction_code' => $code->transaction_code,
+                'user_id'          => $code->user_id,
                 'user'             => $code->display_name,
                 'date_created'     => date('d M Y', strtotime($code->date_created)),
             );
@@ -67,13 +68,13 @@ class Admin_alfamart extends Admin_Controller
         : $this->template->build('admin/alfamart/index');
     }
 
-    public function delete($id = 0)
-    {
-        $this->code_m->deleteData('alfamart_code', 'code_id', $id);
-        $this->session->set_flashdata('success', lang('code:delete_code'));
+    // public function delete($id = 0)
+    // {
+    //     $this->code_m->deleteData('alfamart_code', 'code_id', $id);
+    //     $this->session->set_flashdata('success', lang('code:delete_code'));
 
-        redirect($this->redirect);
-    }
+    //     redirect($this->redirect);
+    // }
 
     public function action()
     {
@@ -86,6 +87,10 @@ class Admin_alfamart extends Admin_Controller
                 foreach ($ids as $id) {
                     if ($action == 'delete') {
                         $this->code_m->deleteData('alfamart_code', 'code_id', $id);
+                    }
+
+                    if ($action == 'winner') {
+                        //
                     }
                 }
 

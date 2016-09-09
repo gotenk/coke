@@ -42,7 +42,7 @@ class Code_m extends MY_Model
     public function getIndomaretCodeList($parameter, $pagination = null)
     {
         $this->db
-            ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name')
+            ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name, p.user_id')
             ->from('indomaret_code ic')
             ->join('profiles p', 'p.user_id = ic.user_id', 'left');
 
@@ -74,7 +74,7 @@ class Code_m extends MY_Model
     public function getAlfamartCodeList($parameter, $pagination = null)
     {
         $this->db
-            ->select('ac.*, p.display_name')
+            ->select('ac.*, p.display_name, p.user_id')
             ->from('alfamart_code ac')
             ->join('profiles p', 'p.user_id = ac.user_id', 'left');
 
@@ -102,5 +102,19 @@ class Code_m extends MY_Model
             ->or_where('unique_code', $data['alfamart_code'])
             ->get()
             ->row();
+    }
+
+    public function getPemenangList($parameter, $pagination = null)
+    {
+        $this->db
+            ->select('pe.*, pr.*')
+            ->from('pemenang pe')
+            ->join('profiles pr', 'pr.user_id = pe.user_id', 'left');
+
+        if (isset($pagination)) {
+            $this->db->limit($pagination['limit'], $pagination['offset']);
+        }
+
+        return $this->db->get();
     }
 }
