@@ -24,6 +24,7 @@ class Users extends Public_Controller
 		$this->load->helper(array('user', 'coketune'));
 		$this->lang->load('user');
 		$this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
 
 		$this->social_media_list =array('vine','instagram','twitter','facebook');
 	}
