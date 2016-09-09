@@ -31,7 +31,7 @@
 						<h3>step 3</h3>
 						<div class="text">
 							Masukkan kode unik dan kode transaksi (khusus pembelian di Alfamart) yang tertera di struk belanja kamu di
-							kolom yang tersedia di www.waktunyacokebreak.coca-cola.co.id
+							kolom yang tersedia di waktunyacokebreak.coca-cola.co.id
 						</div> <!-- .text -->
 					</figcaption>
 				</figure>
