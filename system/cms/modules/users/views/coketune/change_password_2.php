@@ -1,4 +1,4 @@
-<?php echo validation_errors() ?>
+<?php #echo validation_errors() ?>
 
 <main>
 	<section id="register" class="date-check fullScreen register">

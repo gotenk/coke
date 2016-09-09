@@ -2231,7 +2231,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$password	= $this->ion_auth->change_password($email, $old_password, $new_password);			
 
 			if($password){
-				redirect('logout');
+				redirect('profile');
+				#redirect('logout');
 			}			
 		}
 		$this->template->build('coketune/change_password_2');
