@@ -61,7 +61,7 @@
           <ul>
             <li><a href="{{ url:site uri="cara-mengikuti-kompetisi"}}">cara mengikuti kompetisi</a></li>
                       
-            <?php if($this->current_user):?>
+            <?php if($this->current_user):if($this->current_user->group == 'user'):?>
               <li>
                 <a href="{{ url:site uri="profile"}}">
                   <div class="row">
@@ -79,6 +79,9 @@
                 </a>
               </li>
               <li><a href="{{ url:site uri="logout"}}">keluar</a></li>
+              <?php else:?>              
+              <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
+              <?php endif;?>
             <?php else:?>
               <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
             <?php endif;?>
@@ -92,7 +95,7 @@
       <nav id="mobile">
         <ul>          
           
-          <?php if($this->current_user):?>
+          <?php if($this->current_user): if($this->current_user->group == 'user'):?>
             <li>
               <div class="row profile">
                 <div class="userProfile-image">
@@ -108,7 +111,7 @@
                 </div> <!-- .userProfile-info -->
               </div> <!-- .row -->
             </li>          
-          <?php endif;?>
+          <?php endif;endif;?>
 
           <li><a href="{{ url:site }}">beranda</a></li>
           <?php if(!$this->current_user):?>

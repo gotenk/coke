@@ -1938,6 +1938,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			redirect();
 		}
 
+		$this->_already_logged_in();
+
 		$this->validation_rules = array(
 			array(
 				'field' => 'email',
@@ -1954,12 +1956,13 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$this->form_validation->set_message('_check_login', 'KATA SANDI / EMAIL SALAH');
 		#$this->form_validation->set_error_delimiters('<br>', '');
 		$this->form_validation->set_rules($this->validation_rules);
-		if ($this->form_validation->run() or $this->ion_auth->logged_in())
+		if ($this->form_validation->run())
 		{
 			$redirect = $this->session->userdata('admin_redirect');
 			$this->session->unset_userdata('admin_redirect');			
 			redirect('profile');
 		}
+
 
 		if($this->input->post('register')){
 			$this->_already_logged_in();
@@ -2210,10 +2213,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	public function change_password_2()
-	{
-		if (!$this->current_user && !$this->current_user->group == 'user') {
-			redirect();
-		}
+	{		
+		$this->_restricted_area();
 		$this->form_validation->set_rules('old_password', 'Password Lama', 'required|trim|xss_clean|callback__password_complexcity['.$this->current_user->id.']');
 		$this->form_validation->set_rules('password', 'Password Baru', 'required|trim|xss_clean|callback__password_complexcity');
 		$this->form_validation->set_rules('re-password', 'Ulangi Password Baru', 'required|trim|xss_clean|matches[password]');
@@ -2234,7 +2235,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 		$this->template->build('coketune/change_password_2');
 	}
-	public function profile(){
+	public function profile(){		
 		$this->_restricted_area();
 
 		$total 	= $this->coketune_m->count_code_user($this->current_user->id);
@@ -2313,7 +2314,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	private function _restricted_area(){
-		if(!$this->current_user){
+		if(!$this->current_user || $this->current_user->group != 'user'){
 			redirect();
 		}
 	}
