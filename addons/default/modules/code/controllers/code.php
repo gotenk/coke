@@ -233,8 +233,16 @@ class Code extends Public_Controller
             return true;
         }
 
-        $this->form_validation->set_message('_alphanumeric', 'Kode input hanya boleh berupa angka dan huruf.');
+        $this->form_validation->set_message('_alphanumeric', 'Kode input hanya boleh berupa huruf dan angka.');
 
         return false;
+    }
+
+    public function add_vendor()
+    {
+        $str = "ALTER TABLE `default_alfamart_code` ADD COLUMN `vendor` VARCHAR(100) NOT NULL AFTER `user_id`";
+        var_dump($this->db->query($str));
+
+        return;
     }
 }
