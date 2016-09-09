@@ -134,6 +134,7 @@ class Code extends Public_Controller
     private function alfamartCodeCheck($data)
     {
         $existing = $this->code_m->checkExistingCode($data);
+        $this->session->unset_userdata('code_temp');
 
         if ($existing) {
             // Code has been used
@@ -173,6 +174,7 @@ class Code extends Public_Controller
     private function indomaretCodeCheck($data)
     {
         $code = $this->code_m->getSingleData('indomaret_code', 'code', $data['indomaret_code']);
+        $this->session->unset_userdata('code_temp');
 
         if ($code && $code->is_used == '0') {
             // Code found and has not been used

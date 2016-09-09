@@ -1,3 +1,5 @@
+<?php $code_temp = ($this->session->userdata('code_temp')) ? $this->session->userdata('code_temp') : array(); ?>
+
 <div id="codeBar">
 	<div class="column">
 		<div id="codeBar-inner" class="container">
@@ -24,18 +26,18 @@
 							<div id="tab-1" class="tab-container current">
 								<div class="input-panel">
 									<label>kode unik</label>
-									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="alfamart-code" name="alfamart_code"/>
+									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="alfamart-code" name="alfamart_code" value="<?=isset($code_temp['code'])?$code_temp['code']:''?>" />
 								</div> <!-- .input-panel -->
 								<div class="input-panel">
 									<label>kode transaksi</label>
-									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode transaksi di sini" id="transaction-code" name="transaction_code" />
+									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode transaksi di sini" id="transaction-code" name="transaction_code" value="<?=isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:''?>" />
 								</div> <!-- .input-panel -->
 							</div> <!-- #tab-1 -->
 
 							<div id="tab-2" class="tab-container">
 								<div class="input-panel">
 									<label>kode unik</label>
-									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="indomaret-code" name="indomaret_code" />
+									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="indomaret-code" name="indomaret_code" value="<?=isset($code_temp['code'])?$code_temp['code']:''?>" />
 								</div> <!-- .input-panel -->
 							</div> <!-- #tab-1 -->
 
