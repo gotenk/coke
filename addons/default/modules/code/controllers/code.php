@@ -176,13 +176,13 @@ class Code extends Public_Controller
 
         if ($code && $code->is_used == '0') {
             // Code found and has not been used
-            $data = array(
+            $input = array(
                 'user_id'   => $this->current_user->id,
                 'is_used'   => 1,
                 'date_used' => date('Y-m-d H:i:s'),
             );
 
-            $this->code_m->updateData('indomaret_code', $data, 'code', $data['indomaret_code']);
+            $this->code_m->updateData('indomaret_code', $input, 'code', $data['indomaret_code']);
 
             return array('message' => '1');
         }
