@@ -1,27 +1,27 @@
 <main>
 	<section id="register">
-		<div id="background-img" class="fluid-img <?=isset($session)?'register':''?>">
+		<div id="background-img" class="fluid-img register">
 			<div id="register-inner" class="container">
 				<div class="row">
 
 					<?php if (isset($session['twitter_id'])) { $display_name = explode(' ', $session['display_name']); ?>
 					<div class="panel profile" id="social-register">
 						<div class="userProfile-image">
-							<img src="<?=$session['image_url_https']?>"/>
+							<img src="<?php echo $session['image_url_https']?>"/>
 						</div> <!-- .image -->
 						<div class="userProfile-info">
-							<div class="name"><?=$display_name[0]?></div>
+							<div class="name"><?php echo $display_name[0]?></div>
 							<div class="detail"><span class="gender"></span></div>
-							<div class="detail"><span class="username-tw">@<?=$session['screen_name']?></span></div>
+							<div class="detail"><span class="username-tw">@<?php echo $session['screen_name']?></span></div>
 						</div> <!-- .userProfile-info -->
 					</div>
 					<?php } else  if (isset($session['fb_id'])) { $display_name = explode(' ', $session['display_name']); ?>
 					<div class="panel profile" id="social-register">
 						<div class="userProfile-image">
-							<img src="<?=$session['image_url']?>"/>
+							<img src="<?php echo $session['image_url']?>"/>
 						</div> <!-- .image -->
 						<div class="userProfile-info">
-							<div class="name"><?=$display_name[0]?></div>
+							<div class="name"><?php echo $display_name[0]?></div>
 							<div class="detail"><span class="gender"><?php echo $session['gender']?></span></div>
 						</div> <!-- .userProfile-info -->
 					</div> <!-- .panel -->
@@ -43,7 +43,7 @@
 					<?php } ?>
 
 
-					<div id="figure" class="wide panel"> <?= isset($session) ? 'lengkapi data kamu' : 'or' ?></div>
+					<div id="figure" class="wide panel"> <?php echo isset($session) ? 'lengkapi data kamu' : 'or' ?></div>
 					<div class="panel" id="email-register">
 						<?php if (!isset($session)){?>
 						<div class="title">
@@ -100,11 +100,11 @@
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
 								<div class="custom-radio-button">
-									<?php 
+									<?php
 										$gender_m = '';
 										$gender_f = '';
 										$gender_m_tambahan = '';
-										$gender_f_tambahan = '';										
+										$gender_f_tambahan = '';
 
 										if( $this->input->post('gender') == 'm' ){
 											$gender_m = 'checked';
@@ -118,7 +118,7 @@
 										}else if( isset($session['gender']) && $session['gender']=='female' ){
 											$gender_f = 'checked';
 											$gender_m_tambahan = ' disabled';
-										}										
+										}
 									?>
 								    <input type="radio" id="m-option" name="gender" value="m" <?php echo $gender_m.$gender_m_tambahan;?>>
 								    <label for="m-option"><span></span>Laki-laki</label>
@@ -148,18 +148,18 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
-								<input onkeypress="return textAlphanumeric(event)" id="code-id" type="text" value="<?=isset($code_temp['code'])?$code_temp['code']:set_value('kode_unik')?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
+								<input onkeypress="return textAlphanumeric(event)" id="code-id" type="text" value="<?php echo isset($code_temp['code'])?$code_temp['code']:set_value('kode_unik')?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
 								<?php echo form_error('kode_unik')?>
 								<?php if($code_err):?>
 									<p class="error"><?php echo $code_err;?></p>
 								<?php endif;?>
-								
+
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?=isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('code_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?php echo isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('code_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
-							<input type="hidden" name="vendor" value="<?=isset($code_temp['vendor'])?$code_temp['vendor']:''?>">
+							<input type="hidden" name="vendor" value="<?php echo isset($code_temp['vendor'])?$code_temp['vendor']:''?>">
 							<div class="column">
 								<div id="captcha">
 									<div>
