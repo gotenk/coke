@@ -15,11 +15,11 @@
 										<!-- <input type="text" id="day" placeholder="DD" class="center"/> -->
 										<?php echo form_dropdown('dd', $dob_day, (isset($sekarang[2])) ? ( $sekarang[2]) : '', 'class="center" id="day"' )?>
 									</div> <!-- .child -->
-									<div class="child">
+									<div class="child custom-selectbox">
 										<!-- <input type="text" id="month" placeholder="MM" class="center"/> -->
 										<?php echo form_dropdown('mm', $dob_month, (isset($sekarang[1])) ? ( $sekarang[1]) : '')?>
 									</div> <!-- .child -->
-									<div class="child">
+									<div class="child custom-selectbox">
 										<!-- <input type="text" id="year" placeholder="YYYY" class="center"/> -->
 										<?php echo form_dropdown('yy', $dob_year, (isset($sekarang[0])) ? ( $sekarang[0]) : '')?>
 									</div> <!-- .child -->
