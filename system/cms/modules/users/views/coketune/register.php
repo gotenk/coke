@@ -31,11 +31,11 @@
 						<div class="button-action-wrapper social-button">
 							<a href="<?php echo site_url('fb-connect')?>" class="button rounded login-button fb">
 								<i class="social-icon fb"></i>
-								<span>register with facebook</span>
+								<span>daftar dengan facebook</span>
 							</a>
 							<a href="<?php echo site_url('tw-connect')?>" class="button rounded login-button tw">
 								<i class="social-icon tw"></i>
-								<span>register with twitter</span>
+								<span>daftar dengan twitter</span>
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->

@@ -8,11 +8,11 @@
 						<div class="button-action-wrapper social-button">
 							<a href="{{ url:site uri="fb-connect"}}" class="button rounded login-button fb">
 								<i class="social-icon fb"></i>
-								<span>register with facebook</span>
+								<span>masuk dengan facebook</span>
 							</a>
 							<a href="{{url:site uri="tw-connect"}}" class="button rounded login-button tw">
 								<i class="social-icon tw"></i>
-								<span>register with twitter</span>
+								<span>masuk dengan twitter</span>
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
