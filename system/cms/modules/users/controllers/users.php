@@ -2409,7 +2409,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	// HAPUS !
 
-	public function create_table_pemenang(){
+	/*public function create_table_pemenang(){
 		$str = "CREATE TABLE `default_pemenang` ( `pemenang_id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` INT(11) NOT NULL , `name` VARCHAR(250) NOT NULL , PRIMARY KEY (`pemenang_id`)) ENGINE = InnoDB;";
 		var_dump($this->db->query($str));
 	}
@@ -2426,5 +2426,5 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$d['name'] = $i.' tune';
 			$this->db->insert('default_pemenang', $d);
 		}
-	}
+	}*/
 }
