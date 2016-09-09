@@ -2281,8 +2281,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if ($this->input->is_ajax_request())
 		{
 			$keyword = $this->input->post('keyword');
+
 			#$keyword = 'w coke';
-			if($keyword){
+			if($keyword && $this->all_letter_space($keyword)){
 				$search = $this->coketune_m->search_pemenang($keyword);
 				if($search){
 					$is_next = $this->coketune_m->is_berikutnya($search['offset'], 20);
@@ -2339,7 +2340,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 /*-----------------------------------------------------------END COKE TUNE-----------------------------------------------------------*/
 
-
+	
+	public function all_letter_space($string){
+		if(!preg_match('/[^a-zA-Z0-9\s]+/ism', $string)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 
 /*-----------------------------------------------------------CALLBACK-----------------------------------------------------------*/
