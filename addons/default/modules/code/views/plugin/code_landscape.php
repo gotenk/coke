@@ -14,6 +14,9 @@
 							<li class="vendor-list current" data-tab="tab-1" data-name="alfamart">
 								<a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_alfamart.png" }}" alt=""/></a>
 							</li>
+							<li class="vendor-list" data-tab="tab-1" data-name="alfamidi">
+								<a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_alfamidi.png" }}" alt=""/></a>
+							</li>
 							<li class="vendor-list" data-tab="tab-2" data-name="indomaret">
 							  <a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_indomaret.png" }}" alt=""/></a>
   							</li>

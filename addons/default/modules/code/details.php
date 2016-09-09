@@ -46,6 +46,7 @@ class Module_code extends Module
         $alfamart_code_fields = array(
             'code_id'          => array('type' => 'INT', 'constraint' => 11, 'auto_increment' => true, 'primary' => true),
             'user_id'          => array('type' => 'INT', 'constraint' => 11),
+            'vendor'           => array('type' => 'VARCHAR', 'constraint' => 100),
             'unique_code'      => array('type' => 'VARCHAR', 'constraint' => 100),
             'transaction_code' => array('type' => 'VARCHAR', 'constraint' => 100),
             'date_created'     => array('type' => 'DATETIME'),
