@@ -20,7 +20,7 @@ class Users extends Public_Controller
 		parent::__construct();
 
 		// Load the required classes
-		$this->load->model(array('user_m', 'profile_m', 'coketune_m', 'code/code_m'));		
+		$this->load->model(array('user_m', 'profile_m', 'coketune_m', 'code/code_m'));
 		$this->load->helper(array('user', 'coketune'));
 		$this->lang->load('user');
 		$this->load->library('form_validation');
@@ -1674,7 +1674,7 @@ class Users extends Public_Controller
             $me =array();
             try
             {
-                $me = $this->facebook->api('/me?fields=id,email,name,gender,birthday');                
+                $me = $this->facebook->api('/me?fields=id,email,name,gender,birthday');
             }
             catch(FacebookApiException $e)
             {
@@ -1826,7 +1826,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				// check
 		    	if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 					redirect('register-failed');
-				}				
+				}
 				if(!$this->session->userdata($this->sess_name_dob)){
 					$this->session->set_userdata('last_coke_uri');
 					redirect('dob');
@@ -1914,7 +1914,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'field' => 'kode_transaksi',
 			'label' => 'Kode Transaksi',
 			'rules' => 'trim|xss_clean|callback__string_angka_spasi',
-		),		
+		),
 		/*array(
 			'field'=>'dd',
 			'label'=>'Day',
@@ -1971,7 +1971,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if ($this->form_validation->run())
 		{
 			$redirect = $this->session->userdata('admin_redirect');
-			$this->session->unset_userdata('admin_redirect');			
+			$this->session->unset_userdata('admin_redirect');
 			redirect('profile');
 		}
 
@@ -2014,16 +2014,17 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if($this->input->post('register')){
 			$dd = $this->input->post('dd');
 			$mm = $this->input->post('mm');
-			$yy = $this->input->post('yy');			
-			if($this->form_validation->run()){				
+			$yy = $this->input->post('yy');
+			if($this->form_validation->run()){
 				// cek DOB
 				$dob = $this->_check_dob($yy, $mm, $dd);
 				$dob_err = $dob;
 				if($dob == ""){
-					// cek code					
+					// cek code
 					$kode_unik 		= $this->input->post('kode_unik');
 					$kode_transaksi = $this->input->post('kode_transaksi');
 					$cek_kode = $this->_check_code($kode_unik, $kode_transaksi);
+					$vendor = $this->input->post('vendor');
 					#var_dump($cek_kode);exit();
 					if(!$cek_kode){
 						$display_name 	= $this->input->post('name');
@@ -2045,7 +2046,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							$connect_with = $this->session->userdata($this->sess_connect_with);
 							$profile_data['phone'] = $this->input->post('phone');
 							$profile_data['gender'] = $this->input->post('gender');
-							$profile_data['dob_date_format'] = "{$yy}-{$mm}-{$dd}";						
+							$profile_data['dob_date_format'] = "{$yy}-{$mm}-{$dd}";
 
 							if($connect_with == 'fb'){
 								$imgfb = $this->grab_facebook_picture($id); //download img
@@ -2062,7 +2063,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 								$profile_data['photo_profile'] 		= $imgtw;
 							}
 
-							$profile_reg = $this->coketune_m->register_profile($profile_data, $id);							
+							$profile_reg = $this->coketune_m->register_profile($profile_data, $id);
 
 							// berhasil update profile
 							if($profile_reg){
@@ -2070,7 +2071,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 								if($kode_unik && !$kode_transaksi){ // indomaret
 									$this->insert_indomaret_code($id, $kode_unik);
 								}else if($kode_unik && $kode_transaksi){
-									$this->insert_alfamart_code($id, $kode_unik, $kode_transaksi);
+									$this->insert_alfamart_code($id, $kode_unik, $kode_transaksi, $vendor);
 								}
 
 								//unset session
@@ -2094,7 +2095,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					}else{
 						$code_err = $cek_kode;
 					}// end cek code
-				}else{	
+				}else{
 					// dob salah
 					$this->session->unset_userdata($this->sess_name_dob);
 					$this->session->set_userdata($this->sess_name_dob_status, 'false');
@@ -2196,7 +2197,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 			if ($email_status) {
 				/*belum dapat kirim email*/
-				$data_send = $this->send_email_confirmation($email,$email_status->id);				
+				$data_send = $this->send_email_confirmation($email,$email_status->id);
 			}
 
 			// if($email_status){
@@ -2211,8 +2212,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			// 		$link = site_url('change-password/'.$token);
 			// 		pre('link to test '. $link);
 			// 		pre('success, redirrect ndi?');
-			// 	}				
-			// }			
+			// 	}
+			// }
 		}
 
 		$this->template
@@ -2228,8 +2229,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		$this->form_validation->set_rules('password', 'Password', 'required|trim|xss_clean|callback__password_complexcity');
 		$this->form_validation->set_rules('re-password', 'Ulangi Password', 'required|trim|xss_clean|matches[password]');
 		if($this->form_validation->run()){
-			$pass = $this->input->post('password');				
-			$password	= $this->ion_auth_model->hash_password($pass, $istoken->salt);			
+			$pass = $this->input->post('password');
+			$password	= $this->ion_auth_model->hash_password($pass, $istoken->salt);
 
 			$dnew['password'] = $password;
 			$dnew['forgotten_password_code'] = '';
@@ -2237,7 +2238,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 			if($updt){
 				redirect('login');
-			}			
+			}
 		}
 
 		$this->template
@@ -2245,12 +2246,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 	public function change_password_2()
-	{		
+	{
 		$this->_restricted_area();
 		$this->form_validation->set_rules('old_password', 'Password Lama', 'required|trim|xss_clean|callback__password_complexcity['.$this->current_user->id.']');
 		$this->form_validation->set_rules('password', 'Password Baru', 'required|trim|xss_clean|callback__password_complexcity');
 		$this->form_validation->set_rules('re-password', 'Ulangi Password Baru', 'required|trim|xss_clean|matches[password]');
-		
+
 		if($this->form_validation->run()){
 
 			$email			= $this->current_user->email;
@@ -2259,23 +2260,23 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 
 
-			$password	= $this->ion_auth->change_password($email, $old_password, $new_password);			
+			$password	= $this->ion_auth->change_password($email, $old_password, $new_password);
 
-			if($password){				
+			if($password){
 				redirect('register');
-			}			
+			}
 		}
 		$this->template->build('coketune/change_password_2');
 	}
-	public function profile(){		
+	public function profile(){
 		$this->_restricted_area();
 
 		$total 	= $this->coketune_m->count_code_user($this->current_user->id);
-		$codes 	= $this->coketune_m->code_user($this->current_user->id);	
-		$user 	= $this->profile_m->get_profile(array('user_id'=>$this->current_user->id));	
+		$codes 	= $this->coketune_m->code_user($this->current_user->id);
+		$user 	= $this->profile_m->get_profile(array('user_id'=>$this->current_user->id));
 		$this->session->set_userdata('display_name', $user->display_name);
-		$this->session->set_userdata('photo_profile', $user->photo_profile);			
-			
+		$this->session->set_userdata('photo_profile', $user->photo_profile);
+
 
 		$this->template
 				->set('total', $total)
@@ -2299,7 +2300,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 
 		$this->template
-			->title('Daftar Pemenang')			
+			->title('Daftar Pemenang')
 			->set('home', 'home')
 			->set('is_next', $is_next)
 			->set('offset', $offset)
@@ -2323,10 +2324,10 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					$data['is_next'] 	= $is_next;
 					$data['offset'] 	= $search['offset'];
 					$data['winners'] 	= $search['pemenangs'];
-					$data['selected'] 	= $search['pemenang_id'];					
+					$data['selected'] 	= $search['pemenang_id'];
 					$this->load->view('coketune/winner_table_search', $data);
-				}				
-			}			
+				}
+			}
 		}
 	}
 
@@ -2364,7 +2365,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$error = 'wrong format.';
 		}
 		return $error;
-	}	
+	}
 
 	// HAPUS
 	public function deb(){
@@ -2378,24 +2379,24 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 /*-----------------------------------------------------------CODE-----------------------------------------------------------*/
 	// error return string
-	private function _check_code($code, $transaksi=''){				
+	private function _check_code($code, $transaksi=''){
 		$result = "Kode yang dimasukkan salah atau sudah pernah digunakan.";
 		if($code && $transaksi){
 			$cocok = confidential($transaksi);
 			if($cocok != $code){
 				return $result;
 			}
-		}elseif($code && !$transaksi){				
-			$code = $this->code_m->getSingleData('indomaret_code', 'code', $code);			
-			if( $code ){					
+		}elseif($code && !$transaksi){
+			$code = $this->code_m->getSingleData('indomaret_code', 'code', $code);
+			if( $code ){
 				if( $code->is_used != '0' ){
 					return $result;
-				}				
+				}
 			}else{
 				return $result;
-			}			
-		}		
-	}	
+			}
+		}
+	}
 
 	/*public function tess(){
 		var_dump($this->_check_code('CX5Q2452',''));
@@ -2409,10 +2410,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
         );
         $this->code_m->updateData('indomaret_code', $input, 'code', $code);
     }
-    
-    private function insert_alfamart_code($user_id, $code, $transaksi){
+
+    private function insert_alfamart_code($user_id, $code, $transaksi, $vendor){
         $success = array(
             'user_id'          => $user_id,
+            'vendor'           => $vendor,
             'unique_code'      => $code,
             'transaction_code' => $transaksi,
             'date_created'     => date('Y-m-d H:i:s'),
@@ -2424,7 +2426,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 
 
-	
+
 	public function all_letter_space($string){
 		if(!preg_match('/[^a-zA-Z0-9\s]+/ism', $string)){
 			return true;
@@ -2479,14 +2481,14 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}else{
 			return true;
 		}
-	}	
+	}
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/
 
 
 	public function cara_ikut_kompetisi()
 	{
 		$this->template->build('coketune/cara_ikut');
-	}	
+	}
 
 
 	// HAPUS !

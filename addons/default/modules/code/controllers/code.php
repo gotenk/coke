@@ -237,12 +237,4 @@ class Code extends Public_Controller
 
         return false;
     }
-
-    public function add_vendor()
-    {
-        $str = "ALTER TABLE `default_alfamart_code` ADD COLUMN `vendor` VARCHAR(100) NOT NULL AFTER `user_id`";
-        var_dump($this->db->query($str));
-
-        return;
-    }
 }
