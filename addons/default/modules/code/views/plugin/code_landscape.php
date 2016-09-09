@@ -14,39 +14,39 @@
 							</li>
 							<li data-tab="tab-2" data-name="indomaret">
 							  <a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_indomaret.png" }}" alt=""/></a>
-  							</li>									
-						</ul> <!-- #tab -->									
+  							</li>
+						</ul> <!-- #tab -->
 					</div> <!-- .column -->
-					
+
 					<?= form_open('code-check', array('id' => 'input-id')); ?>
 						<div id="input-inner">
-							
+
 							<div id="tab-1" class="tab-container current">
 								<div class="input-panel">
 									<label>kode unik</label>
-									<input type="text" placeholder="ketik kode unik di sini" id="alfamart-code" name="alfamart_code"/>
+									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="alfamart-code" name="alfamart_code"/>
 								</div> <!-- .input-panel -->
 								<div class="input-panel">
 									<label>kode transaksi</label>
-									<input type="text" placeholder="ketik kode transaksi di sini" id="transaction-code" name="transaction_code" />
+									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode transaksi di sini" id="transaction-code" name="transaction_code" />
 								</div> <!-- .input-panel -->
 							</div> <!-- #tab-1 -->
 
 							<div id="tab-2" class="tab-container">
 								<div class="input-panel">
 									<label>kode unik</label>
-									<input type="text" placeholder="ketik kode unik di sini" id="indomaret-code" name="indomaret_code" />
-								</div> <!-- .input-panel -->											
+									<input onkeypress="return textAlphanumeric(event)" type="text" placeholder="ketik kode unik di sini" id="indomaret-code" name="indomaret_code" />
+								</div> <!-- .input-panel -->
 							</div> <!-- #tab-1 -->
-																	
-						</div> <!-- #input-inner -->																		
+
+						</div> <!-- #input-inner -->
 					<?= form_close(); ?>
-					
+
 					<div class="psst">
 		                <span class="error-m message">
 		                </span><!-- .error-m -->
 		            </div> <!-- .psst -->
-					
+
 				  	<div id="captcha">
 		                <div style="margin-top: 10px;" class="test">
 		                    <script type="text/javascript">
@@ -67,12 +67,12 @@
 		                    <input type="hidden" id="recaptcha-response-field" name="recaptcha_response_field" value="" readonly="readonly" />
 		                </div>
 		            </div> <!-- #captcha -->
-					
+
 					<div class="button-action-wrapper">
 		                <input type="hidden" name="vendor" id="vendor-name" value="" readonly="readonly">
 		                <a href="#" id="code-btn" class="button rounded border">submit</a>
 		            </div> <!-- .button-action-wrapper -->
-					
+
 				</div> <!-- .panel -->
 			</div> <!-- .content -->
 		</div> <!-- .column -->
