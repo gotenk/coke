@@ -97,12 +97,12 @@
 							<div class="column half">
 								<label class="sub-title">jenis kelamin<span>*</span></label>
 								<div class="custom-radio-button">
-								    <input type="radio" id="m-option" name="gender" value="m" <?php echo ($this->input->post('gender') == 'male') ? 'checked' : '';?>>
+								    <input type="radio" id="m-option" name="gender" value="m" <?php echo ($this->input->post('gender') == 'm') ? 'checked' : '';?>>
 								    <label for="m-option"><span></span>Laki-laki</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
 								<div class="custom-radio-button">
-								    <input type="radio" id="f-option" name="gender" value="f" <?php echo ($this->input->post('gender') == 'female') ? 'checked' : '';?>>
+								    <input type="radio" id="f-option" name="gender" value="f" <?php echo ($this->input->post('gender') == 'f') ? 'checked' : '';?>>
 								    <label for="f-option"><span></span>Perempuan</label>
 								    <div class="check"></div>
 								</div> <!-- .custom-radio-button -->
