@@ -73,6 +73,7 @@ $route['change-password(/:any)?']	          = 'users/change_password$1';
 $route['cara-mengikuti-kompetisi']	= 'users/cara_ikut_kompetisi';
 $route['daftar-pemenang']	= 'users/daftar_pemenang';
 $route['logout']	= 'users/logout';
+$route['search-pemenang']	= 'users/search_pemenang';
 //$route['vine-connect']					= 'users/vine_login';
 //$route['instagram-connect']				= 'users/instagram_callback';
 //$route['check-parent-email']			= 'users/check_parent_email';

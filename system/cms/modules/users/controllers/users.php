@@ -2277,10 +2277,22 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$this->template->build('coketune/winner_frame');
 	}
 
-	public function daftar_pemenang_search(){
+	public function search_pemenang(){
 		if ($this->input->is_ajax_request())
 		{
-			
+			$keyword = $this->input->post('keyword');
+			#$keyword = 'w coke';
+			if($keyword){
+				$search = $this->coketune_m->search_pemenang($keyword);
+				if($search){
+					$is_next = $this->coketune_m->is_berikutnya($search['offset'], 20);
+					$data['is_next'] 	= $is_next;
+					$data['offset'] 	= $search['offset'];
+					$data['winners'] 	= $search['pemenangs'];
+					$data['selected'] 	= $search['pemenang_id'];					
+					$this->load->view('coketune/winner_table_search', $data);
+				}				
+			}			
 		}
 	}
 
@@ -2382,11 +2394,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	public function cara_ikut_kompetisi()
 	{
 		$this->template->build('coketune/cara_ikut');
-	}
-
-	public function testing(){
-		$this->coketune_m->search_pemenang();
-	}
+	}	
 
 
 	// HAPUS !

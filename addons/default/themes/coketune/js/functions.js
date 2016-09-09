@@ -73,9 +73,9 @@ $(document).ready(function(){
 
     function ngajax_search(keyword){
         $.ajax({
-            url: BASE_URL+'daftar-pemenang-search',
+            url: BASE_URL+'search-pemenang',
             type: 'post',            
-            data: $.extend(tokens, {keyword:keyword, search:search}),
+            data: $.extend(tokens, {keyword:keyword}),
             success: function (result) {                
                 $('#winner-result').empty();
                 $('#winner-result').append(result);

@@ -66,17 +66,50 @@ class Coketune_m extends MY_Model
                     ->get('pemenang', $limit, $newoffset);
         return ($q->row()) ? $newoffset : 0;
     }
- 
-    public function search_pemenang(){
-        $total = 50;        
-        $limit = 10;
+    
+
+    // cari pemenang
+    public function search_pemenang($keyword){
+        $total = $this->count_by();        
+        $limit = 20;
 
         $range = $this->_create_range(0, $limit, $total, array());
+        #pre($range);
+        $str = "SELECT *
+                FROM 
+                (
+                    SELECT *,
+                    @rownum := @rownum + 1 AS posisi
+                    FROM default_pemenang p
+                    JOIN (SELECT @rownum := 0) r
+                )sub
+                WHERE sub.name = '$keyword' ";        
+        $pemenang = $this->db->query($str)->row();
+        #pre($pemenang);
+        if($pemenang){
+            $posisi = ($pemenang->posisi - 1);
+            #pre($posisi);
+            $offset = 0;
+            foreach($range as $k=>$v){
+                if($posisi >=$v[0] && $posisi<=$v[1]){
+                    $offset = $v[0];                    
+                    break;
+                }
+            }
+            $pemenangs = $this->data_pemenang($offset, $limit);
+            #pre($this->db->last_query());
 
-        pre($range);
+            $result['pemenangs']    = $pemenangs;
+            $result['pemenang_id']  = $pemenang->pemenang_id;
+            $result['offset']       = $offset;
+            return $result;          
+        }
+
+        return $pemenang;
 
     }
- 
+    
+    // buat nyari offset
     private function _create_range($offset, $limit, $total, $result){ 
         $next = $offset + $limit;
 
@@ -86,7 +119,7 @@ class Coketune_m extends MY_Model
                 $result = $this->_create_range($next, $limit, $total, $result);
             }
         }else{
-            $result[] = array($next, ( ($next+$limit) - 1) );
+            $result[] = array($offset, ( ($next) - 1) );
             if($next < $total){
                 $result = $this->_create_range($next, $limit, $total, $result);
             }
@@ -95,6 +128,7 @@ class Coketune_m extends MY_Model
         return $result;
     }
 
+    // list code inputan dari user
     public function code_user($user_id, $offset='', $limit=''){
         $str = "SELECT * FROM
                 (
@@ -115,6 +149,8 @@ class Coketune_m extends MY_Model
         return $result->row();
     }
 
+    // count data inputan user
+    // belom
     public function count_code_user($user_id){
         $str = "SELECT COUNT(*) AS total FROM
                 (
