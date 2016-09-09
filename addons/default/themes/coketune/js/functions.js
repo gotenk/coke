@@ -31,4 +31,55 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#winner-result').on('click', '#prev', function(e){
+        e.preventDefault();
+        var offset = parseInt($('#pagination-pemenang').attr('data-offset'));
+        var is_next = parseInt($('#pagination-pemenang').attr('data-is-next'));
+        if(offset!=0){            
+            ngajax( (offset - 20));
+        }
+    });
+    
+    $('#winner-result').on('click', '#next', function(e){
+        e.preventDefault();        
+        var is_next = parseInt($('#pagination-pemenang').attr('data-is-next'));
+        if(is_next!=0){            
+            ngajax(is_next);
+        }
+    });
+
+    $('#icon-search').click(function(){
+        ngajax_search($('#search').val());
+    });
+
+    $('#search').keyup(function(e){
+        if(e.keyCode == 13){
+            ngajax_search($('#search').val());
+        }        
+    });
+
+    function ngajax(next){        
+        $.ajax({
+            url: BASE_URL+'daftar-pemenang',
+            type: 'post',            
+            data: $.extend(tokens, {f_offset:next}),
+            success: function (result) {                
+                $('#winner-result').empty();
+                $('#winner-result').append(result);
+            }
+        });
+    }
+
+    function ngajax_search(keyword){
+        $.ajax({
+            url: BASE_URL+'daftar-pemenang-search',
+            type: 'post',            
+            data: $.extend(tokens, {keyword:keyword, search:search}),
+            success: function (result) {                
+                $('#winner-result').empty();
+                $('#winner-result').append(result);
+            }
+        });
+    }
 });

@@ -11,12 +11,14 @@
 			<div class="row">
 				<div id="list">
 					<div class="search-panel">
-						<label for="search"><i class="icon only icon-search">search</i></label>
+						<label for="search" id="icon-search"><i class="icon only icon-search">search</i></label>
 						<input id="search" type="text" placeholder="Cari nama kamu..."/>
 					</div> <!-- .search-panel -->
 
-					<?php $this->load->view('coketune/winner_table');?>
-
+					<div id="winner-result">
+					<?php $this->load->view('coketune/winner_table');?>									
+					</div> <!-- #winner-result -->
+					
 				</div> <!-- #list -->		
 			</div> <!-- .row -->
 		</div> <!-- #winnertable-inner -->						

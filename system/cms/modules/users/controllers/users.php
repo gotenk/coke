@@ -2255,11 +2255,10 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	public function daftar_pemenang(){
 		$limit = 20;
 		$winners = array();
-		$is_next = '';
-		$offset = 0;
+		$offset = $this->input->post('f_offset') ? ((int) $this->input->post('f_offset')) : 0;
 
-
-		#$winners = $this->coketune_m->data_pemenang($offset, $limit);
+		$winners = $this->coketune_m->data_pemenang($offset, $limit);
+		$is_next = $this->coketune_m->is_berikutnya($offset, $limit);
 
 		if ($this->input->is_ajax_request())
 		{
@@ -2267,14 +2266,22 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		}
 
 		$this->template
-			->title('Daftar Pemenang')
-			->set('is_next', $is_next)
+			->title('Daftar Pemenang')			
 			->set('home', 'home')
+			->set('is_next', $is_next)
+			->set('offset', $offset)
 			->set('winners', $winners);
 
 		$this->input->is_ajax_request() ?
 			$this->template->build('coketune/winner_table') :
 			$this->template->build('coketune/winner_frame');
+	}
+
+	public function daftar_pemenang_search(){
+		if ($this->input->is_ajax_request())
+		{
+			
+		}
 	}
 
 
@@ -2382,4 +2389,24 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 
+	// HAPUS !
+
+	public function create_table_pemenang(){
+		$str = "CREATE TABLE `default_pemenang` ( `pemenang_id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` INT(11) NOT NULL , `name` VARCHAR(250) NOT NULL , PRIMARY KEY (`pemenang_id`)) ENGINE = InnoDB;";
+		var_dump($this->db->query($str));
+	}
+
+	public function insert_pemenang(){
+		foreach(range('a','z') as $i) {
+			$d['user_id'] = 0;
+			$d['name'] = $i.' coke';
+			$this->db->insert('default_pemenang', $d);
+		}
+
+		foreach(range('a','z') as $i) {
+			$d['user_id'] = 0;
+			$d['name'] = $i.' tune';
+			$this->db->insert('default_pemenang', $d);
+		}
+	}
 }

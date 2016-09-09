@@ -47,7 +47,7 @@ class Coketune_m extends MY_Model
 
 
     public function data_pemenang($offset, $limit){
-        return $this->db->get('pemenang', $limit, $offset);
+        return $this->db->get('pemenang', $limit, $offset)->result();
     }
 
     public function count_by(){
@@ -56,11 +56,15 @@ class Coketune_m extends MY_Model
     }
 
     public function is_berikutnya($offset, $limit){
+        if($offset == 0){
+            $newoffset = $limit;
+        }else{
+            $newoffset = $offset + $limit;
+        }
         $q  = $this->db
-                    ->select('id_pemenang')
-                    ->limit(1)
-                    ->get('pemenang');
-        return $q->row();
+                    ->select('pemenang_id')
+                    ->get('pemenang', $limit, $newoffset);
+        return ($q->row()) ? $newoffset : 0;
     }
  
     public function search_pemenang(){
