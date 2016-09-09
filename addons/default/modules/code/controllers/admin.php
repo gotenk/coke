@@ -2,13 +2,15 @@
 
 class Admin extends Admin_Controller
 {
+    protected $redirect;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->load->model(array('code_m'));
         $this->lang->load('code');
-
+        $this->redirect = ADMIN_URL.'/code/daftar_pemenang';
         $this->template->active_section = 'code';
     }
 
@@ -21,14 +23,10 @@ class Admin extends Admin_Controller
     {
         $this->template->active_section = 'pemenang';
 
-        $parameter = array('is_used' => 'all');
+        $parameter = array();
 
-        if ($this->input->post('f_is_used')) {
-            $parameter['is_used'] = $this->input->post('f_is_used');
-        }
-
-        if ($this->input->post('f_code')) {
-            $parameter['code'] = $this->input->post('f_code');
+        if ($this->input->post('f_name')) {
+            $parameter['name'] = $this->input->post('f_name');
         }
 
         $data = array();
@@ -58,5 +56,16 @@ class Admin extends Admin_Controller
         $this->input->is_ajax_request()
         ? $this->template->build('admin/pemenang/tables/table')
         : $this->template->build('admin/pemenang/index');
+    }
+
+    public function winner($id = 0)
+    {
+        $exist = $this->code_m->setAsWinner($id);
+
+        if ($exist) {
+            $this->session->set_flashdata('success', lang('code:set_as_winner'));
+        }
+
+        redirect($this->redirect);
     }
 }

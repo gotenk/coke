@@ -50,6 +50,7 @@ class Admin_indomaret extends Admin_Controller
                 'user'         => $code->display_name,
                 'date_used'    => ($code->date_used != '0000-00-00 00:00:00') ? date('d M Y', strtotime($code->date_used)) : null,
                 'date_created' => date('d M Y', strtotime($code->date_created)),
+                'pemenang_id'  => $code->pemenang_id,
             );
         }
 
@@ -68,14 +69,6 @@ class Admin_indomaret extends Admin_Controller
         : $this->template->build('admin/indomaret/index');
     }
 
-    // public function delete($id = 0)
-    // {
-    //     $this->code_m->deleteData('indomaret_code', 'code_id', $id);
-    //     $this->session->set_flashdata('success', lang('code:delete_code'));
-
-    //     redirect($this->redirect);
-    // }
-
     public function action()
     {
         if ($this->input->method() == 'post') {
@@ -85,12 +78,8 @@ class Admin_indomaret extends Admin_Controller
 
             if ($ids) {
                 foreach ($ids as $id) {
-                    if ($action == 'delete') {
-                        $this->code_m->deleteData('indomaret_code', 'code_id', $id);
-                    }
-
                     if ($action == 'winner') {
-                        //
+                        $success = $this->code_m->setAsWinner($id);
                     }
                 }
 
@@ -98,7 +87,7 @@ class Admin_indomaret extends Admin_Controller
             }
 
             if ($success) {
-                $this->session->set_flashdata('success', lang('code:'.$action.'_code'));
+                $this->session->set_flashdata('success', lang('code:set_as_winner'));
             } else {
                 $this->session->set_flashdata('error', lang('code:error'));
             }

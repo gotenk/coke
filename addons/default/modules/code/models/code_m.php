@@ -42,9 +42,10 @@ class Code_m extends MY_Model
     public function getIndomaretCodeList($parameter, $pagination = null)
     {
         $this->db
-            ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name, p.user_id')
+            ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name, p.user_id, pe.pemenang_id')
             ->from('indomaret_code ic')
-            ->join('profiles p', 'p.user_id = ic.user_id', 'left');
+            ->join('profiles p', 'p.user_id = ic.user_id', 'left')
+            ->join('pemenang pe', 'pe.user_id = ic.user_id', 'left');
 
         if (isset($parameter['is_used'])) {
             if ($parameter['is_used'] == 'yes') {
@@ -74,9 +75,10 @@ class Code_m extends MY_Model
     public function getAlfamartCodeList($parameter, $pagination = null)
     {
         $this->db
-            ->select('ac.*, p.display_name, p.user_id')
+            ->select('ac.*, p.display_name, p.user_id, pe.pemenang_id')
             ->from('alfamart_code ac')
-            ->join('profiles p', 'p.user_id = ac.user_id', 'left');
+            ->join('profiles p', 'p.user_id = ac.user_id', 'left')
+            ->join('pemenang pe', 'pe.user_id = ac.user_id', 'left');
 
         if (isset($parameter['unique_code'])) {
             $this->db->like('ac.unique_code', $parameter['unique_code']);
@@ -111,10 +113,38 @@ class Code_m extends MY_Model
             ->from('pemenang pe')
             ->join('profiles pr', 'pr.user_id = pe.user_id', 'left');
 
+        if (isset($parameter['name'])) {
+            $this->db->like('pe.name', $parameter['name']);
+        }
+
         if (isset($pagination)) {
             $this->db->limit($pagination['limit'], $pagination['offset']);
         }
 
         return $this->db->get();
+    }
+
+    public function setAsWinner($id)
+    {
+        $exist = $this->getSingleData('pemenang', 'user_id', $id);
+
+        // Pemenang is not exist - set as one?
+        if (!$exist) {
+            $profile = $this->getSingleData('profiles', 'user_id', $id);
+
+            // Is user exist? - If yes, set as winner
+            if ($profile) {
+                $data = array(
+                    'user_id' => $id,
+                    'name'    => $profile->display_name
+                );
+
+                $this->insertData('pemenang', $data);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

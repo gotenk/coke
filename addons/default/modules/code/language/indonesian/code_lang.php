@@ -2,7 +2,7 @@
 
 $lang['code:main_menu']              = 'Kode';
 
-$lang['code:alfamart_title']         = 'Alfamart';
+$lang['code:alfamart_title']         = 'Alfamart / Alfamidi';
 $lang['code:indomaret_title']        = 'Indomaret';
 $lang['code:pemenang_title']         = 'Daftar Pemenang';
 
@@ -15,9 +15,12 @@ $lang['code:date_used_label']        = 'Tanggal Digunakan';
 $lang['code:date_created_label']     = 'Tanggal Dibuat';
 $lang['code:yes_label']              = 'Ya';
 $lang['code:no_label']               = 'Tidak';
+$lang['code:number_label']           = 'No.';
+$lang['code:name_label']             = 'Nama';
 
 $lang['code:code_list']              = 'Daftar Kode';
 $lang['code:no_data']                = 'Tidak ada data tersedia';
 $lang['code:error']                  = 'Sebuah kesalahan terjadi';
 $lang['code:delete_code']            = 'Berhasil menghapus kode';
 $lang['code:winner']                 = 'Pilih Sebagai Pemenang';
+$lang['code:set_as_winner']          = 'Berhasil memilih user sebagai pemenang';

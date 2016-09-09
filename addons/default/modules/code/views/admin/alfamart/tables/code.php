@@ -21,7 +21,7 @@
         <?php foreach ($data as $value) { ?>
             <tr class="item" id="<?= $value['user_id']; ?>">
                 <td>
-                    <?php if ($value['user_id']) { ?>
+                    <?php if ($value['pemenang_id'] === null) { ?>
                         <?= form_checkbox('action_to[]', $value['user_id']); ?>
                     <?php } ?>
                 </td>
@@ -30,8 +30,8 @@
                 <td><?= $value['user']; ?></td>
                 <td><?= $value['date_created']; ?></td>
                 <td style="padding-top:10px; text-align: center;">
-                    <?php if ($value['user_id']) { ?>
-                        <a href="<?= site_url(ADMIN_URL.'/code/alfamart/winner/'.$value['user_id']); ?>" title="<?= lang('code:winner'); ?>" class="btn green" onclick="return confirm('Are you sure?');"><?= lang('code:winner'); ?></a>
+                    <?php if ($value['pemenang_id'] === null) { ?>
+                        <a href="<?= site_url(ADMIN_URL.'/code/winner/'.$value['user_id']); ?>" title="<?= lang('code:winner'); ?>" class="btn green" onclick="return confirm('Are you sure?');"><?= lang('code:winner'); ?></a>
                     <?php } ?>
                 </td>
             </tr>
