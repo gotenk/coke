@@ -6,12 +6,12 @@ class Code extends Public_Controller
         array(
             'field' => 'alfamart_code',
             'label' => 'Kode Unik',
-            'rules' => 'required|trim|xss_clean|htmlspecialchars|callback__alphanumeric'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars|max_length[10]|callback__alphanumeric'
         ),
         array(
             'field' => 'transaction_code',
             'label' => 'Kode Transaksi',
-            'rules' => 'required|trim|xss_clean|htmlspecialchars|callback__alphanumeric'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars|max_length[25]|callback__alphanumeric'
         ),
         array(
             'field' => 'recaptcha_response_field',
@@ -24,7 +24,7 @@ class Code extends Public_Controller
         array(
             'field' => 'indomaret_code',
             'label' => 'Kode Unik',
-            'rules' => 'required|trim|xss_clean|htmlspecialchars|callback__alphanumeric'
+            'rules' => 'required|trim|xss_clean|htmlspecialchars|max_length[10]|callback__alphanumeric'
         ),
         array(
             'field' => 'recaptcha_response_field',
