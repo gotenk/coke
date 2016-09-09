@@ -9,7 +9,7 @@
 						<div class="title">
 							<h4>perbarui kata sandi</h4>
 						</div> <!-- .title -->						
-						<?php echo cmc_form_open('user-reset-password', '', 'id="user-register"')?>
+						<?php echo cmc_form_open('user-reset2-password', '', 'id="user-register"')?>
 							<div class="column">
 								<label for="old_password" class="sub-title">kata sandi lama<span>*</span></label>
 								<input name="old_password" id="old_password" type="password" placeholder="Password Lama" value="<?php echo set_value('old_password')?>">
