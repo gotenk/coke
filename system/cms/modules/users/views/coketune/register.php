@@ -135,25 +135,29 @@
 								<label class="sub-title">tanggal lahir<span>*</span></label>
 								<div class="devide-3">
 									<div class="child">
-										<input readonly type="text" id="day" placeholder="DD" class="center" name="dd" value="<?php echo (isset($dob_ar[2])) ? $dob_ar[2] : '' ;?>"/>
+										<input onkeypress="return numeric(event)" readonly type="text" id="day" placeholder="DD" class="center" name="dd" value="<?php echo (isset($dob_ar[2])) ? $dob_ar[2] : '' ;?>"/>
 									</div> <!-- .child -->
 									<div class="child">
-										<input readonly type="text" id="month" placeholder="MM" class="center" name="mm" value="<?php echo (isset($dob_ar[1])) ? $dob_ar[1] : '' ;?>"/>
+										<input onkeypress="return numeric(event)" readonly type="text" id="month" placeholder="MM" class="center" name="mm" value="<?php echo (isset($dob_ar[1])) ? $dob_ar[1] : '' ;?>"/>
 									</div> <!-- .child -->
 									<div class="child">
-										<input readonly type="text" id="year" placeholder="YYYY" class="center" name="yy" value="<?php echo (isset($dob_ar[0])) ? $dob_ar[0] : '' ;?>"/>
+										<input onkeypress="return numeric(event)" readonly type="text" id="year" placeholder="YYYY" class="center" name="yy" value="<?php echo (isset($dob_ar[0])) ? $dob_ar[0] : '' ;?>"/>
 									</div> <!-- .child -->
 								</div> <!-- .devide-3 -->
-								<p><?php echo $dob_err;?></p>
+								<p class="error"><?php echo $dob_err;?></p>
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
-								<input id="code-id" type="text" value="<?=isset($code_temp['code'])?$code_temp['code']:''?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
+								<input onkeypress="return textAlphanumeric(event)" id="code-id" type="text" value="<?=isset($code_temp['code'])?$code_temp['code']:set_value('kode_unik')?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
 								<?php echo form_error('kode_unik')?>
+								<?php if($code_err):?>
+									<p class="error"><?php echo $code_err;?></p>
+								<?php endif;?>
+								
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input id="code-tr" value="<?=isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:''?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?=isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('code_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
 							<input type="hidden" name="vendor" value="<?=isset($code_temp['vendor'])?$code_temp['vendor']:''?>">
 							<div class="column">

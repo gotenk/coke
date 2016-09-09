@@ -3,7 +3,7 @@
 if (!function_exists('is_valid_date'))
 {
 	function is_valid_date($yy, $mm, $dd){
-		if ( checkdate($mm, $dd, $yy) ){
+		if ( checkdate( ((int) $mm), ((int) $dd), ((int) $yy) ) ){
 			return true;			
 		}
 		return false;
@@ -100,4 +100,27 @@ if (!function_exists('profile_get_umur'))
 			return $diff->y;
 		}
 	}
+}
+
+
+if(!function_exists('confidential'))
+{
+	function confidential($no_trans){
+        $string = '340'.$no_trans.'#37F0PJ0T';
+        $hasil = dechex(crc32($string));
+        $length = strlen($hasil);
+
+        if ($length < 8) {
+            $kurang = 8 - $length;
+            $tambahan = '';
+
+            for ($i = 0; $i < $kurang; $i++) {
+                $tambahan .= '0';
+            }
+
+            $hasil = $tambahan.$hasil;
+        }
+
+        return strtoupper($hasil);
+    }
 }

@@ -20,7 +20,7 @@ class Users extends Public_Controller
 		parent::__construct();
 
 		// Load the required classes
-		$this->load->model(array('user_m', 'profile_m', 'coketune_m'));
+		$this->load->model(array('user_m', 'profile_m', 'coketune_m', 'code/code_m'));		
 		$this->load->helper(array('user', 'coketune'));
 		$this->lang->load('user');
 		$this->load->library('form_validation');
@@ -1910,6 +1910,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'label' => 'Kode Unik',
 			'rules' => 'required|trim|xss_clean|callback__string_angka_spasi',
 		),
+		array(
+			'field' => 'kode_transaksi',
+			'label' => 'Kode Transaksi',
+			'rules' => 'trim|xss_clean|callback__string_angka_spasi',
+		),		
 		/*array(
 			'field'=>'dd',
 			'label'=>'Day',
@@ -1988,6 +1993,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 	public function register(){
 		$dob_err = '';
+		$code_err = '';
 		$this->_already_logged_in();
 		if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 			redirect('register-failed');
@@ -2008,73 +2014,91 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		if($this->input->post('register')){
 			$dd = $this->input->post('dd');
 			$mm = $this->input->post('mm');
-			$yy = $this->input->post('yy');
-			$dob = $this->_check_dob($yy, $mm, $dd);
-			$dob_err = $dob;
-			if($this->form_validation->run()){
+			$yy = $this->input->post('yy');			
+			if($this->form_validation->run()){				
+				// cek DOB
+				$dob = $this->_check_dob($yy, $mm, $dd);
+				$dob_err = $dob;
 				if($dob == ""){
-					$display_name 	= $this->input->post('name');
-					$username 		= strtolower(str_replace(' ', '', $display_name));
-					$password 		= $this->input->post('password');
-					$email 			= $this->input->post('email');
-					$valid_email  	= $this->input->post('email');
+					// cek code					
+					$kode_unik 		= $this->input->post('kode_unik');
+					$kode_transaksi = $this->input->post('kode_transaksi');
+					$cek_kode = $this->_check_code($kode_unik, $kode_transaksi);
+					#var_dump($cek_kode);exit();
+					if(!$cek_kode){
+						$display_name 	= $this->input->post('name');
+						$username 		= strtolower(str_replace(' ', '', $display_name));
+						$password 		= $this->input->post('password');
+						$email 			= $this->input->post('email');
+						$valid_email  	= $this->input->post('email');
 
-					// tambahan
-					$profile_data = array();
-					$profile_data['display_name'] = $display_name;
+						// tambahan
+						$profile_data = array();
+						$profile_data['display_name'] = $display_name;
 
+						// insert user
+						$id = $this->ion_auth->register($username, $password, $email, $valid_email, null, $profile_data);
 
-					// insert user
-					$id = $this->ion_auth->register($username, $password, $email, $valid_email, null, $profile_data);
+						// register ion berhasil
+						if($id){
+							// columns not use stream, update manual
+							$connect_with = $this->session->userdata($this->sess_connect_with);
+							$profile_data['phone'] = $this->input->post('phone');
+							$profile_data['gender'] = $this->input->post('gender');
+							$profile_data['dob_date_format'] = "{$yy}-{$mm}-{$dd}";						
 
-					// register ion berhasil
-					if($id){
-						// columns not use stream, update manual
-						$connect_with = $this->session->userdata($this->sess_connect_with);
-						$profile_data['phone'] = $this->input->post('phone');
-						$profile_data['gender'] = $this->input->post('gender');
-						$profile_data['dob_date_format'] = "{$yy}-{$mm}-{$dd}";
+							if($connect_with == 'fb'){
+								$imgfb = $this->grab_facebook_picture($id); //download img
+								$session = $this->session->userdata($this->sess_data_fb);
+								$profile_data['fb_id'] 			= $session['fb_id'];
+								$profile_data['photo_profile'] 	= $imgfb;
+							}else if($connect_with == 'tw'){
+								$imgtw = $this->grab_twitter_picture($id); //download img
+								$session = $this->session->userdata($this->sess_data_tw);
+								$profile_data['tw_screen_name'] 	= $session['screen_name'];
+								$profile_data['tw_id']   			= $session['twitter_id'];
+								$profile_data['tw_access_token']   	= serialize($this->session->userdata('access_token'));
+								$profile_data['tw_name'] 		= $session['display_name'];
+								$profile_data['photo_profile'] 		= $imgtw;
+							}
 
-						#$profile_data['kode_unik'] = $this->input->post('kode_unik');
-						#$profile_data['kode_transaksi'] = $this->input->post('kode_transaksi');
+							$profile_reg = $this->coketune_m->register_profile($profile_data, $id);							
 
-						if($connect_with == 'fb'){
-							$imgfb = $this->grab_facebook_picture($id); //download img
-							$session = $this->session->userdata($this->sess_data_fb);
-							$profile_data['fb_id'] 			= $session['fb_id'];
-							$profile_data['photo_profile'] 	= $imgfb;
-						}else if($connect_with == 'tw'){
-							$imgtw = $this->grab_twitter_picture($id); //download img
-							$session = $this->session->userdata($this->sess_data_tw);
-							$profile_data['tw_screen_name'] 	= $session['screen_name'];
-							$profile_data['tw_id']   			= $session['twitter_id'];
-							$profile_data['tw_access_token']   	= serialize($this->session->userdata('access_token'));
-							$profile_data['tw_name'] 		= $session['display_name'];
-							$profile_data['photo_profile'] 		= $imgtw;
+							// berhasil update profile
+							if($profile_reg){
+								// insert code
+								if($kode_unik && !$kode_transaksi){ // indomaret
+									$this->insert_indomaret_code($id, $kode_unik);
+								}else if($kode_unik && $kode_transaksi){
+									$this->insert_alfamart_code($id, $kode_unik, $kode_transaksi);
+								}
+
+								//unset session
+								$this->session->unset_userdata($this->sess_data_fb);
+								$this->session->unset_userdata($this->sess_data_tw);
+								$this->session->unset_userdata($this->sess_connect_with);
+								$this->session->unset_userdata($this->sess_name_dob);
+								$this->session->unset_userdata($this->sess_name_dob_status);
+								$this->session->unset_userdata('code_temp');
+								$this->session->unset_userdata('access_token');
+
+								//active and login
+								$this->ion_auth->activate($id, false);
+								$this->ion_auth->force_login($id);
+
+								redirect('profile');
+							}else{
+								$this->ion_auth->delete_user($id);
+							}
 						}
-
-						$profile_reg = $this->coketune_m->register_profile($profile_data, $id);
-
-						// berhasil update profile
-						if($profile_reg){
-							//unset session
-							$this->session->unset_userdata($this->sess_data_fb);
-							$this->session->unset_userdata($this->sess_data_tw);
-							$this->session->unset_userdata($this->sess_connect_with);
-							$this->session->unset_userdata($this->sess_name_dob);
-							$this->session->unset_userdata($this->sess_name_dob_status);
-							$this->session->unset_userdata('code_temp');
-							$this->session->unset_userdata('access_token');
-
-							//active and login
-							$this->ion_auth->activate($id, false);
-							$this->ion_auth->force_login($id);
-
-							redirect('profile');
-						}else{
-							$this->ion_auth->delete_user($id);
-						}
-					}
+					}else{
+						$code_err = $cek_kode;
+					}// end cek code
+				}else{	
+					// dob salah
+					$this->session->unset_userdata($this->sess_name_dob);
+					$this->session->set_userdata($this->sess_name_dob_status, 'false');
+					redirect('register-failed');
 				}
 			}
 		}
@@ -2084,6 +2108,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					->set('session', $session)
 					->set('dob_ar', $dob_ar)
 					->set('dob_err', $dob_err)
+					->set('code_err', $code_err)
 					->set('code_temp', $code_temp)
 					->build('coketune/register');
 	}
@@ -2339,14 +2364,65 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			$error = 'wrong format.';
 		}
 		return $error;
-	}
+	}	
 
+	// HAPUS
 	public function deb(){
 		pre($this->session->all_userdata());
 	}
 
 
 /*-----------------------------------------------------------END COKE TUNE-----------------------------------------------------------*/
+
+
+
+/*-----------------------------------------------------------CODE-----------------------------------------------------------*/
+	// error return string
+	private function _check_code($code, $transaksi=''){				
+		$result = "Kode yang dimasukkan salah atau sudah pernah digunakan.";
+		if($code && $transaksi){
+			$cocok = confidential($transaksi);
+			if($cocok != $code){
+				return $result;
+			}
+		}elseif($code && !$transaksi){				
+			$code = $this->code_m->getSingleData('indomaret_code', 'code', $code);			
+			if( $code ){					
+				if( $code->is_used != '0' ){
+					return $result;
+				}				
+			}else{
+				return $result;
+			}			
+		}		
+	}	
+
+	/*public function tess(){
+		var_dump($this->_check_code('CX5Q2452',''));
+	}*/
+
+    private function insert_indomaret_code($user_id, $code){
+        $input = array(
+            'user_id'   => $user_id,
+            'is_used'   => 1,
+            'date_used' => date('Y-m-d H:i:s'),
+        );
+        $this->code_m->updateData('indomaret_code', $input, 'code', $code);
+    }
+    
+    private function insert_alfamart_code($user_id, $code, $transaksi){
+        $success = array(
+            'user_id'          => $user_id,
+            'unique_code'      => $code,
+            'transaction_code' => $transaksi,
+            'date_created'     => date('Y-m-d H:i:s'),
+        );
+
+        $this->code_m->insertData('alfamart_code', $success);
+    }
+/*-----------------------------------------------------------END CODE-----------------------------------------------------------*/
+
+
 
 	
 	public function all_letter_space($string){
