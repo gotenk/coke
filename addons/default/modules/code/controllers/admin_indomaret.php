@@ -37,7 +37,7 @@ class Admin_indomaret extends Admin_Controller
 
         $data = array();
         $per_page = Settings::get('records_per_page');
-        $total_rows = $this->code_m->getIndomaretCodeList($parameter)->num_rows(); // Ini bermasalah ya
+        $total_rows = 1005000; //manual aja. tp hrs cari solusi lain //$this->code_m->getIndomaretCodeList($parameter)->num_rows(); // Ini bermasalah ya
         $pagination = create_pagination(ADMIN_URL.'/code/indomaret/index', $total_rows, $per_page, 5);
         $codes = $this->code_m->getIndomaretCodeList($parameter, $pagination)->result();
 
