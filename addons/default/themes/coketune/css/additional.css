@@ -16,3 +16,6 @@ section#register #email-register .column input.transparent{
 input.button.rounded.border.primary {
     cursor: pointer;
 }
+#background-img #banner-content .text, #hero #content .text, #method .row figure figcaption .text, p{
+  line-height: 20px;
+}
