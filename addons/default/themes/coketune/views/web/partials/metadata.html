@@ -17,28 +17,25 @@
 
   <!-- Favicon -->
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ theme:image_url file= "lib/favicon/apple-icon-57x57.png" }}" />
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ theme:image_url file= "lib/favicon/apple-icon-114x114.png" }}" />
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ theme:image_url file= "lib/favicon/apple-icon-72x72.png" }}" />
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ theme:image_url file= "lib/favicon/apple-icon-144x144.png" }}" />
   <link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ theme:image_url file= "lib/favicon/apple-icon-60x60.png" }}" />
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ theme:image_url file= "lib/favicon/apple-icon-120x120.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ theme:image_url file= "lib/favicon/apple-icon-72x72.png" }}" />
   <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ theme:image_url file= "lib/favicon/apple-icon-76x76.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ theme:image_url file= "lib/favicon/apple-icon-114x114.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ theme:image_url file= "lib/favicon/apple-icon-144x144.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ theme:image_url file= "lib/favicon/apple-icon-120x120.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ theme:image_url file= "lib/favicon/apple-icon-144x144.png" }}" />
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-icon-152x152.png" }}" />
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-icon-144x144.png" }}" />
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ theme:image_url file= "lib/favicon/apple-icon-180x180.png" }}" />
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="{{ theme:image_url file= "lib/favicon/apple-icon-180x180.png" }}" />
   <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon//android-icon-192x192.png" }}" sizes="192x192" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-96x96.png" }}" sizes="96x96" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-72x72.png" }}" sizes="72x72" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-48x48.png" }}" sizes="48x48" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-36x36.png" }}" sizes="36x36" />
-  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/android-icon-144x144.png"}}" sizes="144x144" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-96x96.png" }}" sizes="96x96" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-72x72.png" }}" sizes="72x72" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-48x48.png" }}" sizes="48x48" />
+  <link rel="icon" type="image/png" href="{{ theme:image_url file= "lib/favicon/favicon-32x32.png" }}" sizes="36x36" />
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#da532c" />
   <meta name="application-name" content="Coke-Tune"/>
   <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-70x70.png" }}" />
   <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-144x144.png" }}" />
-  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-150x150.png" }}" />
-  <meta name="msapplication-TileImage" content="{{ theme:image_url file= "lib/favicon/ms-icon-310x310.png" }}" />
 
   <!-- end Favicon -->
 
@@ -60,13 +57,13 @@
         <nav id="top">
           <ul>
             <li><a href="{{ url:site uri="cara-mengikuti-kompetisi"}}">cara mengikuti kompetisi</a></li>
-                      
+
             <?php if($this->current_user):if($this->current_user->group == 'user'):?>
               <li>
                 <a href="{{ url:site uri="profile"}}">
                   <div class="row">
                     <div class="userProfile-image">
-                      <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>                        
+                      <?php if($this->session->userdata('photo_profile') && is_file($this->session->userdata('photo_profile'))):?>
                         <img src="<?php echo base_url().$this->session->userdata('photo_profile')?>"/>
                       <?php else:?>
                         <img src="{{ url:site }}addons/default/themes/coketune/img/coke/demo-user-profile-picture.jpg"/>
@@ -79,7 +76,7 @@
                 </a>
               </li>
               <li><a href="{{ url:site uri="logout"}}">keluar</a></li>
-              <?php else:?>              
+              <?php else:?>
               <li><a href="{{ url:site uri="login"}}">masuk</a><span style="color:#828282;"> / </span><a href="{{ url:site uri="register"}}">daftar</a></li>
               <?php endif;?>
             <?php else:?>
@@ -93,8 +90,8 @@
 
       <!-- NAVIGATION MOBILE -->
       <nav id="mobile">
-        <ul>          
-          
+        <ul>
+
           <?php if($this->current_user): if($this->current_user->group == 'user'):?>
             <li>
               <div class="row profile">
@@ -110,7 +107,7 @@
                   <a href="{{ url:site uri="logout"}}" class="link">keluar</a>
                 </div> <!-- .userProfile-info -->
               </div> <!-- .row -->
-            </li>          
+            </li>
           <?php endif;endif;?>
 
           <li><a href="{{ url:site }}">beranda</a></li>
