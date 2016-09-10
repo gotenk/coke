@@ -11,11 +11,11 @@
 						<?php echo cmc_form_open('user-register', '');?>	
 						<form id="user-register">
 							<div class="column">
-								<input id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo set_value('email');?>">
+								<input onkeypress="return emailValidation(event)" id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo set_value('email');?>">
 								<p><?php echo form_error('email')?></p>
 							</div> <!-- .column -->
 							<div class="button-action-wrapper">
-								<?php echo form_submit('f_lanjut', 'LANJUT','class="button rounded border primary"')?>							
+								<?php echo form_submit('f_lanjut', 'LANJUT','class="button rounded border primary"')?>
 							</div> <!-- .button-action-wrapper -->
 						<?php echo form_close()?> <!-- #user-register -->
 					</div> <!-- .panel -->
@@ -23,5 +23,5 @@
 			</div> <!-- #register-inner -->
 		</div> <!-- #background-img -->
 	</section> <!-- #login -->
-	
+
 </main>
