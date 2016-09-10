@@ -65,9 +65,7 @@ class Code_m extends MY_Model
             $this->db->like('ic.code', $parameter['code']);
         }
 
-        if (isset($pagination)) {
-            $this->db->limit($pagination['limit'], $pagination['offset']);
-        }
+        $this->db->limit($parameter['limit'], $parameter['offset']);
 
         return $this->db->get();
     }

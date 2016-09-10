@@ -25,7 +25,13 @@ class Admin_indomaret extends Admin_Controller
 
     public function index()
     {
-        $parameter = array('is_used' => 'all');
+        $page = ($this->uri->segment(5) === null || $this->uri->segment(5) == 0) ? 1 : abs($this->uri->segment(5));
+
+        $parameter = array(
+            'is_used' => 'all',
+            'limit'   => Settings::get('records_per_page'),
+            'offset'  => ($page - 1) * Settings::get('records_per_page')
+        );
 
         if ($this->input->post('f_is_used')) {
             $parameter['is_used'] = $this->input->post('f_is_used');
@@ -36,11 +42,11 @@ class Admin_indomaret extends Admin_Controller
         }
 
         $data = array();
-        $per_page = Settings::get('records_per_page');
-        $total_rows = $this->code_m->getIndomaretCodeList($parameter)->num_rows(); // Ini bermasalah ya harus di ganti
-        // ngecek num rows itu kyk select * jadi satu server crash.
-        $pagination = create_pagination(ADMIN_URL.'/code/indomaret/index', $total_rows, $per_page, 5);
-        $codes = $this->code_m->getIndomaretCodeList($parameter, $pagination)->result();
+        $total_rows = $this->code_m->getIndomaretCodeList($parameter)->num_rows();
+        $codes = $this->code_m->getIndomaretCodeList($parameter)->result();
+        // Masih ada flaw di pagination
+        $prev_page = ($total_rows === 0) ? '#' : $page - 1;
+        $next_page = ($total_rows === 0 || $page === 40000) ? '#' : $page + 1;
 
         foreach ($codes as $code) {
             $data[] = array(
@@ -62,7 +68,8 @@ class Admin_indomaret extends Admin_Controller
             ->append_js('admin/filter.js')
             ->set_partial('filters', 'admin/indomaret/partials/filters')
             ->set('total_rows', $total_rows)
-            ->set('pagination', $pagination)
+            ->set('prev_page', $prev_page)
+            ->set('next_page', $next_page)
             ->set('data', $data);
 
         $this->input->is_ajax_request()

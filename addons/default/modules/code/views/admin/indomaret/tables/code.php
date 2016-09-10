@@ -41,7 +41,20 @@
     </tbody>
 </table>
 
-<?= $this->load->view('admin/partials/pagination'); ?>
+<?php if ($total_rows == Settings::get('records_per_page')) { ?>
+    <div class="paginate">
+        <div class="pagination">
+            <ul>
+                <li class="first">
+                    <a href="<?= site_url(ADMIN_URL.'/code/indomaret/index/'.$prev_page.'?'); ?>">&lt;&lt;</a>
+                </li>
+                <li class="last">
+                    <a href="<?= site_url(ADMIN_URL.'/code/indomaret/index/'.$next_page.'?'); ?>">&gt;&gt;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<?php } ?>
 
 <br>
 
