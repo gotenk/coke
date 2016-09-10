@@ -109,6 +109,10 @@ class Code extends Public_Controller
 
             echo json_encode($error);
             return;
+        } else {
+            // Abort if vendor other than alfamart, alfamidi, indomaret
+            echo json_encode(array('message' => 'Terjadi kesalahan.'));
+            return;
         }
     }
 

@@ -2020,13 +2020,17 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$dob = $this->_check_dob($yy, $mm, $dd);
 				$dob_err = $dob;
 				if($dob == ""){
+					// cek vendor
+					$vendor = $this->input->post('vendor');
+					if ($vendor == '') {
+						$vendor = ($this->input->post('kode_transaksi') == '') ? 'indomaret' : 'alfamart';
+					}
 					// cek code
 					$kode_unik 		= $this->input->post('kode_unik');
 					$kode_transaksi = $this->input->post('kode_transaksi');
-					$cek_kode = $this->_check_code($kode_unik, $kode_transaksi);
-					$vendor = $this->input->post('vendor');
+					$cek_kode = $this->_check_code($vendor, $kode_unik, $kode_transaksi);
 					#var_dump($cek_kode);exit();
-					if(!$cek_kode){
+					if($cek_kode === true){
 						$display_name 	= $this->input->post('name');
 						$username 		= strtolower(str_replace(' ', '', $display_name));
 						$password 		= $this->input->post('password');
@@ -2379,24 +2383,61 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 /*-----------------------------------------------------------CODE-----------------------------------------------------------*/
 	// error return string
-	private function _check_code($code, $transaksi=''){
+	private function _check_code($vendor, $code, $transaksi = '')
+	{
 		$result = "Kode yang dimasukkan salah atau sudah pernah digunakan.";
-		if($code && $transaksi){
-			$cocok = confidential($transaksi);
-			if($cocok != $code){
+
+		if ($vendor == 'alfamart') {
+			$data = array(
+                'alfamart_code'    => $code,
+                'transaction_code' => $transaksi,
+            );
+
+			$existing = $this->code_m->checkExistingCode($data);
+
+			if ($existing) {
+	            return $result;
+	        }
+
+	        $cocok = $this->confidential($transaksi);
+
+	        if ($cocok != $code) {
 				return $result;
 			}
-		}elseif($code && !$transaksi){
+
+	        return true;
+		} elseif ($vendor == 'indomaret') {
 			$code = $this->code_m->getSingleData('indomaret_code', 'code', $code);
-			if( $code ){
-				if( $code->is_used != '0' ){
-					return $result;
-				}
-			}else{
-				return $result;
-			}
+
+			if ($code && $code->is_used == '0') {
+	            return true;
+	        }
+
+	        return $result;
+		} else {
+			return $result;
 		}
 	}
+
+	private function confidential($no_trans)
+    {
+        $string = '340'.$no_trans.'#37F0PJ0T';
+        $hasil = dechex(crc32($string));
+        $length = strlen($hasil);
+
+        if ($length < 8) {
+            $kurang = 8 - $length;
+            $tambahan = '';
+
+            for ($i = 0; $i < $kurang; $i++) {
+                $tambahan .= '0';
+            }
+
+            $hasil = $tambahan.$hasil;
+        }
+
+        return strtoupper($hasil);
+    }
 
 	/*public function tess(){
 		var_dump($this->_check_code('CX5Q2452',''));
