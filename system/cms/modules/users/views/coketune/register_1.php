@@ -139,7 +139,7 @@
 								    <label for="terms">
 								    		<span></span>
 								    	</label>
-								    <span class="text">Saya telah memahami dan menyetujui <a href="{{ url:site uri="cara-mengikuti-kompetisi"}}#page" target="_blank" style="color:white">Syarat dan Ketentuan</a> Promosi</span>
+								    <span class="text">Saya telah memahami dan menyetujui <a href="{{ url:site uri="cara-mengikuti-kompetisi"}}#page" target="_blank">Syarat dan Ketentuan</a> Promosi</span>
 								</div> <!-- .custom-radio-button -->
 								<p><?php echo form_error('term')?></p>
 							</div> <!-- .column -->
