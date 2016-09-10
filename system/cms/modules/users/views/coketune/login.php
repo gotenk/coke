@@ -21,7 +21,7 @@
 						<?php echo cmc_form_open('user-register', site_url('login'));?>
 							<div class="column">
 								<label for="email" class="sub-title">alamat email<span>*</span></label>
-								<input onkeypress="return emailValidation(event) id="email" name="email" class="transparent" type="email" placeholder="alamat email mu">
+								<input onkeypress="return emailValidation(event)" id="email" name="email" class="transparent" type="email" placeholder="alamat email mu">
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="password" class="sub-title">kata sandi<span>*</span></label>
