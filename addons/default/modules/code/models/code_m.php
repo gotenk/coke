@@ -69,9 +69,7 @@ class Code_m extends MY_Model
             $this->db->limit($pagination['limit'], $pagination['offset']);
         }
 
-        //return $this->db->get();
-        $this->db-get();
-        var_dump($this->db->last_query());
+        return $this->db->get();
     }
 
     public function getAlfamartCodeList($parameter, $pagination = null)
