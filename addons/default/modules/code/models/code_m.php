@@ -68,8 +68,8 @@ class Code_m extends MY_Model
         if (isset($pagination)) {
             $this->db->limit($pagination['limit'], $pagination['offset']);
         }
-        $this->db->last_query();
-        die();
+        //$this->db->last_query();
+        //die();
         return $this->db->get();
     }
 
