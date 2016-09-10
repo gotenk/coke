@@ -23,7 +23,7 @@
 						</ul> <!-- #tab -->
 					</div> <!-- .column -->
 
-					<?= form_open('code-check', array('id' => 'input-id')); ?>
+					<?= cmc_form_open('profile_code_check', site_url('code-check'), array('id' => 'input-id')); ?>
 						<div id="input-inner">
 
 							<div id="tab-1" class="tab-container current">

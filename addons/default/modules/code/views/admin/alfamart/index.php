@@ -8,7 +8,7 @@
             <?php if ($total_rows > 0) { ?>
                 <?= $this->load->view('admin/alfamart/partials/filters'); ?>
 
-                <?= form_open(ADMIN_URL.'/code/alfamart/action'); ?>
+                <?= cmc_form_open('frm_alfamart', ADMIN_URL.'/code/alfamart/action'); ?>
                     <div id="filter-stage">
                         <?= $this->load->view('admin/alfamart/tables/code'); ?>
                     </div>

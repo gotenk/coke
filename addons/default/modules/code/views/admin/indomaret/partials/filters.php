@@ -1,7 +1,7 @@
 <fieldset id="filters">
     <legend><?= lang('global:filters'); ?></legend>
 
-    <?= form_open('', '', array('f_module' => $module_details['slug'])); ?>
+    <?= cmc_form_open('index_indomaret', '', '', array('f_module' => $module_details['slug'])); ?>
         <ul>
             <li class="" style="vertical-align: top; width: 160px;">
                 <label for="f_code" style="padding-bottom: 5px;"><?= lang('code:code_label'); ?></label>
@@ -17,6 +17,9 @@
                     'no'  => lang('code:no_label'),
                 )); ?>
             </li>
+            <!-- <li class="" style="top:24px;float:right;">
+                <a href="javascript:void(0);" title="Export Data" class="btn blue" id="export-data">Export Data CSV</a>
+            </li> -->
         </ul>
     <?= form_close(); ?>
 </fieldset>

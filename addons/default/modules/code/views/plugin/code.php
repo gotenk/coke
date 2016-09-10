@@ -11,7 +11,7 @@
             <span></span>
         </li>
     </ul>
-    <?= form_open('code-check', array('id' => 'input-id')); ?>
+    <?= cmc_form_open('index_code_check', site_url('code-check'), array('id' => 'input-id')); ?>
         <div id="input-inner">
             <div id="tab-1" class="tab-container current">
                 <span class="panel">

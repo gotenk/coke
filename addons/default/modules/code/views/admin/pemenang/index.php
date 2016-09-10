@@ -8,7 +8,7 @@
             <?php if ($total_rows > 0) { ?>
                 <?= $this->load->view('admin/pemenang/partials/filters'); ?>
 
-                <?= form_open(ADMIN_URL.'/code/pemenang/action'); ?>
+                <?= cmc_form_open('frm_pemenang', ADMIN_URL.'/code/pemenang/action'); ?>
                     <div id="filter-stage">
                         <?= $this->load->view('admin/pemenang/tables/table'); ?>
                     </div>
