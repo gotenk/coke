@@ -39,7 +39,7 @@
 										}
 									}
 								?>
-								<input id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
+								<input onkeypress="return allLetterspace(event)"  id="username" type="text" placeholder="nama lengkapmu" name="name" value="<?php echo $name_value;?>">
 								<p><?php echo form_error('name')?></p>
 							</div> <!-- .column -->
 							<div class="column">
@@ -54,7 +54,7 @@
 										}
 									}
 								?>
-								<input id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
+								<input onkeypress="return emailValidation(event)" id="email" type="text" placeholder="alamat email mu" name="email" value="<?php echo $email_value;?>">
 								<p><?php echo form_error('email')?></p>
 							</div> <!-- .column -->
 							<div class="column">
@@ -69,7 +69,7 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="phone" class="sub-title">nomer ponsel<span>*</span></label>
-								<input id="phone" type="text" placeholder="08X-XXXXXXXXX" name="phone" value="<?php echo set_value('phone');?>">
+								<input onkeypress="return numeric(event)" id="phone" type="number" placeholder="08X-XXXXXXXXX" name="phone" value="<?php echo set_value('phone');?>">
 								<p><?php echo form_error('phone')?></p>
 							</div> <!-- .column -->
 							<div class="column half">
@@ -103,11 +103,11 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
-								<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
+								<input onkeypress="return textAlphanumeric(event)" id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+								<input onkeypress="return textAlphanumeric(event)" id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
 							<div class="column">
 								<div id="captcha">
@@ -139,7 +139,7 @@
 								    <label for="terms">
 								    		<span></span>
 								    	</label>
-								    <span class="text">Saya telah memahami dan menyetujui Syarat dan Ketentuan Promosi</span>
+								    <span class="text">Saya telah memahami dan menyetujui <a href="{{ url:site uri="cara-mengikuti-kompetisi"}}#page" target="_blank">Syarat dan Ketentuan</a> Promosi</span>
 								</div> <!-- .custom-radio-button -->
 								<p><?php echo form_error('term')?></p>
 							</div> <!-- .column -->

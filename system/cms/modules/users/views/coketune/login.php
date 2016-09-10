@@ -18,10 +18,10 @@
 					</div> <!-- .panel -->
 					<div id="figure" class="wide panel no-transform">Atau masuk dengan email</div>
 					<div class="panel" id="email-register">
-						<?php echo cmc_form_open('user-register', site_url('login'));?>	
+						<?php echo cmc_form_open('user-register', site_url('login'));?>
 							<div class="column">
 								<label for="email" class="sub-title">alamat email<span>*</span></label>
-								<input id="email" name="email" class="transparent" type="email" placeholder="alamat email mu">
+								<input onkeypress="return emailValidation(event) id="email" name="email" class="transparent" type="email" placeholder="alamat email mu">
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="password" class="sub-title">kata sandi<span>*</span></label>
@@ -37,16 +37,16 @@
 							<div class="button-action-wrapper login">
 								<input type="submit" class="button rounded border primary" name="login" value="masuk">
 							</div> <!-- .button-action-wrapper -->
-							
+
 							<span class="linkk center"><a href="{{ url:site uri="reset-password"}}">Lupa kata sandi?</a></span>
-							
+
 							<div class="border-figure"></div>
-							
+
 							<div class="button-action-wrapper column">
 								<label class="sub-title">Pengguna baru?</label>
-								<input type="submit" class="button rounded border primary register" name="register" value="daftar">								
-							</div> <!-- .button-action-wrapper -->							
-							
+								<input type="submit" class="button rounded border primary register" name="register" value="daftar">
+							</div> <!-- .button-action-wrapper -->
+
 						<?php echo form_close();?> <!-- #user-register -->
 					</div> <!-- .panel -->
 				</div> <!-- .row -->
