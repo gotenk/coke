@@ -39,7 +39,7 @@ class Code_m extends MY_Model
         return $this->db->delete($table, array($field => $id));
     }
 
-    public function getIndomaretCodeList($parameter, $pagination = null)
+    public function getIndomaretCodeList($parameter, $pagination = 1)
     {
         $this->db
             ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name, p.user_id, pe.pemenang_id')
