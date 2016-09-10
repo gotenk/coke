@@ -19,3 +19,9 @@ input.button.rounded.border.primary {
 #background-img #banner-content .text, #hero #content .text, #method .row figure figcaption .text, p{
   line-height: 20px;
 }
+.text a {
+    color: #fff;
+}
+.text a:hover {
+    color: #e41e2b;
+}
