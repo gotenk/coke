@@ -8,11 +8,9 @@
             <?php if ($total_rows > 0) { ?>
                 <?= $this->load->view('admin/alfamart/partials/filters'); ?>
 
-                <?= cmc_form_open('frm_alfamart', ADMIN_URL.'/code/alfamart/action'); ?>
-                    <div id="filter-stage">
-                        <?= $this->load->view('admin/alfamart/tables/code'); ?>
-                    </div>
-                <?= form_close(); ?>
+                <div id="filter-stage">
+                    <?= $this->load->view('admin/alfamart/tables/code'); ?>
+                </div>
             <?php } else { ?>
                 <div class="no_data"><?= lang('code:no_data'); ?></div>
             <?php } ?>

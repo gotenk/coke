@@ -271,9 +271,9 @@ class Code extends Public_Controller
     }
 
     // Temp method - should be deleted when this is not used anymore
-    public function create_pemenang_temp()
+    /*public function create_pemenang_temp()
     {
-        /* INSERT SETTING DATA */
+        // INSERT SETTING DATA
         $setting = array(
             'slug'        => 'pemenang_temp_count',
             'title'       => 'Pemenang Temp Table Count',
@@ -289,14 +289,14 @@ class Code extends Public_Controller
         );
 
         $this->code_m->insertData('settings', $setting);
-        /* INSERT SETTING DATA */
+        // INSERT SETTING DATA
 
-        /* CREATE default_pemenang_temp TABLE */
+        // CREATE default_pemenang_temp TABLE
         $sql1 = "CREATE TABLE `default_pemenang_temp` (`pemenang_temp_id` INT(11) NOT NULL AUTO_INCREMENT, `user_id` INT(11) NOT NULL, `vendor` VARCHAR(100) NOT NULL, `code` VARCHAR(100) NOT NULL, PRIMARY KEY (`pemenang_temp_id`)) ENGINE = InnoDB;";
         $this->db->query($sql1);
-        /* CREATE default_pemenang_temp TABLE */
+        // CREATE default_pemenang_temp TABLE
 
-        /* CREATE default_pemenang_temp_password TABLE */
+        // CREATE default_pemenang_temp_password TABLE
         $sql2 = "CREATE TABLE `default_pemenang_temp_password` (`slug` VARCHAR(100) NOT NULL, `password` VARCHAR(100) NOT NULL, `salt` VARCHAR(6) NOT NULL) ENGINE = InnoDB;";
         $this->db->query($sql2);
 
@@ -307,8 +307,8 @@ class Code extends Public_Controller
         );
 
         $this->code_m->insertData('pemenang_temp_password', $pass);
-        /* CREATE default_pemenang_temp_password TABLE */
+        // CREATE default_pemenang_temp_password TABLE
 
         return;
-    }
+    }*/
 }

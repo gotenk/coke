@@ -2,6 +2,15 @@
 
 class Code_m extends MY_Model
 {
+    public function countData($table, $parameter = null)
+    {
+        if (isset($parameter['field'])) {
+            $this->db->where($parameter['field'], $parameter['value']);
+        }
+
+        return $this->db->count_all_results($table);
+    }
+
     public function insertData($table, $data)
     {
         $this->db->insert($table, $data);
@@ -139,10 +148,58 @@ class Code_m extends MY_Model
 
                 $this->insertData('pemenang', $data);
 
+                /* UPDATE TEMP COUNT */
+                $parameter = array(
+                    'field' => 'user_id',
+                    'value' => $id,
+                );
+
+                $count = $this->countData('pemenang_temp', $parameter);
+                $this->updateTempCount($count, 'less');
+                /* UPDATE TEMP COUNT */
+
+                // Delete data from pemenang_temp table
+                $this->deleteData('pemenang_temp', 'user_id', $id);
+
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function updateTempCount($count, $type)
+    {
+        $data = array();
+        $current = Settings::get('pemenang_temp_count');
+
+        if ($type == 'more') {
+            $data['value'] = $current + $count;
+        } elseif ($type == 'less') {
+            $data['value'] = $current - $count;
+        } else {
+            $data['value'] = $current;
+        }
+
+        $this->updateData('settings', $data, 'slug', 'pemenang_temp_count');
+
+        return true;
+    }
+
+    public function getTempPemenangList($parameter, $pagination)
+    {
+        $this->db
+            ->select('pt.*, pr.display_name, count(pt.user_id) as count')
+            ->from('pemenang_temp pt')
+            ->join('profiles pr', 'pr.user_id = pt.user_id', 'left')
+            ->group_by('pt.user_id');
+
+        if (isset($parameter['name'])) {
+            $this->db->like('pr.display_name', $parameter['name']);
+        }
+
+        $this->db->limit($pagination['limit'], $pagination['offset']);
+
+        return $this->db->get();
     }
 }

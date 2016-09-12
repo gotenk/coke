@@ -31,6 +31,14 @@ class Module_code extends Module
                 'pemenang' => array(
                     'name' => 'code:pemenang_title',
                     'uri'  => ADMIN_URL.'/code/daftar_pemenang'
+                ),
+                'select_pemenang' => array(
+                    'name' => 'code:select_pemenang_title',
+                    'uri'  => ADMIN_URL.'/code/pilih_pemenang'
+                ),
+                'password' => array(
+                    'name' => 'code:password_title',
+                    'uri'  => ADMIN_URL.'/code/password'
                 )
             )
         );

@@ -2450,6 +2450,13 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
             'date_used' => date('Y-m-d H:i:s'),
         );
         $this->code_m->updateData('indomaret_code', $input, 'code', $code);
+
+        // Check - if user has been in pemenang table then they are not valid anymore
+        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $this->current_user->id);
+
+        if (!$exist) {
+        	$this->insert_pemenang_temp('indomaret', $user_id, $code);
+        }
     }
 
     private function insert_alfamart_code($user_id, $code, $transaksi, $vendor){
@@ -2462,6 +2469,24 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
         );
 
         $this->code_m->insertData('alfamart_code', $success);
+
+        // Check - if user has been in pemenang table then they are not valid anymore
+        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $this->current_user->id);
+
+        if (!$exist) {
+        	$this->insert_pemenang_temp($vendor, $user_id, $code, $transaksi);
+        }
+    }
+
+    private function insert_pemenang_temp($vendor, $user_id, $code, $transaksi = '') {
+    	$temp = array(
+            'user_id' => $user_id,
+            'vendor'  => $vendor,
+            'code'    => ($vendor == 'indomaret') ? $code : $code.','.$transaksi,
+        );
+
+        $this->code_m->insertData('pemenang_temp', $temp);
+        $this->code_m->updateTempCount(1, 'more');
     }
 /*-----------------------------------------------------------END CODE-----------------------------------------------------------*/
 
