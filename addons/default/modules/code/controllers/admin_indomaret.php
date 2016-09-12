@@ -76,31 +76,4 @@ class Admin_indomaret extends Admin_Controller
         ? $this->template->build('admin/indomaret/tables/code')
         : $this->template->build('admin/indomaret/index');
     }
-
-    public function action()
-    {
-        if ($this->input->method() == 'post') {
-            $success = false;
-            $action = $this->input->post('btnAction');
-            $ids = $this->input->post('action_to');
-
-            if ($ids) {
-                foreach ($ids as $id) {
-                    if ($action == 'winner') {
-                        $success = $this->code_m->setAsWinner($id);
-                    }
-                }
-
-                $success = true;
-            }
-
-            if ($success) {
-                $this->session->set_flashdata('success', lang('code:set_as_winner'));
-            } else {
-                $this->session->set_flashdata('error', lang('code:error'));
-            }
-        }
-
-        redirect($this->redirect);
-    }
 }

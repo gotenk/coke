@@ -139,29 +139,33 @@ class Code_m extends MY_Model
         if (!$exist) {
             $profile = $this->getSingleData('profiles', 'user_id', $id);
 
-            // Is user exist? - If yes, set as winner
+            // Is user exist?
             if ($profile) {
-                $data = array(
-                    'user_id' => $id,
-                    'name'    => $profile->display_name
-                );
-
-                $this->insertData('pemenang', $data);
-
-                /* UPDATE TEMP COUNT */
+                // UPDATE TEMP COUNT
+                // Check first if user is in pemenang_temp table
                 $parameter = array(
                     'field' => 'user_id',
                     'value' => $id,
                 );
 
                 $count = $this->countData('pemenang_temp', $parameter);
-                $this->updateTempCount($count, 'less');
-                /* UPDATE TEMP COUNT */
 
-                // Delete data from pemenang_temp table
-                $this->deleteData('pemenang_temp', 'user_id', $id);
+                // User is in pemenang_temp table - Set as winner
+                if ($count > 0) {
+                    $this->updateTempCount($count, 'less');
 
-                return true;
+                    // Delete data from pemenang_temp table
+                    $this->deleteData('pemenang_temp', 'user_id', $id);
+
+                    $data = array(
+                        'user_id' => $id,
+                        'name'    => $profile->display_name
+                    );
+
+                    $this->insertData('pemenang', $data);
+
+                    return true;
+                }
             }
         }
 
