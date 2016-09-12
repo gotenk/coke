@@ -186,6 +186,20 @@ class Code extends Public_Controller
 
         $this->code_m->insertData('alfamart_code', $success);
 
+        // Check - if user has been in pemenang table then they are not valid anymore
+        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $this->current_user->id);
+
+        if (!$exist) {
+            $temp = array(
+                'user_id' => $this->current_user->id,
+                'vendor'  => $data['vendor'],
+                'code'    => $data['alfamart_code'].','.$data['transaction_code'],
+            );
+
+            $this->code_m->insertData('pemenang_temp', $temp);
+            $this->code_m->updateTempCount(1, 'more');
+        }
+
         return array('message' => '1');
     }
 
@@ -203,6 +217,20 @@ class Code extends Public_Controller
             );
 
             $this->code_m->updateData('indomaret_code', $input, 'code', $data['indomaret_code']);
+
+            // Check - if user has been in pemenang table then they are not valid anymore
+            $exist = $this->code_m->getSingleData('pemenang', 'user_id', $this->current_user->id);
+
+            if (!$exist) {
+                $temp = array(
+                    'user_id' => $this->current_user->id,
+                    'vendor'  => 'indomaret',
+                    'code'    => $data['indomaret_code'],
+                );
+
+                $this->code_m->insertData('pemenang_temp', $temp);
+                $this->code_m->updateTempCount(1, 'more');
+            }
 
             return array('message' => '1');
         }
@@ -240,5 +268,47 @@ class Code extends Public_Controller
         $this->form_validation->set_message('_alphanumeric', 'Kode input hanya boleh berupa huruf dan angka.');
 
         return false;
+    }
+
+    // Temp method - should be deleted when this is not used anymore
+    public function create_pemenang_temp()
+    {
+        /* INSERT SETTING DATA */
+        $setting = array(
+            'slug'        => 'pemenang_temp_count',
+            'title'       => 'Pemenang Temp Table Count',
+            'description' => 'Pemenang Temp Table Count',
+            'type'        => 'text',
+            'default'     => 0,
+            'value'       => 0,
+            'options'     => '',
+            'is_required' => 0,
+            'is_gui'      => 0,
+            'module'      => '',
+            'order'       => 0,
+        );
+
+        $this->code_m->insertData('settings', $setting);
+        /* INSERT SETTING DATA */
+
+        /* CREATE default_pemenang_temp TABLE */
+        $sql1 = "CREATE TABLE `default_pemenang_temp` (`pemenang_temp_id` INT(11) NOT NULL AUTO_INCREMENT, `user_id` INT(11) NOT NULL, `vendor` VARCHAR(100) NOT NULL, `code` VARCHAR(100) NOT NULL, PRIMARY KEY (`pemenang_temp_id`)) ENGINE = InnoDB;";
+        $this->db->query($sql1);
+        /* CREATE default_pemenang_temp TABLE */
+
+        /* CREATE default_pemenang_temp_password TABLE */
+        $sql2 = "CREATE TABLE `default_pemenang_temp_password` (`slug` VARCHAR(100) NOT NULL, `password` VARCHAR(100) NOT NULL, `salt` VARCHAR(6) NOT NULL) ENGINE = InnoDB;";
+        $this->db->query($sql2);
+
+        $pass = array(
+            'slug'     => 'winner_password',
+            'password' => '5f038cc23de6792762d5e5769c7e201008381d57', // 43lw9rj2
+            'salt'     => '7aa3fe',
+        );
+
+        $this->code_m->insertData('pemenang_temp_password', $pass);
+        /* CREATE default_pemenang_temp_password TABLE */
+
+        return;
     }
 }
