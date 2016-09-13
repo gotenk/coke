@@ -37,13 +37,15 @@
 								<?php echo form_input('username', $member->username, 'id="username"') ?>
 							</div>
 						</li>
-	
+						
+						<?php /*coketune only
 						<li>
 							<label for="group_id"><?php echo lang('user:group_label') ?></label>
 							<div class="input">
 								<?php echo form_dropdown('group_id', array(0 => lang('global:select-pick')) + $groups_select, $member->group_id, 'id="group_id"') ?>
 							</div>
-						</li>
+						</li>*/?>
+						<?php echo form_hidden('group_id', 1);?>
 						
 						<li class="even">
 							<label for="active"><?php echo lang('user:activate_label') ?></label>

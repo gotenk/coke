@@ -46,6 +46,15 @@ if(ADMIN_URL !='admin')
 	$route['admin(/:any)?'] ='404';
 }
 
+// coketune only
+$route[ADMIN_URL.'/users'] 	= 'users/cokeuser/index/';
+$route[ADMIN_URL.'/users/(:any)'] 	= 'users/cokeuser/$1';
+$route[ADMIN_URL.'/users/(:any)/(:any)'] 	= 'users/cokeuser/$1/$2';
+$route[ADMIN_URL.'/admins'] 	= 'users/admin/index/';
+$route[ADMIN_URL.'/admins/(:any)'] 	= 'users/admin/$1';
+$route[ADMIN_URL.'/admins/(:any)/(:any)'] 	= 'users/admin/$1/$2';
+//end coketune
+
 $route[ADMIN_URL.'(/)?'] = 'admin/index';
 $route[ADMIN_URL.'/(login|logout|remove_installer_directory|index)']			    = 'admin/$1';
 $route[ADMIN_URL.'/help/([a-zA-Z0-9_-]+)']       = 'admin/help/$1';

@@ -5,6 +5,7 @@
 	<?php echo cmc_form_open('index_users', '') ?>
 	<?php echo form_hidden('f_module', $module_details['slug']) ?>
 		<ul>
+			<?php /*for coke tune only
 			<li>
 				<?php echo '<b>Tanggal Awal</b><br />'; ?>
 				<?php echo form_input('f_date_start') ?>
@@ -13,13 +14,13 @@
 				<?php echo '<b>Tanggal Akhir</b><br />'; ?>
 				<?php echo form_input('f_date_end') ?>
 			</li>
-			<br />
+			<br />*/?>
 
 			<li>
 				<?php echo lang('user:active', 'f_active') ?>
 				<?php echo form_dropdown('f_active', array(0 => lang('global:select-all'), 1 => lang('global:yes'), 2 => lang('global:no') ), array(0)) ?>
 			</li>
-
+			<?php /*for coke tune only
 			<li>
 				<?php echo lang('user:group_label', 'f_group') ?>
 				<?php echo form_dropdown('f_group', array(0 => lang('global:select-all')) + $groups_select) ?>
@@ -30,9 +31,11 @@
 				<?php echo form_input('f_keywords', '', 'style="width: 67%;"') ?>
 				<?php echo anchor(current_url(), lang('buttons:cancel'), 'class="cancel"') ?>
 			</li>
+			
 			<li class="" style="top:24px;float:right;">
 				<a href="javascript:void(0);" title="Export Data" class="btn blue" id="export-data">Export Data CSV</a>
 			</li>
+			*/?>
 		</ul>
 	<?php echo form_close() ?>
 </fieldset>

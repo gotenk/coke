@@ -78,18 +78,29 @@ class Module_Users extends Module {
 			if(group_has_role('users', 'admin_profile_fields'))
 			{
 				$info['sections'] = array(
-					'users' => array(
-							'name' 	=> 'user:list_title',
-							'uri' 	=> ADMIN_URL.'/users',
+					'admins' => array(
+							'name' 	=> 'Admins',
+							'uri' 	=> ADMIN_URL.'/admins',
 								'shortcuts' => array(
 									'create' => array(
-										'name' 	=> 'user:add_title',
-										'uri' 	=> ADMIN_URL.'/users/create',
+										'name' 	=> 'user:add_admin',
+										'uri' 	=> ADMIN_URL.'/admins/create',
 										'class' => 'add'
 										)
 									)
 								),
-					'fields' => array(
+					'users' => array(
+							'name' 	=> 'user:list_title',
+							'uri' 	=> ADMIN_URL.'/users',
+								'shortcuts' => array(
+									/*'create' => array(
+										'name' 	=> 'user:add_title',
+										'uri' 	=> ADMIN_URL.'/users/create',
+										'class' => 'add'
+										)*/
+									)
+								),
+					/*'fields' => array(
 							'name' 	=> 'user:profile_fields_label',
 							'uri' 	=> ADMIN_URL.'/users/fields',
 								'shortcuts' => array(
@@ -99,7 +110,7 @@ class Module_Users extends Module {
 										'class' => 'add'
 										)
 									)
-								)
+								)*/
 						);
 			}
 		}
@@ -109,7 +120,8 @@ class Module_Users extends Module {
 
 	public function admin_menu(&$menu)
 	{
-		$menu['lang:cp:nav_users']['lang:cp:nav_users'] = ADMIN_URL.'/users';
+		$menu['lang:cp:nav_users']['Admins'] = ADMIN_URL.'/admins';
+		$menu['lang:cp:nav_users']['lang:cp:nav_users'] = ADMIN_URL.'/users';		
 	}
 
 	/**

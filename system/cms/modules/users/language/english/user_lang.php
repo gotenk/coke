@@ -207,3 +207,7 @@ $lang['profile_edit_error']           = 'An error occurred.';
 
 $lang['profile_save_btn']             = 'Save profile';
 /* End of file user_lang.php */
+
+
+// coketune
+$lang['user:add_admin']                        = 'Add Admin';

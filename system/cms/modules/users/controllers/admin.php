@@ -9,7 +9,7 @@
 class Admin extends Admin_Controller
 {
 
-	protected $section = 'users';
+	protected $section = 'admins';
 
 	/**
 	 * Validation for basic profile
@@ -39,11 +39,11 @@ class Admin extends Admin_Controller
 			'label' => 'lang:user_username',
 			'rules' => 'required|alpha_dot_dash|min_length[3]|max_length[20]'
 		),
-		array(
+		/*array(
 			'field' => 'group_id',
 			'label' => 'lang:user_group_label',
 			'rules' => 'required|callback__group_check'
-		),
+		),*/
 		array(
 			'field' => 'active',
 			'label' => 'lang:user_active_label',
@@ -106,7 +106,8 @@ class Admin extends Admin_Controller
 		$pagination = create_pagination(ADMIN_URL.'/users/index', $this->user_m->count_by($base_where));
 
 		//Skip admin
-		$skip_admin = ( $this->current_user->group != 'admin' ) ? 'admin' : '';
+		##$skip_admin = ( $this->current_user->group != 'admin' ) ? 'admin' : '';
+		$skip_admin = 'user';
 
 		// Using this data, get the relevant results
 		$this->db->order_by('active', 'desc')
@@ -142,7 +143,7 @@ class Admin extends Admin_Controller
 		if (MAX_DEMO)
 		{
 			$this->session->set_flashdata('notice', lang('global:demo_restrictions'));
-			redirect(ADMIN_URL.'/users');
+			redirect(ADMIN_URL.'/admins');
 		}
 
 		// Determine the type of action
@@ -155,7 +156,7 @@ class Admin extends Admin_Controller
 				$this->delete();
 				break;
 			default:
-				redirect(ADMIN_URL.'/users');
+				redirect(ADMIN_URL.'/admins');
 				break;
 		}
 	}
@@ -244,7 +245,7 @@ class Admin extends Admin_Controller
 				$this->session->set_flashdata('success', $this->ion_auth->messages());
 
 				// Redirect back to the form or main page
-				$this->input->post('btnAction') === 'save_exit' ? redirect(ADMIN_URL.'/users') : redirect(ADMIN_URL.'/users/edit/'.$user_id);
+				$this->input->post('btnAction') === 'save_exit' ? redirect(ADMIN_URL.'/admins') : redirect(ADMIN_URL.'/admins/edit/'.$user_id);
 			}
 			// Error
 			else
@@ -301,7 +302,7 @@ class Admin extends Admin_Controller
 		if ( ! ($member = $this->ion_auth->get_user($id)))
 		{
 			$this->session->set_flashdata('error', lang('user:edit_user_not_found_error'));
-			redirect(ADMIN_URL.'/users');
+			redirect(ADMIN_URL.'/admins');
 		}
 		
 		// Check to see if we are changing usernames
@@ -360,7 +361,7 @@ class Admin extends Admin_Controller
 			if (MAX_DEMO)
 			{
 				$this->session->set_flashdata('notice', lang('global:demo_restrictions'));
-				redirect(ADMIN_URL.'/users');
+				redirect(ADMIN_URL.'/admins');
 			}
 
 			// Get the POST data
@@ -413,7 +414,7 @@ class Admin extends Admin_Controller
 			}
 
 			// Redirect back to the form or main page
-			$this->input->post('btnAction') === 'save_exit' ? redirect(ADMIN_URL.'/users') : redirect(ADMIN_URL.'/users/edit/'.$id);
+			$this->input->post('btnAction') === 'save_exit' ? redirect(ADMIN_URL.'/admins') : redirect(ADMIN_URL.'/admins/edit/'.$id);
 		}
 		else
 		{
@@ -488,7 +489,7 @@ class Admin extends Admin_Controller
 		if ( ! ($ids = $this->input->post('action_to')))
 		{
 			$this->session->set_flashdata('error', lang('user:activate_error'));
-			redirect(ADMIN_URL.'/users');
+			redirect(ADMIN_URL.'/admins');
 		}
 
 		$activated = 0;
@@ -503,7 +504,7 @@ class Admin extends Admin_Controller
 		}
 		$this->session->set_flashdata('success', sprintf(lang('user:activate_success'), $activated, $to_activate));
 
-		redirect(ADMIN_URL.'/users');
+		redirect(ADMIN_URL.'/admins');
 	}
 
 	/**
@@ -512,7 +513,7 @@ class Admin extends Admin_Controller
 	 * @param int $id The ID of the user to delete
 	 */
 	public function delete()
-	{
+	{		
 		if($id = $this->input->post('id'))
 		{
 
@@ -554,10 +555,10 @@ class Admin extends Admin_Controller
 				$this->session->set_flashdata('error', lang('user:mass_delete_error'));
 			}
 
-			redirect(ADMIN_URL.'/users');
+			redirect(ADMIN_URL.'/admins');
 		}
 		else {
-			redirect(ADMIN_URL.'/users');
+			redirect(ADMIN_URL.'/admins');
 		}
 	}
 
@@ -604,7 +605,7 @@ class Admin extends Admin_Controller
 		
 		if($data->num_rows <=0){
 			$this->session->set_flashdata('error', 'Tidak ada data hasil');
-			redirect(ADMIN_URL.'/users');
+			redirect(ADMIN_URL.'/admins');
 			die();
 		}
 
