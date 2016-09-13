@@ -1674,7 +1674,7 @@ class Users extends Public_Controller
             $me =array();
             try
             {
-                $me = $this->facebook->api('/me?fields=id,email,name,gender,birthday');
+                $me = $this->facebook->api('/me?fields=id,email,name,gender,birthday,first_name,last_name');
             }
             catch(FacebookApiException $e)
             {
@@ -1908,12 +1908,12 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'kode_unik',
 			'label' => 'Kode Unik',
-			'rules' => 'required|trim|xss_clean|callback__string_angka_spasi',
+			'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[20]',
 		),
 		array(
 			'field' => 'kode_transaksi',
 			'label' => 'Kode Transaksi',
-			'rules' => 'trim|xss_clean|callback__string_angka_spasi',
+			'rules' => 'trim|xss_clean|callback__string_angka_spasi|max_length[25]',
 		),
 		/*array(
 			'field'=>'dd',

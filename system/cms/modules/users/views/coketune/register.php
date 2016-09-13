@@ -157,7 +157,7 @@
 							</div> <!-- .column -->
 							<div class="column">
 								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?php echo isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('code_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?php echo isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('kode_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
 							</div> <!-- .column -->
 							<input type="hidden" name="vendor" value="<?php echo isset($code_temp['vendor'])?$code_temp['vendor']:''?>">
 							<div class="column">
