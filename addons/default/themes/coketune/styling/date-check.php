@@ -1,7 +1,7 @@
 <?php include 'header-fluid.php'; ?>
 
 <main>
-
+	
 	<section id="register" class="date-check fullScreen">
 		<div id="background-img" class="fluid-img register">
 			<div id="register-inner" class="container">
@@ -21,7 +21,7 @@
 										  <option value="3">03</option>
 										  <option value="4">04</option>
 										  <option value="5">05</option>
-										</select>
+										</select>										
 									</div> <!-- .child -->
 									<div class="child custom-selectbox">
 										<select>
@@ -31,7 +31,7 @@
 										  <option value="3">03</option>
 										  <option value="4">04</option>
 										  <option value="5">05</option>
-										</select>
+										</select>										
 									</div> <!-- .child -->
 									<div class="child custom-selectbox">
 										<select>
@@ -41,8 +41,8 @@
 										  <option value="3">03</option>
 										  <option value="4">04</option>
 										  <option value="5">05</option>
-										</select>
-									</div> <!-- .child -->
+										</select>										
+									</div> <!-- .child -->									
 								</div> <!-- .devide-3 -->
 							</div> <!-- .column -->
 							<div class="button-action-wrapper">
@@ -54,7 +54,7 @@
 			</div> <!-- #register-inner -->
 		</div> <!-- #background-img -->
 	</section> <!-- #login -->
-
+	
 </main>
-
-<?php include 'footer.php'; ?>
+	
+<?php include 'footer.php'; ?>	

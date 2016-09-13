@@ -18,7 +18,7 @@
 							</a>
 						</div> <!-- .button-action-wrapper -->
 					</div> <!-- .panel -->
-					<div id="figure" class="wide panel">or</div>
+					<div id="figure" class="wide panel">atau</div>
 					<div class="panel" id="email-register">
 						<div class="title">
 							<h4>daftar</h4>
@@ -72,13 +72,51 @@
 								</div> <!-- .devide-3 -->
 							</div> <!-- .column -->
 							<div class="column">
-								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
-								<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx">
+								<label class="sub-title mobile">lokasi pembelian</label>
+								<ul id="tab" class="tabbb">
+									<li class="current" data-tab="tab-1">
+										<a href="javascript:void(0)"><span></span><img src="img/coke/vendor_alfamart.png" alt=""/></a>
+									</li>
+									<li data-tab="tab-2">
+										<a href="javascript:void(0)"><span></span><img src="img/coke/vendor_indomaret.png" alt=""/></a>
+										<span></span>
+									</li>
+									<li data-tab="tab-3">
+										<a href="javascript:void(0)"><span></span><img src="img/coke/vendor_alfamart.png" alt=""/></a>
+										<span></span>
+									</li>									
+								</ul>								
 							</div> <!-- .column -->
-							<div class="column">
-								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx">
-							</div> <!-- .column -->
+							
+							<div id="tab-1" class="tab-container current">
+								<div class="column">
+									<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+									<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx">
+								</div> <!-- .column -->
+								<div class="column">
+									<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
+									<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx">
+								</div> <!-- .column -->								
+							</div> <!-- .tab-container -->
+
+							<div id="tab-2" class="tab-container">
+								<div class="column">
+									<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+									<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx">
+								</div> <!-- .column -->
+							</div> <!-- .tab-container -->
+
+							<div id="tab-3" class="tab-container">
+								<div class="column">
+									<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+									<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx">
+								</div> <!-- .column -->
+								<div class="column">
+									<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
+									<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx">
+								</div> <!-- .column -->								
+							</div> <!-- .tab-container -->
+							
 							<div class="column">
 								<div id="captcha">
 									<div>

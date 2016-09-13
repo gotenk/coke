@@ -72,7 +72,7 @@
 			
 		</div> <!-- #header-inner -->
 		<div id="hero">
-			<div id="background-img">
+			<div id="background-img" class="page-header">
 				<div id="banner-content" class="container">
 					<div class="heading">
 						<h1>COKE Breakpackers</h1>

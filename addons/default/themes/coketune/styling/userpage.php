@@ -3,7 +3,7 @@
 <main>
 	
 	<section id="page">
-		<div id="background-img" class="fluid-img page">
+		<div id="background-img" class="fluid-img user-main-profile">
 			
 			<div id="userProfile">
 				<div class="column">
