@@ -51,6 +51,7 @@ class Admin_alfamart extends Admin_Controller
                 'user'             => $code->display_name,
                 'date_created'     => date('d M Y', strtotime($code->date_created)),
                 'pemenang_id'      => $code->pemenang_id,
+                'pemenang_temp_id' => $code->pemenang_temp_id,
             );
         }
 
@@ -67,5 +68,43 @@ class Admin_alfamart extends Admin_Controller
         $this->input->is_ajax_request()
         ? $this->template->build('admin/alfamart/tables/code')
         : $this->template->build('admin/alfamart/index');
+    }
+
+    public function winner($id = 0)
+    {
+        $code = $this->code_m->getSingleData('alfamart_code', 'code_id', $id);
+
+        if ($code) {
+            $this->code_m->setAsTempWinner($code);
+            $this->session->set_flashdata('success', lang('code:set_as_temp_winner'));
+        }
+
+        redirect($this->redirect);
+    }
+
+    public function action()
+    {
+        if ($this->input->method() == 'post') {
+            $success = false;
+            $action = $this->input->post('btnAction');
+            $ids = $this->input->post('action_to');
+
+            if ($ids) {
+                foreach ($ids as $id) {
+                    if ($action == 'winner') {
+                        $code = $this->code_m->getSingleData('alfamart_code', 'code_id', $id);
+                        $success = $this->code_m->setAsTempWinner($code);
+                    }
+                }
+            }
+
+            if ($success) {
+                $this->session->set_flashdata('success', lang('code:set_as_temp_winner'));
+            } else {
+                $this->session->set_flashdata('error', lang('code:error'));
+            }
+        }
+
+        redirect($this->redirect);
     }
 }

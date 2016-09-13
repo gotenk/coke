@@ -29,6 +29,7 @@ $lang['code:error']                  = 'An error has occured';
 $lang['code:delete_code']            = 'Success to delete code';
 $lang['code:winner']                 = 'Set As Winner';
 $lang['code:set_as_winner']          = 'Success to set user as winner';
+$lang['code:set_as_temp_winner']     = 'Success to insert user to winner table';
 $lang['code:select_pemenang_text']   = 'Input password to select the winner';
 $lang['code:wrong_password']         = 'Password is not valid';
 $lang['code:no_winner']              = 'No winner selected';

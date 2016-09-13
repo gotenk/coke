@@ -158,9 +158,22 @@ class Admin extends Admin_Controller
         $max = Settings::get('pemenang_temp_count');
 
         if ($max > 0) {
+            // Jika $selected = pemenang_temp_id tidak ada di tabel pemenang_temp
+            // akan terjadi infinity loop
+            // do {
+            //     $selected = mt_rand(1, $max);
+            //     $result = $this->code_m->getSingleData('pemenang_temp', 'pemenang_temp_id', $selected);
+            // } while (!$result);
+            //
+            // return $result;
+
+            // $lists akan meload semua data, $selected = key dari $lists
             do {
                 $selected = mt_rand(1, $max);
-                $result = $this->code_m->getSingleData('pemenang_temp', 'pemenang_temp_id', $selected);
+                $selected = $selected - 1;
+                $lists = $this->code_m->getData('pemenang_temp');
+
+                $result = (isset($lists[$selected])) ? $lists[$selected] : false;
             } while (!$result);
 
             return $result;
