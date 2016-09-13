@@ -34,10 +34,13 @@ $(document).ready(function(){
                     window.location.href = BASE_URL+'profile';
                 } else {
                     // Tampilkan pesan error
-                    $('.error-m').html(result.message);
-                    $('#alfamart-code').val('');
-                    $('#transaction-code').val('');
-                    $('#indomaret-code').val('');
+                    $('.error-m').html(result.message);                    
+                    if(vendor == 'indomaret'){
+                        $('#alfamart-code').val('');
+                        $('#transaction-code').val('');
+                    }else{
+                        $('#indomaret-code').val('');
+                    }                    
                     if (window.grecaptcha) grecaptcha.reset();
                 }
             }
