@@ -4,7 +4,7 @@
 			<tr>
 				<th with="30" class="align-center"><?php echo form_checkbox(array('name' => 'action_to_all', 'class' => 'check-all'));?></th>
 				<th><?php echo lang('user:name_label');?></th>
-				<th class="collapse"><?php echo lang('user:email_label');?></th>
+				<th class="collapse">Email</th>
 				<?php /*<th><?php echo lang('user:group_label');?></th>*/?>
 				<th class="collapse"><?php echo lang('user:active') ?></th>
 				<th class="collapse"><?php echo lang('user:joined_label');?></th>
