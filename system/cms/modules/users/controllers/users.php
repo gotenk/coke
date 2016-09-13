@@ -1888,7 +1888,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 		array(
 			'field' => 'name',
 			'label' => 'Nama Lengkap',
-			'rules' => 'trim|required|min_length[2]|callback__string_spasi|xss_clean',
+			'rules' => 'trim|required|min_length[2]|max_length[60]|callback__string_spasi|xss_clean',
 		),
 		array(
 			'field' => 'phone',
