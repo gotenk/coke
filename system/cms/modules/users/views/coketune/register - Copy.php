@@ -174,17 +174,15 @@
 											$kode_alfamart = $code_temp['code'];
 											$kode_transaksi_alfamart = $code_temp['code_transaksi'];
 										}else{
-											$kode_alfamart = set_value('kode_alfamart');
-											$kode_transaksi_alfamart = set_value('kode_transaksi_alfamart');
+											$kode_alfamart = set_value('kode_unik');
+											$kode_transaksi_alfamart = set_value('kode_transaksi');
 										}
 									?>
-									<input id="code-id-alfamart" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_alfamart" value="<?php echo $kode_alfamart;?>" onkeypress="return textAlphanumeric(event)">
-									<?php echo form_error('kode_alfamart')?>									
+									<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_alfamart" value="<?php echo $kode_alfamart;?>" onkeypress="return textAlphanumeric(event)">
 								</div> <!-- .column -->
 								<div class="column">
 									<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
 									<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi_alfamart" value="<?php echo $kode_transaksi_alfamart;?>" onkeypress="return textAlphanumeric(event)">
-									<?php echo form_error('kode_transaksi_alfamart')?>
 								</div> <!-- .column -->								
 							</div> <!-- .tab-container -->
 
@@ -196,17 +194,15 @@
 											$kode_alfamidi = $code_temp['code'];
 											$kode_transaksi_alfamidi = $code_temp['code_transaksi'];
 										}else{
-											$kode_alfamidi = set_value('kode_alfamidi');
-											$kode_transaksi_alfamidi = set_value('kode_transaksi_alfamidi');
+											$kode_alfamidi = set_value('kode_unik');
+											$kode_transaksi_alfamidi = set_value('kode_transaksi');
 										}
 									?>
-									<input id="code-id-alfamidi" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_alfamidi" value="<?php echo $kode_alfamidi;?>" onkeypress="return textAlphanumeric(event)">
-									<?php echo form_error('kode_alfamidi')?>									
+									<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_alfamidi" value="<?php echo $kode_alfamidi;?>" onkeypress="return textAlphanumeric(event)">
 								</div> <!-- .column -->
 								<div class="column">
 									<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
 									<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi_alfamidi" value="<?php echo $kode_transaksi_alfamidi;?>" onkeypress="return textAlphanumeric(event)">
-									<?php echo form_error('kode_transaksi_alfamidi')?>
 								</div> <!-- .column -->								
 							</div> <!-- .tab-container -->
 
@@ -220,15 +216,28 @@
 											$kode_unik_indomaret = set_value('kode_unik_indomaret');											
 										}
 									?>
-									<input id="code-id-indomaret" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik_indomaret" value="<?php echo $kode_unik_indomaret;?>" onkeypress="return textAlphanumeric(event)">
-									<?php echo form_error('kode_unik_indomaret')?>									
+									<input id="code-id" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik_indomaret" value="<?php echo $kode_unik_indomaret;?>" onkeypress="return textAlphanumeric(event)">
 								</div> <!-- .column -->
 							</div> <!-- .tab-container -->
 
 							
 
+
+
+							<div class="column">
+								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+								<input onkeypress="return textAlphanumeric(event)" id="code-id" type="text" value="<?php echo isset($code_temp['code'])?$code_temp['code']:set_value('kode_unik')?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
 								<?php echo form_error('kode_unik')?>
-								
+								<?php if($code_err):?>
+									<p class="error"><?php echo $code_err;?></p>
+								<?php endif;?>
+
+							</div> <!-- .column -->
+							<div class="column">
+								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
+								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?php echo isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('kode_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+							</div> <!-- .column -->
+
 
 							
 

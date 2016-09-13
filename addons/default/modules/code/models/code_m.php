@@ -51,10 +51,11 @@ class Code_m extends MY_Model
     public function getIndomaretCodeList($parameter, $pagination = null)
     {
         $this->db
-            ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name, p.user_id, pe.pemenang_id')
+            ->select('ic.code_id, ic.code, ic.is_used, ic.date_used, ic.date_created, p.display_name, p.user_id, pe.pemenang_id, pt.pemenang_temp_id')
             ->from('indomaret_code ic')
             ->join('profiles p', 'p.user_id = ic.user_id', 'left')
-            ->join('pemenang pe', 'pe.user_id = ic.user_id', 'left');
+            ->join('pemenang pe', 'pe.user_id = ic.user_id', 'left')
+            ->join('pemenang_temp pt', 'pt.user_id = ic.user_id', 'left');
 
         if (isset($parameter['is_used'])) {
             if ($parameter['is_used'] == 'yes') {
@@ -82,10 +83,11 @@ class Code_m extends MY_Model
     public function getAlfamartCodeList($parameter, $pagination = null)
     {
         $this->db
-            ->select('ac.*, p.display_name, p.user_id, pe.pemenang_id')
+            ->select('ac.*, p.display_name, p.user_id, pe.pemenang_id, pt.pemenang_temp_id')
             ->from('alfamart_code ac')
             ->join('profiles p', 'p.user_id = ac.user_id', 'left')
-            ->join('pemenang pe', 'pe.user_id = ac.user_id', 'left');
+            ->join('pemenang pe', 'pe.user_id = ac.user_id', 'left')
+            ->join('pemenang_temp pt', 'pt.user_id = ac.user_id', 'left');
 
         if (isset($parameter['unique_code'])) {
             $this->db->like('ac.unique_code', $parameter['unique_code']);
@@ -205,5 +207,31 @@ class Code_m extends MY_Model
         $this->db->limit($pagination['limit'], $pagination['offset']);
 
         return $this->db->get();
+    }
+
+    public function setAsTempWinner($data)
+    {
+        $exist = $this->getSingleData('pemenang_temp', 'user_id', $data->user_id);
+
+        // Pemenang is not exist - set as one?
+        if (!$exist) {
+            $profile = $this->getSingleData('profiles', 'user_id', $data->user_id);
+
+            // Is user exist?
+            if ($profile) {
+                $data = array(
+                    'user_id' => $data->user_id,
+                    'vendor'  => $data->vendor,
+                    'code'    => ($data->vendor == 'indomaret') ? $data->code : $data->unique_code.','.$data->transaction_code,
+                );
+
+                $this->insertData('pemenang_temp', $data);
+                $this->updateTempCount(1, 'more');
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
