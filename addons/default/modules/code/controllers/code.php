@@ -165,7 +165,7 @@ class Code extends Public_Controller
 
             $this->code_m->insertData('alfamart_fail', $fail);
 
-            return array('message' => 'Kode sudah pernah digunakan.');
+            return array('message' => 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
         }
 
         // Code is new - let's check whether they match each other
@@ -173,7 +173,7 @@ class Code extends Public_Controller
 
         if ($check != $data['alfamart_code']) {
             // Code is not match
-            return array('message' => 'Kode yang dimasukkan salah.');
+            return array('message' => 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
         }
 
         $success = array(
