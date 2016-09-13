@@ -146,20 +146,92 @@
 								</div> <!-- .devide-3 -->
 								<p class="error"><?php echo $dob_err;?></p>
 							</div> <!-- .column -->
-							<div class="column">
-								<label for="code-id" class="sub-title">kode unik<span>*</span></label>
-								<input onkeypress="return textAlphanumeric(event)" id="code-id" type="text" value="<?php echo isset($code_temp['code'])?$code_temp['code']:set_value('kode_unik')?>" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik">
-								<?php echo form_error('kode_unik')?>
-								<?php if($code_err):?>
-									<p class="error"><?php echo $code_err;?></p>
-								<?php endif;?>
 
-							</div> <!-- .column -->
 							<div class="column">
-								<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
-								<input onkeypress="return textAlphanumeric(event)" id="code-tr" value="<?php echo isset($code_temp['code_transaksi'])?$code_temp['code_transaksi']:set_value('kode_transaksi')?>" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi">
+								<label class="sub-title mobile">lokasi pembelian</label>
+								<ul id="tab" class="tabbb">
+									<li <?php echo ($vendor == 'alfamart') ? 'class="current"' : '' ?> data-tab="tab-1" data-vendor="alfamart">
+										<a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_alfamart.png" }}" alt=""/></a>
+									</li>
+									<li <?php echo ($vendor == 'alfamidi') ? 'class="current"' : '' ?> data-tab="tab-2" data-vendor="alfamidi">
+										<a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_alfamidi.png" }}" alt=""/></a>
+										<span></span>
+									</li>
+									<li <?php echo ($vendor == 'indomaret') ? 'class="current"' : '' ?> data-tab="tab-3" data-vendor="indomaret">
+										<a href="javascript:void(0)"><span></span><img src="{{ theme:image_url file= "coke/vendor_indomaret.png" }}" alt=""/></a>
+										<span></span>
+									</li>									
+								</ul>		
+								<input type="hidden" name="vendor" value="<?php echo $vendor;?>" id="vendor-register">														
 							</div> <!-- .column -->
-							<input type="hidden" name="vendor" value="<?php echo isset($code_temp['vendor'])?$code_temp['vendor']:''?>">
+
+
+							<div id="tab-1" class="tab-container <?php echo ($vendor == 'alfamart') ? 'current' : '' ?>">
+								<div class="column">
+									<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+									<?php 										
+										if($code_temp && $code_temp['vendor'] == 'alfamart' ){
+											$kode_alfamart = $code_temp['code'];
+											$kode_transaksi_alfamart = $code_temp['code_transaksi'];
+										}else{
+											$kode_alfamart = set_value('kode_alfamart');
+											$kode_transaksi_alfamart = set_value('kode_transaksi_alfamart');
+										}
+									?>
+									<input id="code-id-alfamart" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_alfamart" value="<?php echo $kode_alfamart;?>" onkeypress="return textAlphanumeric(event)">
+									<?php echo form_error('kode_alfamart')?>									
+								</div> <!-- .column -->
+								<div class="column">
+									<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
+									<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi_alfamart" value="<?php echo $kode_transaksi_alfamart;?>" onkeypress="return textAlphanumeric(event)">
+									<?php echo form_error('kode_transaksi_alfamart')?>
+								</div> <!-- .column -->								
+							</div> <!-- .tab-container -->
+
+							<div id="tab-2" class="tab-container <?php echo ($vendor == 'alfamidi') ? 'current' : '' ?>">
+								<div class="column">
+									<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+									<?php 										
+										if($code_temp && $code_temp['vendor'] == 'alfamidi' ){
+											$kode_alfamidi = $code_temp['code'];
+											$kode_transaksi_alfamidi = $code_temp['code_transaksi'];
+										}else{
+											$kode_alfamidi = set_value('kode_alfamidi');
+											$kode_transaksi_alfamidi = set_value('kode_transaksi_alfamidi');
+										}
+									?>
+									<input id="code-id-alfamidi" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_alfamidi" value="<?php echo $kode_alfamidi;?>" onkeypress="return textAlphanumeric(event)">
+									<?php echo form_error('kode_alfamidi')?>									
+								</div> <!-- .column -->
+								<div class="column">
+									<label for="code-tr" class="sub-title">kode transaksi<span>*</span></label>
+									<input id="code-tr" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_transaksi_alfamidi" value="<?php echo $kode_transaksi_alfamidi;?>" onkeypress="return textAlphanumeric(event)">
+									<?php echo form_error('kode_transaksi_alfamidi')?>
+								</div> <!-- .column -->								
+							</div> <!-- .tab-container -->
+
+							<div id="tab-3" class="tab-container <?php echo ($vendor == 'indomaret') ? 'current' : '' ?>">
+								<div class="column">
+									<label for="code-id" class="sub-title">kode unik<span>*</span></label>
+									<?php 										
+										if($code_temp && $code_temp['vendor'] == 'indomaret' ){
+											$kode_unik_indomaret = $code_temp['code'];											
+										}else{
+											$kode_unik_indomaret = set_value('kode_unik_indomaret');											
+										}
+									?>
+									<input id="code-id-indomaret" type="text" placeholder="CokeTune_0431xxxx-xxxx" name="kode_unik_indomaret" value="<?php echo $kode_unik_indomaret;?>" onkeypress="return textAlphanumeric(event)">
+									<?php echo form_error('kode_unik_indomaret')?>									
+								</div> <!-- .column -->
+							</div> <!-- .tab-container -->
+
+							
+
+								<?php echo form_error('kode_unik')?>
+								
+
+							
+
 							<div class="column">
 								<div id="captcha">
 									<div>

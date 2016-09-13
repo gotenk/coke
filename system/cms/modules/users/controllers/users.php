@@ -1905,7 +1905,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'label' => 'Syarat dan Ketentuan',
 			'rules' => 'required',
 		),
-		array(
+		/*array(
 			'field' => 'kode_unik',
 			'label' => 'Kode Unik',
 			'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[20]',
@@ -1914,6 +1914,11 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'field' => 'kode_transaksi',
 			'label' => 'Kode Transaksi',
 			'rules' => 'trim|xss_clean|callback__string_angka_spasi|max_length[25]',
+		),*/
+		array(
+			'field' => 'vendor',
+			'label' => 'Vendor',
+			'rules' => 'trim|xss_clean|max_length[15]|callback__check_vendor',
 		),
 		/*array(
 			'field'=>'dd',
@@ -1937,6 +1942,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			'rules' => 'trim|xss_clean|callback__recaptcha_check_custom'
 		),
 	);
+
+	
 
 	public function home(){
 		$this->template
@@ -1991,9 +1998,52 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 
+	private function _validation_tambahan($string){
+		if($string=='indomaret'){
+			$validation_tambahan = array(
+				array(
+					'field' => 'kode_unik_indomaret',
+					'label' => 'Kode Unik',
+					'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[20]|callback__check_indomaret_code',
+				)				
+			);
+		}else if($string=='alfamart'){
+			$validation_tambahan = array(
+				array(
+					'field' => 'kode_alfamart',
+					'label' => 'Kode Unik',
+					'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[20]|callback__check_alfamart_code',
+				),
+				array(
+					'field' => 'kode_transaksi_alfamart',
+					'label' => 'Kode Transaksi',
+					'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[25]',
+				),
+			);
+		}else{
+			$validation_tambahan = array(
+				array(
+					'field' => 'kode_alfamidi',
+					'label' => 'Kode Unik',
+					'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[20]|callback__check_alfamidi_code',
+				),
+				array(
+					'field' => 'kode_transaksi_alfamidi',
+					'label' => 'Kode Transaksi',
+					'rules' => 'required|trim|xss_clean|callback__string_angka_spasi|max_length[25]',
+				),
+			);
+		}
+
+		return $validation_tambahan;
+	}
+
 	public function register(){
 		$dob_err = '';
-		$code_err = '';
+		#$code_err = '';
+		$code_temp = array();		
+		$vendor = 'alfamart'; //default
+
 		$this->_already_logged_in();
 		if($this->session->userdata($this->sess_name_dob_status) == 'false'){
 			redirect('register-failed');
@@ -2005,13 +2055,23 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 
 		$code_temp = $this->session->userdata('code_temp');
 
+		//set vendor
+		if($code_temp){
+			$vendor = $code_temp['vendor'];
+		}
+
+		// session FB or TWITTER
 		$session = $this->session->userdata($this->sess_data_fb);
 		if($this->session->userdata($this->sess_data_tw)){
 			$session = $this->session->userdata($this->sess_data_tw);
 		}
 
-		$this->form_validation->set_rules($this->register_validation_array);
-		if($this->input->post('register')){
+		
+		if($this->input->post('register')){		
+			// akalin validasi code							
+			$vendor = $this->input->post('vendor');			
+			$this->form_validation->set_rules(array_merge($this->register_validation_array, $this->_validation_tambahan($vendor)));
+
 			$dd = $this->input->post('dd');
 			$mm = $this->input->post('mm');
 			$yy = $this->input->post('yy');
@@ -2020,17 +2080,17 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 				$dob = $this->_check_dob($yy, $mm, $dd);
 				$dob_err = $dob;
 				if($dob == ""){
-					// cek vendor
-					$vendor = $this->input->post('vendor');
-					if ($vendor == '') {
+					// cek vendor					
+					/*if ($vendor == '') {
 						$vendor = ($this->input->post('kode_transaksi') == '') ? 'indomaret' : 'alfamart';
-					}
+					}*/
+
 					// cek code
-					$kode_unik 		= $this->input->post('kode_unik');
-					$kode_transaksi = $this->input->post('kode_transaksi');
-					$cek_kode = $this->_check_code($vendor, $kode_unik, $kode_transaksi);
+					#$kode_unik 		= $this->input->post('kode_unik');
+					#$kode_transaksi = $this->input->post('kode_transaksi');
+					##$cek_kode = $this->_check_code($vendor, $kode_unik, $kode_transaksi);
 					#var_dump($cek_kode);exit();
-					if($cek_kode === true){
+					##if($cek_kode === true){
 						$display_name 	= $this->input->post('name');
 						$username 		= strtolower(str_replace(' ', '', $display_name));
 						$password 		= $this->input->post('password');
@@ -2072,9 +2132,16 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 							// berhasil update profile
 							if($profile_reg){
 								// insert code
-								if($kode_unik && !$kode_transaksi){ // indomaret
+								if($vendor == 'indomaret'){ // indomaret
+									$kode_unik = $this->input->post('kode_unik_indomaret');
 									$this->insert_indomaret_code($id, $kode_unik);
-								}else if($kode_unik && $kode_transaksi){
+								}else if($vendor == 'alfamart'){
+									$kode_unik = $this->input->post('kode_alfamart');
+									$kode_transaksi = $this->input->post('kode_transaksi_alfamart');
+									$this->insert_alfamart_code($id, $kode_unik, $kode_transaksi, $vendor);
+								}else if($vendor == 'alfamidi'){
+									$kode_unik = $this->input->post('kode_alfamidi');
+									$kode_transaksi = $this->input->post('kode_transaksi_alfamidi');
 									$this->insert_alfamart_code($id, $kode_unik, $kode_transaksi, $vendor);
 								}
 
@@ -2090,15 +2157,15 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 								//active and login
 								$this->ion_auth->activate($id, false);
 								$this->ion_auth->force_login($id);
-
+								
 								redirect('profile');
 							}else{
 								$this->ion_auth->delete_user($id);
 							}
 						}
-					}else{
+					/*}else{
 						$code_err = $cek_kode;
-					}// end cek code
+					}*/
 				}else{
 					// dob salah
 					$this->session->unset_userdata($this->sess_name_dob);
@@ -2113,8 +2180,9 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 					->set('session', $session)
 					->set('dob_ar', $dob_ar)
 					->set('dob_err', $dob_err)
-					->set('code_err', $code_err)
+					#->set('code_err', $code_err)
 					->set('code_temp', $code_temp)
+					->set('vendor', $vendor)
 					->build('coketune/register');
 	}
 
@@ -2336,12 +2404,6 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	}
 
 
-	// belom
-	private function _submit_code(){
-		$this->_restricted_area();
-	}
-
-
 
 	private function _already_logged_in(){
 		if ($this->current_user && $this->current_user->group == 'user') {
@@ -2387,7 +2449,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 	{
 		$result = "Kode yang dimasukkan salah atau sudah pernah digunakan.";
 
-		if ($vendor == 'alfamart') {
+		if ($vendor == 'alfamart' || $vendor == 'alfamidi') {
 			$data = array(
                 'alfamart_code'    => $code,
                 'transaction_code' => $transaksi,
@@ -2452,7 +2514,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
         $this->code_m->updateData('indomaret_code', $input, 'code', $code);
 
         // Check - if user has been in pemenang table then they are not valid anymore
-        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $this->current_user->id);
+        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $user_id);
 
         if (!$exist) {
         	$this->insert_pemenang_temp('indomaret', $user_id, $code);
@@ -2471,7 +2533,7 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
         $this->code_m->insertData('alfamart_code', $success);
 
         // Check - if user has been in pemenang table then they are not valid anymore
-        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $this->current_user->id);
+        $exist = $this->code_m->getSingleData('pemenang', 'user_id', $user_id);
 
         if (!$exist) {
         	$this->insert_pemenang_temp($vendor, $user_id, $code, $transaksi);
@@ -2500,6 +2562,8 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			return false;
 		}
 	}
+
+
 
 
 /*-----------------------------------------------------------CALLBACK-----------------------------------------------------------*/
@@ -2548,6 +2612,81 @@ CONTENT="5;URL='.site_url('fb-connect').'?'.(($this->input->get())?http_build_qu
 			return true;
 		}
 	}
+
+	public function _check_vendor($string){
+		$vendor_array = array('alfamart','alfamidi', 'indomaret');
+		if(!in_array($string, $vendor_array)){
+			$this->form_validation->set_message('_check_vendor', 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
+			return false;
+		}
+	}
+
+	public function _check_indomaret_code($string){
+		$code = $this->code_m->getSingleData('indomaret_code', 'code', $string);
+
+		if ($code && $code->is_used == '0') {
+            return true;
+        }else{
+        	$this->form_validation->set_message('_check_indomaret_code', 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
+        	return false;
+        }
+	}
+
+	public function _check_alfamart_code($string){
+		$code = $this->input->post('kode_alfamart');
+		$transaksi = $this->input->post('kode_transaksi_alfamart');
+
+		if($transaksi){
+			$data = array(
+                'alfamart_code'    => $code,
+                'transaction_code' => $transaksi,
+            );
+
+			$existing = $this->code_m->checkExistingCode($data);
+
+			if ($existing) {
+				$this->form_validation->set_message('_check_alfamart_code', 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
+	            return false;
+	        }else{
+	        	$cocok = $this->confidential($transaksi);
+	        	if ($cocok != $code) {
+	        		$this->form_validation->set_message('_check_alfamart_code', 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
+					return false;
+				}else{
+					return true;
+				}	
+	        }	        	     	        
+		}		
+	}
+
+	public function _check_alfamidi_code($string){
+		$code = $this->input->post('kode_alfamidi');
+		$transaksi = $this->input->post('kode_transaksi_alfamidi');
+
+		if($transaksi){
+			$data = array(
+                'alfamart_code'    => $code,
+                'transaction_code' => $transaksi,
+            );
+
+			$existing = $this->code_m->checkExistingCode($data);
+
+			if ($existing) {
+				$this->form_validation->set_message('_check_alfamidi_code', 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
+	            return false;
+	        }else{
+	        	$cocok = $this->confidential($transaksi);
+	        	if ($cocok != $code) {
+	        		$this->form_validation->set_message('_check_alfamidi_code', 'Kode yang dimasukkan salah atau sudah pernah digunakan.');
+					return false;
+				}else{
+					return true;
+				}	
+	        }	        	     	        
+		}		
+	}
+
+	
 /*-----------------------------------------------------------END CALLBACK-----------------------------------------------------------*/
 
 

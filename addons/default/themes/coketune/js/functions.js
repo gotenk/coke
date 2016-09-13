@@ -103,4 +103,10 @@ $(document).ready(function(){
             }
         });
     }
+
+
+    $('#tab li').click(function(){
+        var vendor = $(this).attr('data-vendor');        
+        $('#vendor-register').val(vendor);
+    });
 });
